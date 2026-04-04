@@ -49,7 +49,7 @@ class ApplicationController extends Controller
     {
         $applications = DangKyLop1::select([
             'id', 'fullname', 'birthdate', 'gender', 'phone', 
-            'current_school', 'status', 'created_at'
+            'guardian_name', 'status', 'created_at'
         ])->orderBy('created_at', 'desc');
         
         return DataTables::of($applications)
@@ -70,11 +70,11 @@ class ApplicationController extends Controller
             })
             ->editColumn('status', function($row) {
                 $badges = [
-                    'pending' => '<span class="badge badge-warning">Chờ duyệt</span>',
-                    'approved' => '<span class="badge badge-success">Đã duyệt</span>',
-                    'rejected' => '<span class="badge badge-danger">Từ chối</span>'
+                    'pending' => '<span class="badge bg-warning text-dark">Chờ duyệt</span>',
+                    'approved' => '<span class="badge bg-success">Đã duyệt</span>',
+                    'rejected' => '<span class="badge bg-danger">Từ chối</span>'
                 ];
-                return $badges[$row->status] ?? '<span class="badge badge-secondary">Không xác định</span>';
+                return $badges[$row->status] ?? '<span class="badge bg-secondary">Không xác định</span>';
             })
             ->editColumn('created_at', function($row) {
                 return $row->created_at->format('d/m/Y H:i');
@@ -118,11 +118,11 @@ class ApplicationController extends Controller
             })
             ->editColumn('status', function($row) {
                 $badges = [
-                    'pending' => '<span class="badge badge-warning">Chờ duyệt</span>',
-                    'approved' => '<span class="badge badge-success">Đã duyệt</span>',
-                    'rejected' => '<span class="badge badge-danger">Từ chối</span>'
+                    'pending' => '<span class="badge bg-warning text-dark">Chờ duyệt</span>',
+                    'approved' => '<span class="badge bg-success">Đã duyệt</span>',
+                    'rejected' => '<span class="badge bg-danger">Từ chối</span>'
                 ];
-                return $badges[$row->status] ?? '<span class="badge badge-secondary">Không xác định</span>';
+                return $badges[$row->status] ?? '<span class="badge bg-secondary">Không xác định</span>';
             })
             ->editColumn('created_at', function($row) {
                 return $row->created_at->format('d/m/Y H:i');
@@ -166,11 +166,11 @@ class ApplicationController extends Controller
             })
             ->editColumn('status', function($row) {
                 $badges = [
-                    'pending' => '<span class="badge badge-warning">Chờ duyệt</span>',
-                    'approved' => '<span class="badge badge-success">Đã duyệt</span>',
-                    'rejected' => '<span class="badge badge-danger">Từ chối</span>'
+                    'pending' => '<span class="badge bg-warning text-dark">Chờ duyệt</span>',
+                    'approved' => '<span class="badge bg-success">Đã duyệt</span>',
+                    'rejected' => '<span class="badge bg-danger">Từ chối</span>'
                 ];
-                return $badges[$row->status] ?? '<span class="badge badge-secondary">Không xác định</span>';
+                return $badges[$row->status] ?? '<span class="badge bg-secondary">Không xác định</span>';
             })
             ->editColumn('created_at', function($row) {
                 return $row->created_at->format('d/m/Y H:i');

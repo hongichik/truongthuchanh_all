@@ -28,6 +28,37 @@ return [
                 'active' => 'admin.dashboard',
             ],
             [
+                'text' => 'Quản lý đơn nhập học',
+                'icon' => 'fas fa-graduation-cap',
+                'active' => 'admin/applications*',
+                'submenu' => [
+                    [
+                        'text' => 'Tổng quan',
+                        'icon' => 'fas fa-chart-pie',
+                        'route' => 'admin.applications.index',
+                        'active' => 'admin/applications',
+                    ],
+                    [
+                        'text' => 'Đơn vào lớp 1',
+                        'icon' => 'fas fa-child',
+                        'route' => 'admin.applications.lop1',
+                        'active' => 'admin/applications/lop-1',
+                    ],
+                    [
+                        'text' => 'Đơn vào lớp 6',
+                        'icon' => 'fas fa-user-graduate',
+                        'route' => 'admin.applications.lop6',
+                        'active' => 'admin/applications/lop-6*',
+                    ],
+                    [
+                        'text' => 'Đơn vào lớp 10',
+                        'icon' => 'fas fa-graduation-cap',
+                        'route' => 'admin.applications.lop10',
+                        'active' => 'admin/applications/lop-10*',
+                    ],
+                ],
+            ],
+            [
                 'text' => 'Quản lý quản trị',
                 'icon' => 'bi bi-shield-lock',
                 'active' => 'admin/role*',
