@@ -13,6 +13,13 @@ use Hongdev\MasterAdmin\Http\Controllers\CodeGenerator\AuthGeneratorController;
 use Hongdev\MasterAdmin\Http\Controllers\FileManagerController;
 use Hongdev\MasterAdmin\Http\Controllers\Settings\DatabaseManagerController;
 
+Route::get('/', function () {
+    return redirect()->route('home');
+});
+
+// Include user routes
+require __DIR__.'/user.php';
+
 Route::middleware('master-admin')->prefix('master-admin')->name('master-admin.')->group(function () {
     // Dashboard
     Route::get('/', [MasterAdminController::class, 'index'])->name('dashboard');

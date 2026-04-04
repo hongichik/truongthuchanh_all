@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\ApplicationController;
 
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::middleware('guest:admin')->group(function () {
@@ -25,9 +26,32 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::resource('role', App\Http\Controllers\Admin\Role\RoleController::class);
             Route::resource('admin', App\Http\Controllers\Admin\Role\AdminController::class);
         });
+        
+        // Quản lý đơn xin nhập học
+        Route::prefix('applications')->name('applications.')->group(function () {
+            Route::get('/', [ApplicationController::class, 'index'])->name('index');
+            
+            // Lớp 1
+            Route::get('lop-1', [ApplicationController::class, 'lop1'])->name('lop1');
+            Route::get('lop-1/data', [ApplicationController::class, 'lop1Data'])->name('lop1.data');
+            
+            // Lớp 6
+            Route::get('lop-6', [ApplicationController::class, 'lop6'])->name('lop6');
+            Route::get('lop-6/data', [ApplicationController::class, 'lop6Data'])->name('lop6.data');
+            
+            // Lớp 10
+            Route::get('lop-10', [ApplicationController::class, 'lop10'])->name('lop10');
+            Route::get('lop-10/data', [ApplicationController::class, 'lop10Data'])->name('lop10.data');
+            
+            // Chi tiết và xử lý đơn
+            Route::get('{grade}/{id}/detail', [ApplicationController::class, 'detail'])->name('detail');
+            Route::put('{grade}/{id}/approve', [ApplicationController::class, 'approve'])->name('approve');
+            Route::put('{grade}/{id}/reject', [ApplicationController::class, 'reject'])->name('reject');
+        });
     });
 });
 
-Route::any('{any}', function () {
-    return redirect()->route('admin.dashboard');
-})->where('any', '.*');
+// Loại bỏ tránh trường hợp bất khả kháng quay trở về trang admin
+// Route::any('{any}', function () {
+//     return redirect()->route('admin.dashboard');
+// })->where('any', '.*');
