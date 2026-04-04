@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ApplicationController;
+use App\Http\Controllers\Admin\ImageController;
 
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::middleware('guest:admin')->group(function () {
@@ -47,6 +48,19 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::get('{grade}/{id}/detail', [ApplicationController::class, 'detail'])->name('detail');
             Route::put('{grade}/{id}/approve', [ApplicationController::class, 'approve'])->name('approve');
             Route::put('{grade}/{id}/reject', [ApplicationController::class, 'reject'])->name('reject');
+        });
+        
+        // Quản lý hình ảnh website
+        Route::prefix('images')->name('images.')->middleware(['can_edit_home'])->group(function () {
+            Route::post('header/update', [ImageController::class, 'updateHeaderImage'])->name('header.update');
+            Route::get('header/current', [ImageController::class, 'getCurrentHeaderImage'])->name('header.current');
+            Route::post('header/reset', [ImageController::class, 'resetHeaderImage'])->name('header.reset');
+        });
+        
+        // Quản lý cấu hình website  
+        Route::prefix('config')->name('config.')->middleware(['can_edit_home'])->group(function () {
+            Route::get('/', [ImageController::class, 'getWebsiteConfig'])->name('get');
+            Route::post('/update', [ImageController::class, 'updateWebsiteConfigGeneral'])->name('update');
         });
     });
 });

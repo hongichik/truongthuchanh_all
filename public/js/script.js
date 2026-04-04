@@ -463,3 +463,354 @@ function lazyLoadImages() {
 if ('IntersectionObserver' in window) {
     lazyLoadImages();
 }
+
+// ===============================
+// Image Editor Functionality
+// ===============================
+
+document.addEventListener('DOMContentLoaded', function() {
+    initializeImageEditor();
+});
+
+function initializeImageEditor() {
+    // Kiểm tra xem các element có tồn tại không (chỉ admin có quyền mới thấy)
+    const editBtn = document.getElementById('editHeaderBtn');
+    const modal = document.getElementById('imageEditModal');
+    
+    if (!editBtn || !modal) {
+        return; // Không có quyền hoặc không đăng nhập admin
+    }
+    
+    const closeBtn = document.getElementById('closeModal');
+    const cancelBtn = document.getElementById('cancelBtn');
+    const uploadArea = document.getElementById('uploadArea');
+    const imageInput = document.getElementById('imageInput');
+    const imagePreview = document.getElementById('imagePreview');
+    const previewImg = document.getElementById('previewImg');
+    const changeImageBtn = document.getElementById('changeImageBtn');
+    const saveImageBtn = document.getElementById('saveImageBtn');
+    const resetImageBtn = document.getElementById('resetImageBtn');
+    const currentImagePreview = document.getElementById('currentImagePreview');
+    const headerImage = document.getElementById('headerImage');
+    
+    let selectedFile = null;
+
+    // Mở modal khi click vào nút edit
+    if (editBtn) {
+        editBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            // Load thông tin ảnh hiện tại từ server
+            loadCurrentImageInfo();
+            openModal();
+        });
+    }
+
+    // Load thông tin ảnh hiện tại
+    function loadCurrentImageInfo() {
+        fetch('/admin/images/header/current', {
+            method: 'GET',
+            headers: {
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success && data.data) {
+                updateImageInfo(data.data);
+            }
+        })
+        .catch(error => {
+            console.error('Error loading image info:', error);
+        });
+    }
+
+    // Cập nhật thông tin ảnh trong modal
+    function updateImageInfo(imageData) {
+        if (currentImagePreview) {
+            currentImagePreview.src = imageData.url;
+        }
+        
+        // Cập nhật thông tin metadata nếu có
+        const imageInfoElement = document.querySelector('.image-info');
+        if (imageInfoElement && imageData.config) {
+            let infoHtml = '';
+            if (imageData.config.last_updated) {
+                const lastUpdated = new Date(imageData.config.last_updated).toLocaleString('vi-VN');
+                infoHtml += `<p><small><i class="fas fa-clock"></i> Cập nhật lần cuối: ${lastUpdated}</small></p>`;
+            }
+            if (imageData.config.updated_by_name) {
+                infoHtml += `<p><small><i class="fas fa-user"></i> Bởi: ${imageData.config.updated_by_name}</small></p>`;
+            }
+            if (infoHtml) {
+                imageInfoElement.innerHTML = infoHtml;
+            }
+        }
+    }
+
+    // Đóng modal
+    function closeModal() {
+        modal.classList.remove('show');
+        setTimeout(() => {
+            modal.style.display = 'none';
+        }, 300);
+        resetForm();
+    }
+
+    // Mở modal
+    function openModal() {
+        modal.style.display = 'flex';
+        setTimeout(() => {
+            modal.classList.add('show');
+        }, 10);
+    }
+
+    // Reset form
+    function resetForm() {
+        selectedFile = null;
+        imageInput.value = '';
+        imagePreview.style.display = 'none';
+        uploadArea.style.display = 'block';
+        saveImageBtn.disabled = true;
+    }
+
+    // Event listeners cho đóng modal
+    if (closeBtn) closeBtn.addEventListener('click', closeModal);
+    if (cancelBtn) cancelBtn.addEventListener('click', closeModal);
+
+    // Đóng modal khi click outside
+    modal.addEventListener('click', function(e) {
+        if (e.target === modal) {
+            closeModal();
+        }
+    });
+
+    // Handle upload area click
+    if (uploadArea) {
+        uploadArea.addEventListener('click', function() {
+            imageInput.click();
+        });
+    }
+
+    // Handle change image button
+    if (changeImageBtn) {
+        changeImageBtn.addEventListener('click', function() {
+            imageInput.click();
+        });
+    }
+
+    // Handle file input change
+    if (imageInput) {
+        imageInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                handleFileSelection(file);
+            }
+        });
+    }
+
+    // Handle drag and drop
+    if (uploadArea) {
+        uploadArea.addEventListener('dragover', function(e) {
+            e.preventDefault();
+            uploadArea.classList.add('dragover');
+        });
+
+        uploadArea.addEventListener('dragleave', function(e) {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+        });
+
+        uploadArea.addEventListener('drop', function(e) {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+            
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                const file = files[0];
+                if (file.type.startsWith('image/')) {
+                    handleFileSelection(file);
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Lỗi!',
+                        text: 'Vui lòng chọn file hình ảnh (JPG, PNG, GIF)'
+                    });
+                }
+            }
+        });
+    }
+
+    // Handle file selection
+    function handleFileSelection(file) {
+        // Kiểm tra định dạng file
+        if (!file.type.startsWith('image/')) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Lỗi!',
+                text: 'Vui lòng chọn file hình ảnh (JPG, PNG, GIF)'
+            });
+            return;
+        }
+
+        // Kiểm tra kích thước file (5MB)
+        if (file.size > 5 * 1024 * 1024) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Lỗi!',
+                text: 'File quá lớn! Vui lòng chọn file nhỏ hơn 5MB'
+            });
+            return;
+        }
+
+        selectedFile = file;
+        
+        // Hiển thị preview
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            previewImg.src = e.target.result;
+            uploadArea.style.display = 'none';
+            imagePreview.style.display = 'block';
+            saveImageBtn.disabled = false;
+        };
+        reader.readAsDataURL(file);
+    }
+
+    // Handle save image
+    if (saveImageBtn) {
+        saveImageBtn.addEventListener('click', function() {
+            if (!selectedFile) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Chưa chọn ảnh!',
+                    text: 'Vui lòng chọn ảnh trước khi lưu'
+                });
+                return;
+            }
+
+            // Hiển thị loading
+            saveImageBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Đang lưu...';
+            saveImageBtn.disabled = true;
+
+            // Tạo FormData để upload
+            const formData = new FormData();
+            formData.append('image', selectedFile);
+            formData.append('_token', document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '');
+
+            // Thực hiện AJAX request đến server Laravel
+            fetch('/admin/images/header/update', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Cập nhật ảnh trên trang
+                    headerImage.src = data.imageUrl;
+                    currentImagePreview.src = data.imageUrl;
+                    
+                    // Hiển thị thông báo thành công
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Thành công!',
+                        text: data.message || 'Ảnh đã được cập nhật thành công!'
+                    });
+
+                    // Đóng modal
+                    closeModal();
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Có lỗi xảy ra!',
+                        text: data.message || 'Có lỗi xảy ra khi cập nhật ảnh'
+                    });
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Có lỗi xảy ra!',
+                    text: 'Có lỗi xảy ra khi upload ảnh'
+                });
+            })
+            .finally(() => {
+                // Reset button
+                saveImageBtn.innerHTML = '<i class="fas fa-save"></i> Lưu thay đổi';
+                saveImageBtn.disabled = false;
+            });
+        });
+    }
+
+    // Handle reset image
+    if (resetImageBtn) {
+        resetImageBtn.addEventListener('click', function() {
+            Swal.fire({
+                title: 'Xác nhận khôi phục',
+                text: 'Bạn có chắc chắn muốn khôi phục ảnh header về mặc định?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'Có, khôi phục',
+                cancelButtonText: 'Hủy bỏ',
+                confirmButtonColor: '#f59e0b',
+                cancelButtonColor: '#6b7280'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Hiển thị loading
+                    resetImageBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Đang khôi phục...';
+                    resetImageBtn.disabled = true;
+
+                    // Gọi API reset
+                    fetch('/admin/images/header/reset', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            // Cập nhật ảnh trên trang
+                            headerImage.src = data.imageUrl;
+                            currentImagePreview.src = data.imageUrl;
+                            
+                            // Hiển thị thông báo thành công
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Thành công!',
+                                text: data.message || 'Đã khôi phục ảnh header mặc định!'
+                            });
+
+                            // Đóng modal
+                            closeModal();
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Có lỗi xảy ra!',
+                                text: data.message || 'Có lỗi xảy ra khi khôi phục ảnh mặc định'
+                            });
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Có lỗi xảy ra!',
+                            text: 'Có lỗi xảy ra khi khôi phục ảnh mặc định'
+                        });
+                    })
+                    .finally(() => {
+                        // Reset button
+                        resetImageBtn.innerHTML = '<i class="fas fa-undo"></i> Khôi phục mặc định';
+                        resetImageBtn.disabled = false;
+                    });
+                }
+            });
+        });
+    }
+}

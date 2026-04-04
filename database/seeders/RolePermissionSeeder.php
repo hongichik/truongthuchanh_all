@@ -16,6 +16,7 @@ class RolePermissionSeeder extends Seeder
             ['name' => 'Manage Permissions', 'slug' => 'manage-permissions', 'description' => 'Manage permissions in the admin panel', 'icon' => 'bi bi-key'],
             ['name' => 'Manage Roles', 'slug' => 'manage-roles', 'description' => 'Manage roles in the admin panel', 'icon' => 'bi bi-person-badge'],
             ['name' => 'Manage Admins', 'slug' => 'manage-admins', 'description' => 'Manage admin users', 'icon' => 'bi bi-people'],
+            ['name' => 'Edit Home Page', 'slug' => 'edit-home', 'description' => 'Edit home page content and images', 'icon' => 'bi bi-house-gear'],
         ];
 
         foreach ($permissions as $perm) {

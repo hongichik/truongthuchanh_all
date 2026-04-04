@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'Trường TH, THCS và THPT Thực hành Sư phạm - Đại học Hạ Long')</title>
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
@@ -21,8 +22,8 @@
         <div class="header-top">
             <div class="container">
                 <div class="header-info">
-                    <span><i class="fas fa-phone"></i> Hotline: 0203.3841.166</span>
-                    <span><i class="fas fa-envelope"></i> Email: thuchanh@uhl.edu.vn</span>
+                    <span><i class="fas fa-phone"></i> Hotline: {{ config('website.contact_info.phone') }}</span>
+                    <span><i class="fas fa-envelope"></i> Email: {{ config('website.contact_info.email') }}</span>
                 </div>
             </div>
         </div>
@@ -31,14 +32,23 @@
             <div class="container">
                 <div class="header-content">
                     <div class="logo-section">
-                        <img src="{{ asset('assets/image/logo.png') }}" alt="Logo Trường" class="logo">
+                        <img src="{{ asset(config('website.logo.path') . config('website.logo.current')) }}" alt="Logo Trường" class="logo">
                         <div class="school-info">
-                            <h1>TRƯỜNG TH, THCS VÀ THPT THỰC HÀNH SƯ PHẠM</h1>
-                            <h2>ĐẠI HỌC HẠ LONG</h2>
+                            <h1>{{ config('website.school_info.name') }}</h1>
+                            <h2>{{ config('website.school_info.parent_organization') }}</h2>
                         </div>
                     </div>
                     <div class="header-image">
-                        <img src="{{ asset('assets/image/bg_header.jpg') }}" alt="Trường Thực hành Sư phạm - Đại học Hạ Long">
+                        <div class="image-editor-container">
+                            <img src="{{ asset(config('website.header_image.path') . config('website.header_image.current')) }}?v={{ filemtime(public_path(config('website.header_image.path') . config('website.header_image.current'))) }}" alt="{{ config('website.school_info.name') }} - {{ config('website.school_info.parent_organization') }}" id="headerImage">
+                            @if(auth()->guard('admin')->check() && (auth()->guard('admin')->user()->id == 0 || auth()->guard('admin')->user()->hasPermission('edit-home')))
+                            <div class="edit-icon-overlay">
+                                <button class="edit-btn" id="editHeaderBtn" title="Chỉnh sửa ảnh">
+                                    <i class="fas fa-pen"></i>
+                                </button>
+                            </div>
+                            @endif
+                        </div>
                     </div>
                 </div>
             </div>
@@ -88,11 +98,11 @@
             <div class="footer-content">
                 <div class="footer-left">
                     <div class="footer-info">
-                        <h3 class="footer-title-desktop">Trường TH, THCS và THPT Thực hành Sư phạm - Đại học Hạ Long</h3>
-                        <h3 class="footer-title-mobile">Trường TH, THCS và THPT Thực hành Sư phạm<br>Đại học Hạ Long</h3>
-                        <p>Địa chỉ: 258 Lê Thánh Tông, Phường Hồng Gai, TP. Hạ Long, Tỉnh Quảng Ninh</p>
-                        <p>Điện thoại: 0203.3841.166</p>
-                        <p>Email: thuchanh@uhl.edu.vn</p>
+                        <h3 class="footer-title-desktop">{{ config('website.school_info.name') }} - {{ config('website.school_info.parent_organization') }}</h3>
+                        <h3 class="footer-title-mobile">{{ config('website.school_info.name') }}<br>{{ config('website.school_info.parent_organization') }}</h3>
+                        <p>Địa chỉ: {{ config('website.contact_info.address') }}</p>
+                        <p>Điện thoại: {{ config('website.contact_info.phone') }}</p>
+                        <p>Email: {{ config('website.contact_info.email') }}</p>
                     </div>
                 </div>
                 <div class="footer-right">
@@ -237,6 +247,64 @@
             margin-bottom: 0 !important;
         }
     </style>
+    
+    <!-- Modal chỉnh sửa ảnh header -->
+    @if(auth()->guard('admin')->check() && (auth()->guard('admin')->user()->id == 0 || auth()->guard('admin')->user()->hasPermission('edit-home')))
+    <div id="imageEditModal" class="image-edit-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-camera"></i> Chỉnh sửa ảnh header</h3>
+                <button class="close-btn" id="closeModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="current-image-section">
+                    <h4>Ảnh hiện tại</h4>
+                    <div class="current-image-preview">
+                        <img src="{{ asset(config('website.header_image.path') . config('website.header_image.current')) }}?v={{ filemtime(public_path(config('website.header_image.path') . config('website.header_image.current'))) }}" alt="Ảnh hiện tại" id="currentImagePreview">
+                    </div>
+                    @if(config('website.header_image.last_updated'))
+                    <div class="image-info">
+                        <p><small><i class="fas fa-clock"></i> Cập nhật lần cuối: {{ \Carbon\Carbon::parse(config('website.header_image.last_updated'))->format('d/m/Y H:i') }}</small></p>
+                        @if(config('website.header_image.updated_by_name'))
+                        <p><small><i class="fas fa-user"></i> Bởi: {{ config('website.header_image.updated_by_name') }}</small></p>
+                        @endif
+                    </div>
+                    @endif
+                </div>
+                
+                <div class="upload-section">
+                    <h4>Chọn ảnh mới</h4>
+                    <div class="upload-area" id="uploadArea">
+                        <div class="upload-icon">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                        </div>
+                        <p>Kéo thả ảnh vào đây hoặc <span class="browse-text">chọn file</span></p>
+                        <p class="file-info">Hỗ trợ: JPG, PNG, GIF (tối đa 5MB)</p>
+                        <input type="file" id="imageInput" accept="image/*" style="display: none;">
+                    </div>
+                    
+                    <div class="image-preview" id="imagePreview" style="display: none;">
+                        <img id="previewImg" src="" alt="Xem trước">
+                        <div class="preview-overlay">
+                            <button class="change-image-btn" id="changeImageBtn">
+                                <i class="fas fa-sync-alt"></i> Đổi ảnh khác
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-reset" id="resetImageBtn" title="Khôi phục ảnh mặc định">
+                    <i class="fas fa-undo"></i> Khôi phục mặc định
+                </button>
+                <button class="btn-cancel" id="cancelBtn">Hủy bỏ</button>
+                <button class="btn-save" id="saveImageBtn" disabled>
+                    <i class="fas fa-save"></i> Lưu thay đổi
+                </button>
+            </div>
+        </div>
+    </div>
+    @endif
     
     @stack('scripts')
 </body>

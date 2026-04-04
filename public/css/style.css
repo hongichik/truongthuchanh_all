@@ -1598,6 +1598,364 @@ body {
     }
 }
 
+/* ===============================
+   Image Editor Styles
+   =============================== */
+
+/* Container cho header image với edit functionality */
+.image-editor-container {
+    position: relative;
+    display: inline-block;
+}
+
+/* Style cho edit icon overlay */
+.edit-icon-overlay {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.image-editor-container:hover .edit-icon-overlay {
+    opacity: 1;
+}
+
+/* Button edit ảnh */
+.edit-btn {
+    background: rgba(34, 197, 94, 0.9);
+    border: none;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    color: white;
+}
+
+.edit-btn:hover {
+    background: rgba(34, 197, 94, 1);
+    transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.edit-btn i {
+    font-size: 14px;
+}
+
+/* Modal styles */
+.image-edit-modal {
+    display: none;
+    position: fixed;
+    z-index: 10000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    animation: fadeIn 0.3s ease;
+}
+
+.image-edit-modal.show {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideIn {
+    from { 
+        opacity: 0;
+        transform: translate(-50%, -60%);
+    }
+    to { 
+        opacity: 1;
+        transform: translate(-50%, -50%);
+    }
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: auto;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 600px;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+    animation: slideIn 0.3s ease;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+/* Modal header */
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 25px 15px;
+    border-bottom: 1px solid #e0e0e0;
+    background: linear-gradient(135deg, #22c55e, #16a34a);
+    color: white;
+    border-radius: 12px 12px 0 0;
+}
+
+.modal-header h3 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.modal-header h3 i {
+    margin-right: 8px;
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: white;
+    padding: 0;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: background-color 0.3s ease;
+}
+
+.close-btn:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Modal body */
+.modal-body {
+    padding: 25px;
+}
+
+.modal-body h4 {
+    margin: 0 0 15px 0;
+    color: #333;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+/* Current image section */
+.current-image-section {
+    margin-bottom: 25px;
+}
+
+.current-image-preview {
+    text-align: center;
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border: 2px dashed #e0e0e0;
+}
+
+.current-image-preview img {
+    max-width: 100%;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 6px;
+    border: 2px solid white;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Thông tin ảnh hiện tại */
+.image-info {
+    margin-top: 10px;
+    padding: 8px 12px;
+    background: #f8f9fa;
+    border-radius: 6px;
+    border-left: 3px solid #22c55e;
+}
+
+.image-info p {
+    margin: 2px 0;
+    color: #666;
+}
+
+.image-info i {
+    color: #22c55e;
+    margin-right: 5px;
+}
+
+/* Upload section */
+.upload-section {
+    margin-bottom: 15px;
+}
+
+.upload-area {
+    border: 2px dashed #22c55e;
+    border-radius: 8px;
+    padding: 30px 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: #f8fff9;
+}
+
+.upload-area:hover {
+    border-color: #16a34a;
+    background: #f0fdf4;
+    transform: translateY(-2px);
+}
+
+.upload-area.dragover {
+    border-color: #16a34a;
+    background: #dcfce7;
+}
+
+.upload-icon {
+    font-size: 48px;
+    color: #22c55e;
+    margin-bottom: 15px;
+}
+
+.upload-area p {
+    margin: 8px 0;
+    color: #666;
+}
+
+.browse-text {
+    color: #22c55e;
+    font-weight: 600;
+    text-decoration: underline;
+}
+
+.file-info {
+    font-size: 12px;
+    color: #999;
+}
+
+/* Image preview */
+.image-preview {
+    position: relative;
+    text-align: center;
+    margin-top: 15px;
+}
+
+.image-preview img {
+    max-width: 100%;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 3px solid #22c55e;
+}
+
+.preview-overlay {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+}
+
+.change-image-btn {
+    background: rgba(34, 197, 94, 0.9);
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.change-image-btn:hover {
+    background: rgba(34, 197, 94, 1);
+}
+
+/* Modal footer */
+.modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+    padding: 20px 25px;
+    border-top: 1px solid #e0e0e0;
+    background: #f8f9fa;
+    border-radius: 0 0 12px 12px;
+}
+
+.btn-cancel,
+.btn-save,
+.btn-reset {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    min-width: 100px;
+}
+
+.btn-cancel {
+    background: #6b7280;
+    color: white;
+}
+
+.btn-cancel:hover {
+    background: #4b5563;
+}
+
+.btn-reset {
+    background: #f59e0b;
+    color: white;
+}
+
+.btn-reset:hover {
+    background: #d97706;
+}
+
+.btn-save {
+    background: #22c55e;
+    color: white;
+}
+
+.btn-save:hover:not(:disabled) {
+    background: #16a34a;
+}
+
+.btn-save:disabled {
+    background: #d1d5db;
+    cursor: not-allowed;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .modal-content {
+        width: 95%;
+        margin: 10px;
+    }
+    
+    .modal-header,
+    .modal-body,
+    .modal-footer {
+        padding: 15px 20px;
+    }
+    
+    .modal-header h3 {
+        font-size: 16px;
+    }
+    
+    .upload-area {
+        padding: 20px 15px;
+    }
+    
+    .upload-icon {
+        font-size: 36px;
+    }
+}
+
 /* ===== REGISTRATION FORM STYLES ===== */
 .registration-form {
     background: #fff;
