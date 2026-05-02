@@ -5,6 +5,9 @@ use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ApplicationController;
 use App\Http\Controllers\Admin\ImageController;
+use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\ArticleController;
+use App\Http\Controllers\Admin\ImageUploadController;
 
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::middleware('guest:admin')->group(function () {
@@ -61,6 +64,29 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::prefix('config')->name('config.')->middleware(['can_edit_home'])->group(function () {
             Route::get('/', [ImageController::class, 'getWebsiteConfig'])->name('get');
             Route::post('/update', [ImageController::class, 'updateWebsiteConfigGeneral'])->name('update');
+        });
+
+        // Quản lý Menu
+        Route::resource('menus', App\Http\Controllers\Admin\MenuController::class);
+        Route::post('menus/update-order', [App\Http\Controllers\Admin\MenuController::class, 'updateOrder'])->name('menus.update-order');
+        Route::post('menus/{menu}/toggle-status', [App\Http\Controllers\Admin\MenuController::class, 'toggleStatus'])->name('menus.toggle-status');
+        Route::get('menus-ajax', [App\Http\Controllers\Admin\MenuController::class, 'getMenusAjax'])->name('menus.ajax');
+
+        // Quản lý Danh mục bài viết
+        Route::resource('categories', App\Http\Controllers\Admin\CategoryController::class);
+        Route::post('categories/{category}/toggle-status', [App\Http\Controllers\Admin\CategoryController::class, 'toggleStatus'])->name('categories.toggle-status');
+
+        // Quản lý Bài viết
+        Route::resource('articles', App\Http\Controllers\Admin\ArticleController::class);
+        Route::post('articles/{article}/toggle-featured', [App\Http\Controllers\Admin\ArticleController::class, 'toggleFeatured'])->name('articles.toggle-featured');
+        Route::post('articles/{article}/update-status', [App\Http\Controllers\Admin\ArticleController::class, 'updateStatus'])->name('articles.update-status');
+        Route::post('articles/{article}/duplicate', [App\Http\Controllers\Admin\ArticleController::class, 'duplicate'])->name('articles.duplicate');
+
+        // Upload ảnh cho trình soạn thảo
+        Route::prefix('uploads')->name('uploads.')->group(function () {
+            Route::post('image', [App\Http\Controllers\Admin\ImageUploadController::class, 'upload'])->name('image');
+            Route::post('images', [App\Http\Controllers\Admin\ImageUploadController::class, 'uploadMultiple'])->name('images');
+            Route::delete('image/delete', [App\Http\Controllers\Admin\ImageUploadController::class, 'deleteImage'])->name('image.delete');
         });
     });
 });

@@ -59,6 +59,31 @@ return [
                 ],
             ],
             [
+                'text' => 'Quản lý Menu',
+                'icon' => 'fas fa-bars',
+                'route' => 'admin.menus.index',
+                'active' => 'admin/menus*',
+            ],
+            [
+                'text' => 'Quản lý nội dung',
+                'icon' => 'fas fa-newspaper',
+                'active' => 'admin/categories*|admin/articles*',
+                'submenu' => [
+                    [
+                        'text' => 'Danh mục bài viết',
+                        'icon' => 'fas fa-folder',
+                        'route' => 'admin.categories.index',
+                        'active' => 'admin/categories*',
+                    ],
+                    [
+                        'text' => 'Bài viết',
+                        'icon' => 'fas fa-edit',
+                        'route' => 'admin.articles.index',
+                        'active' => 'admin/articles*',
+                    ],
+                ],
+            ],
+            [
                 'text' => 'Quản lý quản trị',
                 'icon' => 'bi bi-shield-lock',
                 'active' => 'admin/role*',

@@ -9,6 +9,8 @@
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Custom Badge Styles -->
+    <link rel="stylesheet" href="{{ asset('css/badges.css') }}">
     
     <!-- SweetAlert2 CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.14.5/dist/sweetalert2.min.css">
@@ -57,31 +59,76 @@
         <!-- Navigation -->
         <nav class="navbar">
             <div class="container">
-                <button class="mobile-menu-toggle">
-                    <div class="dropdown">
-                        <a href="#" class="nav-link" id="show-tuyen-sinh"><i class="fas fa-clipboard-list"></i> TUYỂN SINH</a>
-                        <div class="dropdown-content" id="tuyen-sinh" style="position: fixed!important;">
-                            <a href="{{ route('dang-ky.lop10') }}"><i class="fas fa-child"></i> Đăng ký vào lớp 10</a>
-                            <a href="{{ route('dang-ky.lop6') }}"><i class="fas fa-user-graduate"></i> Đăng ký vào lớp 6</a>
-                            <a href="{{ route('dang-ky.lop1') }}"><i class="fas fa-graduation-cap"></i> Đăng ký vào lớp 1</a>
+                <!-- Mobile Menu Toggle -->
+                @if($headerMenus && $headerMenus->isNotEmpty())
+                    @foreach($headerMenus as $menu)
+                        @if($menu->children->isNotEmpty())
+                            <button class="mobile-menu-toggle">
+                                <div class="dropdown">
+                                    <a href="{{ $menu->url ?: '#' }}" class="nav-link" id="show-{{ $menu->slug }}">
+                                        @if($menu->icon)<i class="{{ $menu->icon }}"></i>@endif {{ strtoupper($menu->name) }}
+                                    </a>
+                                    <div class="dropdown-content" id="{{ $menu->slug }}" style="position: fixed!important;">
+                                        @foreach($menu->children as $child)
+                                            <a href="{{ $child->url }}">
+                                                @if($child->icon)<i class="{{ $child->icon }}"></i>@endif {{ $child->name }}
+                                            </a>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            </button>
+                            @break
+                        @endif
+                    @endforeach
+                @else
+                    <button class="mobile-menu-toggle">
+                        <div class="dropdown">
+                            <a href="#" class="nav-link" id="show-tuyen-sinh"><i class="fas fa-clipboard-list"></i> TUYỂN SINH</a>
+                            <div class="dropdown-content" id="tuyen-sinh" style="position: fixed!important;">
+                                <a href="{{ route('dang-ky.lop10') }}"><i class="fas fa-child"></i> Đăng ký vào lớp 10</a>
+                                <a href="{{ route('dang-ky.lop6') }}"><i class="fas fa-user-graduate"></i> Đăng ký vào lớp 6</a>
+                                <a href="{{ route('dang-ky.lop1') }}"><i class="fas fa-graduation-cap"></i> Đăng ký vào lớp 1</a>
+                            </div>
                         </div>
-                    </div>
-                </button>
+                    </button>
+                @endif
+
+                <!-- Desktop Menu -->
                 <ul class="nav-menu" id="navMenu">
-                    <li><a href="{{ route('home') }}" class="nav-link {{ request()->routeIs('home') ? 'active' : '' }}"><i class="fas fa-home"></i> TRANG CHỦ</a></li>
-                    <li class="dropdown">
-                        <a href="#" class="nav-link"><i class="fas fa-clipboard-list"></i> TUYỂN SINH</a>
-                        <div class="dropdown-content">
-                            <a href="{{ route('dang-ky.lop10') }}"><i class="fas fa-child"></i> Đăng ký vào lớp 10</a>
-                            <a href="{{ route('dang-ky.lop6') }}"><i class="fas fa-user-graduate"></i> Đăng ký vào lớp 6</a>
-                            <a href="{{ route('dang-ky.lop1') }}"><i class="fas fa-graduation-cap"></i> Đăng ký vào lớp 1</a>
-                        </div>
-                    </li>
-                    <li><a href="{{ route('about') }}" class="nav-link {{ request()->routeIs('about') ? 'active' : '' }}">GIỚI THIỆU TRƯỜNG</a></li>
-                    <li><a href="#" class="nav-link">CẤP TIỂU HỌC</a></li>
-                    <li><a href="#" class="nav-link">CẤP THCS</a></li>
-                    <li><a href="#" class="nav-link">CẤP THPT</a></li>
-                    <li><a href="{{ route('contact') }}" class="nav-link {{ request()->routeIs('contact') ? 'active' : '' }}">LIÊN HỆ</a></li>
+                    @if($headerMenus && $headerMenus->isNotEmpty())
+                        @foreach($headerMenus as $menu)
+                            <li class="{{ $menu->children->isNotEmpty() ? 'dropdown' : '' }}">
+                                <a href="{{ $menu->url ?: '#' }}" class="nav-link {{ request()->url() === url($menu->url ?: '') ? 'active' : '' }}">
+                                    @if($menu->icon)<i class="{{ $menu->icon }}"></i>@endif {{ strtoupper($menu->name) }}
+                                </a>
+                                @if($menu->children->isNotEmpty())
+                                    <div class="dropdown-content">
+                                        @foreach($menu->children as $child)
+                                            <a href="{{ $child->url }}">
+                                                @if($child->icon)<i class="{{ $child->icon }}"></i>@endif {{ $child->name }}
+                                            </a>
+                                        @endforeach
+                                    </div>
+                                @endif
+                            </li>
+                        @endforeach
+                    @else
+                        <!-- Fallback menu nếu không có menu trong DB -->
+                        <li><a href="{{ route('home') }}" class="nav-link {{ request()->routeIs('home') ? 'active' : '' }}"><i class="fas fa-home"></i> TRANG CHỦ</a></li>
+                        <li class="dropdown">
+                            <a href="#" class="nav-link"><i class="fas fa-clipboard-list"></i> TUYỂN SINH</a>
+                            <div class="dropdown-content">
+                                <a href="{{ route('dang-ky.lop10') }}"><i class="fas fa-child"></i> Đăng ký vào lớp 10</a>
+                                <a href="{{ route('dang-ky.lop6') }}"><i class="fas fa-user-graduate"></i> Đăng ký vào lớp 6</a>
+                                <a href="{{ route('dang-ky.lop1') }}"><i class="fas fa-graduation-cap"></i> Đăng ký vào lớp 1</a>
+                            </div>
+                        </li>
+                        <li><a href="{{ route('about') }}" class="nav-link {{ request()->routeIs('about') ? 'active' : '' }}">GIỚI THIỆU TRƯỜNG</a></li>
+                        <li><a href="#" class="nav-link">CẤP TIỂU HỌC</a></li>
+                        <li><a href="#" class="nav-link">CẤP THCS</a></li>
+                        <li><a href="#" class="nav-link">CẤP THPT</a></li>
+                        <li><a href="{{ route('contact') }}" class="nav-link {{ request()->routeIs('contact') ? 'active' : '' }}">LIÊN HỆ</a></li>
+                    @endif
                 </ul>
             </div>
         </nav>
@@ -98,7 +145,7 @@
             <div class="footer-content">
                 <div class="footer-left">
                     <div class="footer-info">
-                        <h3 class="footer-title-desktop">{{ config('website.school_info.name') }} - {{ config('website.school_info.parent_organization') }}</h3>
+                        <h3 class="footer-title-desktop">{{ config('website.school_info.name') }} <br> {{ config('website.school_info.parent_organization') }}</h3>
                         <h3 class="footer-title-mobile">{{ config('website.school_info.name') }}<br>{{ config('website.school_info.parent_organization') }}</h3>
                         <p>Địa chỉ: {{ config('website.contact_info.address') }}</p>
                         <p>Điện thoại: {{ config('website.contact_info.phone') }}</p>

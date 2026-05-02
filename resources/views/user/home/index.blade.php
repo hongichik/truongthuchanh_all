@@ -46,8 +46,10 @@
 
                 <div class="news-item">
                     <img src="{{ asset('assets/image/banner_2.jpg') }}" alt="Tuyển sinh">
-                    <a href="#" class="news-content">
-                        <h4>Thông báo tuyển sinh đầu cấp năm học 2025-2026</h4>
+                    <div href="#" class="news-content">
+                        <a href="">
+                        <h4>Thông báo tuyển sinh đầu cấp năm học 2025-2026</h4>    
+                        </a> 
                         <p>Trường thông báo kế hoạch tuyển sinh lớp 10, lớp 6 và lớp 1 cho năm học 2025-2026. Phụ huynh có thể đăng ký trực tuyến.</p>
                         <ul>
                             <li><strong>Lớp 10:</strong> <a href="{{ route('dang-ky.lop10') }}" style="color: #22c55e; font-weight: bold;">Đăng ký ngay →</a></li>
@@ -55,7 +57,7 @@
                             <li><strong>Lớp 1:</strong> <a href="{{ route('dang-ky.lop1') }}" style="color: #22c55e; font-weight: bold;">Đăng ký ngay →</a></li>
                         </ul>
                         <p class="news-date"><i class="far fa-clock"></i> 25 tháng 3, 2026</p>
-                    </a>
+                    </div>
                 </div>
             </section>
 
