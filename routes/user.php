@@ -3,12 +3,14 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\User\HomeController;
 use App\Http\Controllers\User\NhapHocController;
+use App\Http\Controllers\User\ArticleController;
 
-// Trang chủ và các trang thông tin
+// Trang chủ và các trang thông tin (đặt trước để tránh conflict)
 Route::get('/', [HomeController::class, 'index'])->name('home');
-Route::get('/gioi-thieu', [HomeController::class, 'about'])->name('about');
-Route::get('/tin-tuc', [HomeController::class, 'news'])->name('news');
 Route::get('/lien-he', [HomeController::class, 'contact'])->name('contact');
+
+// Routes for articles and categories
+Route::get('/bai-viet/{category_slug}', [ArticleController::class, 'categoryIndex'])->name('category.articles');
 
 // Đăng ký nhập học
 Route::prefix('dang-ky')->name('dang-ky.')->group(function () {
@@ -24,3 +26,6 @@ Route::prefix('dang-ky')->name('dang-ky.')->group(function () {
     Route::get('/lop-10', [NhapHocController::class, 'dangKyLop10'])->name('lop10');
     Route::post('/lop-10', [NhapHocController::class, 'storeLop10'])->name('lop10.store');
 });
+
+// Route for articles (đặt cuối để tránh conflict với static routes)  
+Route::get('/bai-viet/{category_slug}/{article_slug}', [ArticleController::class, 'show'])->name('article.show');

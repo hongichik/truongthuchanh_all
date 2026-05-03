@@ -36,7 +36,7 @@ $homepageCategories = CategoryDisplayHelper::getHomepageCategories();
                                     @endif
                                     <div class="card-body">
                                         <h5 class="card-title">
-                                            <a href="{{ route('article.show', $article->slug) }}">
+                                            <a href="{{ route('article.show', [$article->category->slug, $article->slug]) }}">
                                                 {{ $article->title }}
                                                 @if($article->is_featured && $config['show_featured_only'])
                                                     <span class="badge bg-warning">Nổi bật</span>
@@ -45,7 +45,7 @@ $homepageCategories = CategoryDisplayHelper::getHomepageCategories();
                                         </h5>
                                         <p class="card-text text-muted">{{ Str::limit($article->excerpt, 100) }}</p>
                                         <small class="text-muted">
-                                            <i class="fas fa-calendar"></i> {{ $article->created_at->format('d/m/Y') }}
+                                            <i class="fas fa-calendar"></i> {{ $article->created_at->setTimezone('Asia/Ho_Chi_Minh')->format('d/m/Y') }}
                                         </small>
                                     </div>
                                 </div>

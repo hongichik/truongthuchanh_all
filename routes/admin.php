@@ -22,6 +22,11 @@ Route::prefix('admin')->name('admin.')->group(function () {
     });
 
     Route::middleware(['admin'])->group(function () {
+        // Redirect root admin URL to dashboard
+        Route::get('/', function() {
+            return redirect()->route('admin.dashboard');
+        })->name('index');
+        
         Route::post('logout', [AuthController::class, 'logout'])->name('logout');
         Route::get('logout', [AuthController::class, 'logout'])->name('logout');
         Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');

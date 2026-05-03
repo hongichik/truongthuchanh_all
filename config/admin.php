@@ -59,15 +59,9 @@ return [
                 ],
             ],
             [
-                'text' => 'Quản lý Menu',
-                'icon' => 'fas fa-bars',
-                'route' => 'admin.menus.index',
-                'active' => 'admin/menus*',
-            ],
-            [
                 'text' => 'Quản lý nội dung',
                 'icon' => 'fas fa-newspaper',
-                'active' => 'admin/categories*|admin/articles*',
+                'active' => ['admin/categories*', 'admin/articles*'],
                 'submenu' => [
                     [
                         'text' => 'Danh mục bài viết',
@@ -87,7 +81,21 @@ return [
                 'text' => 'Quản lý trang chủ',
                 'icon' => 'fas fa-home',
                 'route' => 'admin.home.index',
-                'active' => 'admin/home*',
+                'active' => ['admin/home*', 'admin/menus*'],
+                'submenu' => [
+                    [
+                        'text' => 'Cấu hình chung',
+                        'icon' => 'fas fa-cogs',
+                        'route' => 'admin.home.index',
+                        'active' => 'admin/home*',
+                    ],
+                    [
+                        'text' => 'Quản lý Menu',
+                        'icon' => 'fas fa-bars',
+                        'route' => 'admin.menus.index',
+                        'active' => 'admin/menus*',
+                    ],
+                ],
             ],
             [
                 'text' => 'Quản lý quản trị',

@@ -20,11 +20,11 @@
                         @continue
                     @endif
                     
-                    <li class="nav-item {{ isset($menuItem['submenu']) ? 'has-treeview' : '' }} {{ isset($menuItem['active']) && request()->is($menuItem['active']) ? 'menu-open' : '' }}">
+                    <li class="nav-item {{ isset($menuItem['submenu']) ? 'has-treeview' : '' }} {{ isset($menuItem['active']) && (is_array($menuItem['active']) ? collect($menuItem['active'])->contains(fn($pattern) => request()->is($pattern)) : request()->is($menuItem['active'])) ? 'menu-open' : '' }}">
                         @if (isset($menuItem['route']))
-                            <a href="{{ route($menuItem['route']) }}" class="nav-link {{ Request::is($menuItem['active']) ? 'active' : '' }}">
+                            <a href="{{ route($menuItem['route']) }}" class="nav-link {{ isset($menuItem['active']) && (is_array($menuItem['active']) ? collect($menuItem['active'])->contains(fn($pattern) => Request::is($pattern)) : Request::is($menuItem['active'])) ? 'active' : '' }}">
                         @elseif (isset($menuItem['url']))
-                            <a href="{{ url($menuItem['url']) }}" class="nav-link {{ Request::is($menuItem['active']) ? 'active' : '' }}">
+                            <a href="{{ url($menuItem['url']) }}" class="nav-link {{ isset($menuItem['active']) && (is_array($menuItem['active']) ? collect($menuItem['active'])->contains(fn($pattern) => Request::is($pattern)) : Request::is($menuItem['active'])) ? 'active' : '' }}">
                         @else
                             <a href="#" class="nav-link">
                         @endif
@@ -51,9 +51,9 @@
                                     
                                     <li class="nav-item">
                                         @if (isset($submenu['route']))
-                                            <a href="{{ route($submenu['route']) }}" class="nav-link {{ Request::is($submenu['active']) ? 'active' : '' }}">
+                                            <a href="{{ route($submenu['route']) }}" class="nav-link {{ isset($submenu['active']) && (is_array($submenu['active']) ? collect($submenu['active'])->contains(fn($pattern) => Request::is($pattern)) : Request::is($submenu['active'])) ? 'active' : '' }}">
                                         @elseif (isset($submenu['url']))
-                                            <a href="{{ url($submenu['url']) }}" class="nav-link {{ Request::is($submenu['active']) ? 'active' : '' }}">
+                                            <a href="{{ url($submenu['url']) }}" class="nav-link {{ isset($submenu['active']) && (is_array($submenu['active']) ? collect($submenu['active'])->contains(fn($pattern) => Request::is($pattern)) : Request::is($submenu['active'])) ? 'active' : '' }}">
                                         @else
                                             <a href="#" class="nav-link">
                                         @endif
