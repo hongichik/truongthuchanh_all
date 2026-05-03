@@ -2,7 +2,7 @@
 // Thông số kết nối của bạn
 $host = 'localhost';
 $db   = 'thuchaoumct3_demo';
-$user = 'thuchaoumct3_demo'; // Thử đổi thành 'thuchaoumct3' nếu code này báo lỗi
+$user = 'thuchaoumct3'; // Thử đổi thành 'thuchaoumct3' nếu code này báo lỗi
 $pass = 'FMi66hmrtLe5Ax1W';
 $port = '3306';
 
