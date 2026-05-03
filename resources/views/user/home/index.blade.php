@@ -35,10 +35,6 @@ use Illuminate\Support\Str;
                 @foreach($homeSettings->quick_links as $link)
                     @php
                         $url = $link['url'];
-                        // Check if it's a route name
-                        if($url !== '#' && !str_starts_with($url, 'http') && !str_starts_with($url, '/')) {
-                            $url = route($url);
-                        }
                     @endphp
                     <div class="quick-link-item orange" onclick="window.open('{{ $url }}', '_blank')">
                         {{ $link['title'] }}
@@ -52,7 +48,7 @@ use Illuminate\Support\Str;
                 @foreach($categoryData as $categoryInfo)
                     <section class="news-section">
                         <h3 class="section-title">
-                            <a href="{{ route('category.articles', $categoryInfo['category']['slug']) }}" style="color: white; text-decoration: none;">
+                            <a href="{{ route('articles.category', $categoryInfo['category']['slug']) }}" style="color: white; text-decoration: none;">
                                 {{ $categoryInfo['config']['category_name'] }}
                             </a>
                         </h3>
@@ -66,7 +62,7 @@ use Illuminate\Support\Str;
                                 @endif
                                 
                                 <div class="news-content">
-                                    <a href="{{ route('article.show', [$categoryInfo['category']['slug'], $article->slug]) }}"><h4>{{ $article->title }}</h4></a> 
+                                    <a href="{{ route('articles.show', [$categoryInfo['category']['slug'], $article->slug]) }}"><h4>{{ $article->title }}</h4></a> 
                                     @if($article->description)
                                         {!! $article->description !!}
                                     @else
@@ -74,7 +70,7 @@ use Illuminate\Support\Str;
                                     @endif    
                                     <p class="news-date">
                                         <i class="far fa-clock"></i> 
-                                        {{ $article->created_at->setTimezone('Asia/Ho_Chi_Minh')->format('d') }} tháng {{ $article->created_at->setTimezone('Asia/Ho_Chi_Minh')->format('n') }}, {{ $article->created_at->setTimezone('Asia/Ho_Chi_Minh')->format('Y') }}
+                                        {{ $article->created_at->format('d') }} tháng {{ $article->created_at->format('n') }}, {{ $article->created_at->format('Y') }}
                                     </p>
                                 </div>
                             </div>

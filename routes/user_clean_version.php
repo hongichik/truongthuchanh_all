@@ -17,3 +17,20 @@ Route::prefix('bai-viet')->group(function () {
 // Contact routes
 Route::get('/lien-he', [ContactController::class, 'index'])->name('contact');
 Route::post('/lien-he', [ContactController::class, 'store'])->name('contact.store');
+
+// Registration routes
+Route::get('/dang-ky-lop-1', function() {
+    return view('user.registration.lop-1');
+})->name('dang-ky.lop1');
+
+Route::get('/dang-ky-lop-3', function() {
+    return view('user.registration.lop-3');  
+})->name('dang-ky.lop3');
+
+Route::get('/dang-ky-lop-6', function() {
+    return view('user.registration.lop-6');
+})->name('dang-ky.lop6');
+
+Route::get('/dang-ky-lop-10', function() {
+    return view('user.registration.lop-10');
+})->name('dang-ky.lop10');
