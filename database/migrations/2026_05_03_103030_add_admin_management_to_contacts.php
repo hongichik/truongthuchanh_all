@@ -24,7 +24,7 @@ return new class extends Migration
             }
             if (!Schema::hasColumn('contacts', 'replied_by')) {
                 $table->unsignedBigInteger('replied_by')->nullable();
-                $table->foreign('replied_by')->references('id')->on('admin')->onDelete('set null');
+                $table->foreign('replied_by')->references('id')->on('admins')->onDelete('set null');
             }
         });
     }

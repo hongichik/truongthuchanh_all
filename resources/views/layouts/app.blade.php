@@ -116,7 +116,7 @@
                                 <a href="{{ route('dang-ky.lop1') }}"><i class="fas fa-graduation-cap"></i> Đăng ký vào lớp 1</a>
                             </div>
                         </li>
-                        <li><a href="{{ route('about') }}" class="nav-link {{ request()->routeIs('about') ? 'active' : '' }}">GIỚI THIỆU TRƯỜNG</a></li>
+                        <li><a href="#" class="nav-link">GIỚI THIỆU TRƯỜNG</a></li>
                         <li><a href="#" class="nav-link">CẤP TIỂU HỌC</a></li>
                         <li><a href="#" class="nav-link">CẤP THCS</a></li>
                         <li><a href="#" class="nav-link">CẤP THPT</a></li>
