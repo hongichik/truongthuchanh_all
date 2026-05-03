@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ArticleController;
 use App\Http\Controllers\Admin\ImageUploadController;
 use App\Http\Controllers\Admin\HomeController;
+use App\Http\Controllers\Admin\ContactController;
 
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::middleware('guest:admin')->group(function () {
@@ -87,6 +88,12 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::post('articles/{article}/toggle-featured', [App\Http\Controllers\Admin\ArticleController::class, 'toggleFeatured'])->name('articles.toggle-featured');
         Route::post('articles/{article}/update-status', [App\Http\Controllers\Admin\ArticleController::class, 'updateStatus'])->name('articles.update-status');
         Route::post('articles/{article}/duplicate', [App\Http\Controllers\Admin\ArticleController::class, 'duplicate'])->name('articles.duplicate');
+
+        // Quản lý Liên hệ
+        Route::resource('contacts', App\Http\Controllers\Admin\ContactController::class)->except(['create', 'edit']);
+        Route::post('contacts/{contact}/reply', [App\Http\Controllers\Admin\ContactController::class, 'reply'])->name('contacts.reply');
+        Route::post('contacts/{contact}/update-status', [App\Http\Controllers\Admin\ContactController::class, 'updateStatus'])->name('contacts.update-status');
+        Route::get('contacts-stats', [App\Http\Controllers\Admin\ContactController::class, 'getStats'])->name('contacts.stats');
 
         // Quản lý Trang chủ
         Route::prefix('home')->name('home.')->group(function () {

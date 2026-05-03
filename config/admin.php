@@ -98,6 +98,12 @@ return [
                 ],
             ],
             [
+                'text' => 'Quản lý Liên hệ',
+                'icon' => 'fas fa-envelope',
+                'route' => 'admin.contacts.index',
+                'active' => 'admin/contacts*',
+            ],
+            [
                 'text' => 'Quản lý quản trị',
                 'icon' => 'bi bi-shield-lock',
                 'active' => 'admin/role*',
