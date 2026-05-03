@@ -38,10 +38,16 @@ class DangKyLop10 extends Model
         'is_disabled',
         'achievements',
         'achievement_rank',
-        'is_policy_family'
+        'is_policy_family',
+        'academic_transcript_path',
+        'additional_documents_paths',
+        'documents_uploaded_at'
     ];
 
     protected $casts = [
-        'birthdate' => 'date'
+        'birthdate' => 'date',
+        'academic_transcript_path' => 'array', // Now stores multiple files
+        'additional_documents_paths' => 'array',
+        'documents_uploaded_at' => 'datetime'
     ];
 }

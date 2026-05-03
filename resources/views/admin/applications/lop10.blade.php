@@ -34,9 +34,12 @@
                         <th>ID</th>
                         <th>Họ tên</th>
                         <th>Ngày sinh</th>
-                        <th>Giới tính</th>
+                        <th>Giới tính</th>  
                         <th>SĐT</th>
                         <th>Trường cũ</th>
+                        <th>Tải xuống</th>
+                        <th>Xem nhanh</th>
+                        <th>Ngày upload</th>
                         <th>Trạng thái</th>
                         <th>Ngày nộp</th>
                         <th>Thao tác</th>
@@ -133,13 +136,30 @@ $(document).ready(function() {
             {data: 'gender', name: 'gender'},
             {data: 'phone', name: 'phone'},
             {data: 'current_school', name: 'current_school'},
+            {data: 'documents', name: 'documents', orderable: false, searchable: false},
+            {data: 'documents_preview', name: 'documents_preview', orderable: false, searchable: false},
+            {data: 'documents_uploaded_at', name: 'documents_uploaded_at'},
             {data: 'status', name: 'status', orderable: false},
             {data: 'created_at', name: 'created_at'},
             {data: 'action', name: 'action', orderable: false, searchable: false}
         ],
         language: {
             "url": "https://cdn.datatables.net/plug-ins/1.13.6/i18n/vi.json"
-        }
+        },
+        columnDefs: [
+            {
+                targets: [6], // Cột documents (tải xuống)
+                width: "150px"
+            },
+            {
+                targets: [7], // Cột documents_preview (xem nhanh)
+                width: "150px"
+            },
+            {
+                targets: [8], // Cột documents_uploaded_at  
+                width: "120px"
+            }
+        ]
     });
     
     // Xử lý duyệt đơn
@@ -220,29 +240,6 @@ function processRejectApplication(id, notes) {
         success: function(response) {
             var rejectModal = bootstrap.Modal.getInstance(document.getElementById('rejectModal'));
             rejectModal.hide();
-            $('#applicationsTable').DataTable().ajax.reload();
-            alert(response.message);
-            $('#rejectNotes').val('');
-            currentId = null;
-        },
-        error: function() {
-            alert('Có lỗi xảy ra khi từ chối đơn!');
-        }
-    });
-}
-</script>
-}
-
-function rejectApplication(id, notes) {
-    $.ajax({
-        url: '/admin/applications/10/' + id + '/reject',
-        method: 'PUT',
-        data: {
-            notes: notes,
-            _token: '{{ csrf_token() }}'
-        },
-        success: function(response) {
-            $('#rejectModal').modal('hide');
             $('#applicationsTable').DataTable().ajax.reload();
             alert(response.message);
             $('#rejectNotes').val('');

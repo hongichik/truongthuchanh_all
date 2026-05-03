@@ -54,6 +54,13 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::get('lop-10', [ApplicationController::class, 'lop10'])->name('lop10');
             Route::get('lop-10/data', [ApplicationController::class, 'lop10Data'])->name('lop10.data');
             
+            // Download file học bạ
+            Route::get('download/{type}/{id}', [ApplicationController::class, 'downloadFile'])->name('download');
+            
+            // Xem file học bạ
+            Route::get('view/{type}/{id}', [ApplicationController::class, 'viewFile'])->name('view');
+            Route::get('view-single/{type}/{id}/{fileIndex?}', [ApplicationController::class, 'viewSingleFile'])->name('view.single');
+            
             // Chi tiết và xử lý đơn
             Route::get('{grade}/{id}/detail', [ApplicationController::class, 'detail'])->name('detail');
             Route::put('{grade}/{id}/approve', [ApplicationController::class, 'approve'])->name('approve');

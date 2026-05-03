@@ -110,7 +110,9 @@ class NhapHocController extends Controller
             'is_disabled' => 'nullable|in:Không,Có',
             'achievements' => 'nullable|string|max:500',
             'achievement_rank' => 'nullable|string|max:100',
-            'is_policy_family' => 'nullable|in:Không,Có'
+            'is_policy_family' => 'nullable|in:Không,Có',
+            'academic_transcript.*' => 'required|file|mimes:pdf,jpg,jpeg,png|max:2048', // 2MB per file
+            'additional_documents.*' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048'
         ]);
         
         if ($validator->fails()) {
@@ -120,9 +122,36 @@ class NhapHocController extends Controller
         }
         
         try {
-            DangKyLop10::create($request->all());
-            return back()->with('success_alert', 'Đăng ký thành công! Chúng tôi sẽ liên hệ với bạn sớm nhất.');
+            $data = $request->except(['academic_transcript', 'additional_documents']);
+            
+            // Xử lý upload nhiều file học bạ
+            if ($request->hasFile('academic_transcript')) {
+                $academicPaths = [];
+                foreach ($request->file('academic_transcript') as $file) {
+                    $academicFileName = time() . '_' . uniqid() . '_hocba_' . $file->getClientOriginalName();
+                    $academicPath = $file->storeAs('uploads/hoc-ba/lop10', $academicFileName, 'public');
+                    $academicPaths[] = $academicPath;
+                }
+                $data['academic_transcript_path'] = json_encode($academicPaths); // Store as JSON array
+            }
+            
+            // Xử lý upload các file bổ sung
+            if ($request->hasFile('additional_documents')) {
+                $additionalPaths = [];
+                foreach ($request->file('additional_documents') as $file) {
+                    $additionalFileName = time() . '_' . uniqid() . '_bosung_' . $file->getClientOriginalName();
+                    $additionalPath = $file->storeAs('uploads/hoc-ba/lop10/bo-sung', $additionalFileName, 'public');
+                    $additionalPaths[] = $additionalPath;
+                }
+                $data['additional_documents_paths'] = $additionalPaths;
+            }
+            
+            $data['documents_uploaded_at'] = now();
+            
+            DangKyLop10::create($data);
+            return back()->with('success_alert', 'Đăng ký thành công! Học bạ đã được tải lên. Chúng tôi sẽ liên hệ với bạn sớm nhất.');
         } catch (\Exception $e) {
+            \Log::error('Lỗi đăng ký lớp 10: ' . $e->getMessage());
             return back()->withInput()->with('error_alert', 'Có lỗi xảy ra khi đăng ký. Vui lòng thử lại.');
         }
     }
