@@ -1,21 +1,32 @@
 <?php
+// Thông số kết nối của bạn
+$host = 'localhost';
+$db   = 'thuchaoumct3_demo';
+$user = 'thuchaoumct3_demo'; // Thử đổi thành 'thuchaoumct3' nếu code này báo lỗi
+$pass = 'FMi66hmrtLe5Ax1W';
+$port = '3306';
 
-/**
- * Laravel - A PHP Framework For Web Artisans
- *
- * @package  Laravel
- * @author   Taylor Otwell <taylor@laravel.com>
- */
+echo "<h2>Đang kiểm tra kết nối Database...</h2>";
 
-$uri = urldecode(
-    parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH)
-);
+try {
+    $dsn = "mysql:host=$host;dbname=$db;port=$port;charset=utf8mb4";
+    $options = [
+        PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+    ];
+    
+    $pdo = new PDO($dsn, $user, $pass, $options);
+    
+    echo "<b style='color:green;'>✅ Kết nối THÀNH CÔNG!</b><br>";
+    
+    // Kiểm tra xem có bảng sessions không
+    $query = $pdo->query("SHOW TABLES LIKE 'sessions'");
+    if ($query->rowCount() > 0) {
+        echo "✅ Tìm thấy bảng 'sessions'.";
+    } else {
+        echo "<b style='color:orange;'>⚠️ Kết nối được nhưng không tìm thấy bảng 'sessions'.</b>";
+    }
 
-// This file allows us to emulate Apache's "mod_rewrite" functionality from the
-// built-in PHP web server. This provides a convenient way to test a Laravel
-// application without having installed a "real" web server software here.
-if ($uri !== '/' && file_exists(__DIR__.'/public'.$uri)) {
-    return false;
+} catch (\PDOException $e) {
+    echo "<b style='color:red;'>❌ Kết nối THẤT BẠI:</b> " . $e->getMessage();
 }
-
-require_once __DIR__.'/public/index.php';
