@@ -232,7 +232,7 @@
                             <label for="fullname">1. Họ và tên <span class="required">*</span></label>
                             <input type="text" id="fullname" name="fullname" class="form-control" 
                                    style="text-transform: uppercase;" placeholder="Nhập họ và tên đầy đủ" 
-                                   value="{{ old('fullname', 'NGUYỄN VĂN AN') }}" required>
+                                   value="{{ old('fullname') }}" required>
                             @error('fullname')<small class="text-danger">{{ $message }}</small>@enderror
                         </div>
                     </div>
@@ -240,7 +240,7 @@
                         <div class="form-group">
                             <label for="birthdate">2. Ngày sinh <span class="required">*</span></label>
                             <input type="date" id="birthdate" name="birthdate" class="form-control" 
-                                   value="{{ old('birthdate', '2008-05-15') }}" required>
+                                   value="{{ old('birthdate') }}" required>
                             @error('birthdate')<small class="text-danger">{{ $message }}</small>@enderror
                         </div>
                     </div>
@@ -252,8 +252,8 @@
                             <label for="gender">3. Giới tính <span class="required">*</span></label>
                             <select id="gender" name="gender" class="form-control" required>
                                 <option value="">-- Chọn giới tính --</option>
-                                <option value="Nam" {{ old('gender', 'Nam') == 'Nam' ? 'selected' : '' }}>Nam</option>
-                                <option value="Nữ" {{ old('gender', 'Nam') == 'Nữ' ? 'selected' : '' }}>Nữ</option>
+                                <option value="Nam" {{ old('gender') == 'Nam' ? 'selected' : '' }}>Nam</option>
+                                <option value="Nữ" {{ old('gender') == 'Nữ' ? 'selected' : '' }}>Nữ</option>
                             </select>
                             @error('gender')<small class="text-danger">{{ $message }}</small>@enderror
                         </div>
@@ -271,7 +271,7 @@
                     <label for="current_school">5. Học sinh trường THCS <span class="required">*</span></label>
                     <input type="text" id="current_school" name="current_school" class="form-control" 
                            placeholder="Nhập tên trường THCS đang theo học" 
-                           value="{{ old('current_school', 'THCS Nguyễn Du') }}" required>
+                           value="{{ old('current_school') }}" required>
                     @error('current_school')<small class="text-danger">{{ $message }}</small>@enderror
                 </div>
                 
@@ -279,13 +279,13 @@
                     <label for="citizen_id">6. CCCD (số định danh)</label>
                     <input type="text" id="citizen_id" name="citizen_id" class="form-control" 
                            placeholder="Nhập số căn cước công dân (số định danh)" 
-                           pattern="[0-9]{12}" value="{{ old('citizen_id', '001208012345') }}">
+                           pattern="[0-9]{12}" value="{{ old('citizen_id') }}">
                 </div>
                 
                 <div class="form-group">
                     <label for="address">7. Thông tin cư trú <span class="required">*</span></label>
                     <textarea id="address" name="address" class="form-control" rows="3" 
-                              placeholder="Nhập địa chỉ cư trú đầy đủ" required>{{ old('address', 'Số 123 Đường Lê Lợi, Phường Hồng Gai, Thành phố Hạ Long, Tỉnh Quảng Ninh') }}</textarea>
+                              placeholder="Nhập địa chỉ cư trú đầy đủ" required>{{ old('address') }}</textarea>
                     @error('address')<small class="text-danger">{{ $message }}</small>@enderror
                 </div>
                 
@@ -293,7 +293,7 @@
                     <label for="phone">8. Số điện thoại liên lạc <span class="required">*</span></label>
                     <input type="tel" id="phone" name="phone" class="form-control" 
                            placeholder="Nhập số điện thoại liên lạc" 
-                           pattern="[0-9]{10,11}" value="{{ old('phone', '0987654321') }}" required>
+                           pattern="[0-9]{10,11}" value="{{ old('phone') }}" required>
                     @error('phone')<small class="text-danger">{{ $message }}</small>@enderror
                 </div>
             </div>
@@ -307,7 +307,7 @@
                         <div class="form-group">
                             <label for="father_name">9. Họ tên Cha</label>
                             <input type="text" id="father_name" name="father_name" class="form-control" 
-                                   placeholder="Nhập họ tên bố" value="{{ old('father_name', 'Nguyễn Văn Bình') }}">
+                                   placeholder="Nhập họ tên bố" value="{{ old('father_name') }}">
                         </div>
                     </div>
                     <div class="form-col">
@@ -324,7 +324,7 @@
                         <div class="form-group">
                             <label for="mother_name">11. Họ tên Mẹ</label>
                             <input type="text" id="mother_name" name="mother_name" class="form-control" 
-                                   placeholder="Nhập họ tên mẹ" value="{{ old('mother_name', 'Trần Thị Lan') }}">
+                                   placeholder="Nhập họ tên mẹ" value="{{ old('mother_name') }}">
                         </div>
                     </div>
                     <div class="form-col">
@@ -348,21 +348,21 @@
                             <label for="grade6_academic">Kết quả học lực</label>
                             <select id="grade6_academic" name="grade6_academic" class="form-control">
                                 <option value="">-- Chọn xếp loại --</option>
-                                <option value="Xuất sắc" {{ old('grade6_academic', 'Giỏi') == 'Xuất sắc' ? 'selected' : '' }}>Xuất sắc</option>
-                                <option value="Giỏi" {{ old('grade6_academic', 'Giỏi') == 'Giỏi' ? 'selected' : '' }}>Giỏi</option>
-                                <option value="Khá" {{ old('grade6_academic', 'Giỏi') == 'Khá' ? 'selected' : '' }}>Khá</option>
-                                <option value="Trung bình" {{ old('grade6_academic', 'Giỏi') == 'Trung bình' ? 'selected' : '' }}>Trung bình</option>
-                                <option value="Yếu" {{ old('grade6_academic', 'Giỏi') == 'Yếu' ? 'selected' : '' }}>Yếu</option>
+                                <option value="Xuất sắc" {{ old('grade6_academic') == 'Xuất sắc' ? 'selected' : '' }}>Xuất sắc</option>
+                                <option value="Giỏi" {{ old('grade6_academic') == 'Giỏi' ? 'selected' : '' }}>Giỏi</option>
+                                <option value="Khá" {{ old('grade6_academic') == 'Khá' ? 'selected' : '' }}>Khá</option>
+                                <option value="Trung bình" {{ old('grade6_academic') == 'Trung bình' ? 'selected' : '' }}>Trung bình</option>
+                                <option value="Yếu" {{ old('grade6_academic') == 'Yếu' ? 'selected' : '' }}>Yếu</option>
                             </select>
                         </div>
                         <div class="form-col">
                             <label for="grade6_conduct">Hạnh kiểm</label>
                             <select id="grade6_conduct" name="grade6_conduct" class="form-control">
                                 <option value="">-- Chọn xếp loại --</option>
-                                <option value="Tốt" {{ old('grade6_conduct', 'Tốt') == 'Tốt' ? 'selected' : '' }}>Tốt</option>
-                                <option value="Khá" {{ old('grade6_conduct', 'Tốt') == 'Khá' ? 'selected' : '' }}>Khá</option>
-                                <option value="Trung bình" {{ old('grade6_conduct', 'Tốt') == 'Trung bình' ? 'selected' : '' }}>Trung bình</option>
-                                <option value="Yếu" {{ old('grade6_conduct', 'Tốt') == 'Yếu' ? 'selected' : '' }}>Yếu</option>
+                                <option value="Tốt" {{ old('grade6_conduct') == 'Tốt' ? 'selected' : '' }}>Tốt</option>
+                                <option value="Khá" {{ old('grade6_conduct') == 'Khá' ? 'selected' : '' }}>Khá</option>
+                                <option value="Trung bình" {{ old('grade6_conduct') == 'Trung bình' ? 'selected' : '' }}>Trung bình</option>
+                                <option value="Yếu" {{ old('grade6_conduct') == 'Yếu' ? 'selected' : '' }}>Yếu</option>
                             </select>
                         </div>
                     </div>
@@ -375,21 +375,21 @@
                             <label for="grade7_academic">Kết quả học lực</label>
                             <select id="grade7_academic" name="grade7_academic" class="form-control">
                                 <option value="">-- Chọn xếp loại --</option>
-                                <option value="Xuất sắc" {{ old('grade7_academic', 'Giỏi') == 'Xuất sắc' ? 'selected' : '' }}>Xuất sắc</option>
-                                <option value="Giỏi" {{ old('grade7_academic', 'Giỏi') == 'Giỏi' ? 'selected' : '' }}>Giỏi</option>
-                                <option value="Khá" {{ old('grade7_academic', 'Giỏi') == 'Khá' ? 'selected' : '' }}>Khá</option>
-                                <option value="Trung bình" {{ old('grade7_academic', 'Giỏi') == 'Trung bình' ? 'selected' : '' }}>Trung bình</option>
-                                <option value="Yếu" {{ old('grade7_academic', 'Giỏi') == 'Yếu' ? 'selected' : '' }}>Yếu</option>
+                                <option value="Xuất sắc" {{ old('grade7_academic') == 'Xuất sắc' ? 'selected' : '' }}>Xuất sắc</option>
+                                <option value="Giỏi" {{ old('grade7_academic') == 'Giỏi' ? 'selected' : '' }}>Giỏi</option>
+                                <option value="Khá" {{ old('grade7_academic') == 'Khá' ? 'selected' : '' }}>Khá</option>
+                                <option value="Trung bình" {{ old('grade7_academic') == 'Trung bình' ? 'selected' : '' }}>Trung bình</option>
+                                <option value="Yếu" {{ old('grade7_academic') == 'Yếu' ? 'selected' : '' }}>Yếu</option>
                             </select>
                         </div>
                         <div class="form-col">
                             <label for="grade7_conduct">Hạnh kiểm</label>
                             <select id="grade7_conduct" name="grade7_conduct" class="form-control">
                                 <option value="">-- Chọn xếp loại --</option>
-                                <option value="Tốt" {{ old('grade7_conduct', 'Tốt') == 'Tốt' ? 'selected' : '' }}>Tốt</option>
-                                <option value="Khá" {{ old('grade7_conduct', 'Tốt') == 'Khá' ? 'selected' : '' }}>Khá</option>
-                                <option value="Trung bình" {{ old('grade7_conduct', 'Tốt') == 'Trung bình' ? 'selected' : '' }}>Trung bình</option>
-                                <option value="Yếu" {{ old('grade7_conduct', 'Tốt') == 'Yếu' ? 'selected' : '' }}>Yếu</option>
+                                <option value="Tốt" {{ old('grade7_conduct') == 'Tốt' ? 'selected' : '' }}>Tốt</option>
+                                <option value="Khá" {{ old('grade7_conduct') == 'Khá' ? 'selected' : '' }}>Khá</option>
+                                <option value="Trung bình" {{ old('grade7_conduct') == 'Trung bình' ? 'selected' : '' }}>Trung bình</option>
+                                <option value="Yếu" {{ old('grade7_conduct') == 'Yếu' ? 'selected' : '' }}>Yếu</option>
                             </select>
                         </div>
                     </div>
@@ -402,21 +402,21 @@
                             <label for="grade8_academic">Kết quả học lực</label>
                             <select id="grade8_academic" name="grade8_academic" class="form-control">
                                 <option value="">-- Chọn xếp loại --</option>
-                                <option value="Xuất sắc" {{ old('grade8_academic', 'Giỏi') == 'Xuất sắc' ? 'selected' : '' }}>Xuất sắc</option>
-                                <option value="Giỏi" {{ old('grade8_academic', 'Giỏi') == 'Giỏi' ? 'selected' : '' }}>Giỏi</option>
-                                <option value="Khá" {{ old('grade8_academic', 'Giỏi') == 'Khá' ? 'selected' : '' }}>Khá</option>
-                                <option value="Trung bình" {{ old('grade8_academic', 'Giỏi') == 'Trung bình' ? 'selected' : '' }}>Trung bình</option>
-                                <option value="Yếu" {{ old('grade8_academic', 'Giỏi') == 'Yếu' ? 'selected' : '' }}>Yếu</option>
+                                <option value="Xuất sắc" {{ old('grade8_academic') == 'Xuất sắc' ? 'selected' : '' }}>Xuất sắc</option>
+                                <option value="Giỏi" {{ old('grade8_academic') == 'Giỏi' ? 'selected' : '' }}>Giỏi</option>
+                                <option value="Khá" {{ old('grade8_academic') == 'Khá' ? 'selected' : '' }}>Khá</option>
+                                <option value="Trung bình" {{ old('grade8_academic') == 'Trung bình' ? 'selected' : '' }}>Trung bình</option>
+                                <option value="Yếu" {{ old('grade8_academic') == 'Yếu' ? 'selected' : '' }}>Yếu</option>
                             </select>
                         </div>
                         <div class="form-col">
                             <label for="grade8_conduct">Hạnh kiểm</label>
                             <select id="grade8_conduct" name="grade8_conduct" class="form-control">
                                 <option value="">-- Chọn xếp loại --</option>
-                                <option value="Tốt" {{ old('grade8_conduct', 'Tốt') == 'Tốt' ? 'selected' : '' }}>Tốt</option>
-                                <option value="Khá" {{ old('grade8_conduct', 'Tốt') == 'Khá' ? 'selected' : '' }}>Khá</option>
-                                <option value="Trung bình" {{ old('grade8_conduct', 'Tốt') == 'Trung bình' ? 'selected' : '' }}>Trung bình</option>
-                                <option value="Yếu" {{ old('grade8_conduct', 'Tốt') == 'Yếu' ? 'selected' : '' }}>Yếu</option>
+                                <option value="Tốt" {{ old('grade8_conduct') == 'Tốt' ? 'selected' : '' }}>Tốt</option>
+                                <option value="Khá" {{ old('grade8_conduct') == 'Khá' ? 'selected' : '' }}>Khá</option>
+                                <option value="Trung bình" {{ old('grade8_conduct') == 'Trung bình' ? 'selected' : '' }}>Trung bình</option>
+                                <option value="Yếu" {{ old('grade8_conduct') == 'Yếu' ? 'selected' : '' }}>Yếu</option>
                             </select>
                         </div>
                     </div>
@@ -429,21 +429,21 @@
                             <label for="grade9_academic">Kết quả học lực</label>
                             <select id="grade9_academic" name="grade9_academic" class="form-control">
                                 <option value="">-- Chọn xếp loại --</option>
-                                <option value="Xuất sắc" {{ old('grade9_academic', 'Giỏi') == 'Xuất sắc' ? 'selected' : '' }}>Xuất sắc</option>
-                                <option value="Giỏi" {{ old('grade9_academic', 'Giỏi') == 'Giỏi' ? 'selected' : '' }}>Giỏi</option>
-                                <option value="Khá" {{ old('grade9_academic', 'Giỏi') == 'Khá' ? 'selected' : '' }}>Khá</option>
-                                <option value="Trung bình" {{ old('grade9_academic', 'Giỏi') == 'Trung bình' ? 'selected' : '' }}>Trung bình</option>
-                                <option value="Yếu" {{ old('grade9_academic', 'Giỏi') == 'Yếu' ? 'selected' : '' }}>Yếu</option>
+                                <option value="Xuất sắc" {{ old('grade9_academic') == 'Xuất sắc' ? 'selected' : '' }}>Xuất sắc</option>
+                                <option value="Giỏi" {{ old('grade9_academic') == 'Giỏi' ? 'selected' : '' }}>Giỏi</option>
+                                <option value="Khá" {{ old('grade9_academic') == 'Khá' ? 'selected' : '' }}>Khá</option>
+                                <option value="Trung bình" {{ old('grade9_academic') == 'Trung bình' ? 'selected' : '' }}>Trung bình</option>
+                                <option value="Yếu" {{ old('grade9_academic') == 'Yếu' ? 'selected' : '' }}>Yếu</option>
                             </select>
                         </div>
                         <div class="form-col">
                             <label for="grade9_conduct">Hạnh kiểm</label>
                             <select id="grade9_conduct" name="grade9_conduct" class="form-control">
                                 <option value="">-- Chọn xếp loại --</option>
-                                <option value="Tốt" {{ old('grade9_conduct', 'Tốt') == 'Tốt' ? 'selected' : '' }}>Tốt</option>
-                                <option value="Khá" {{ old('grade9_conduct', 'Tốt') == 'Khá' ? 'selected' : '' }}>Khá</option>
-                                <option value="Trung bình" {{ old('grade9_conduct', 'Tốt') == 'Trung bình' ? 'selected' : '' }}>Trung bình</option>
-                                <option value="Yếu" {{ old('grade9_conduct', 'Tốt') == 'Yếu' ? 'selected' : '' }}>Yếu</option>
+                                <option value="Tốt" {{ old('grade9_conduct') == 'Tốt' ? 'selected' : '' }}>Tốt</option>
+                                <option value="Khá" {{ old('grade9_conduct') == 'Khá' ? 'selected' : '' }}>Khá</option>
+                                <option value="Trung bình" {{ old('grade9_conduct') == 'Trung bình' ? 'selected' : '' }}>Trung bình</option>
+                                <option value="Yếu" {{ old('grade9_conduct') == 'Yếu' ? 'selected' : '' }}>Yếu</option>
                             </select>
                         </div>
                     </div>
@@ -453,14 +453,14 @@
                         <div class="form-col">
                             <label for="grade9_math_avg">Điểm trung bình Toán lớp 9</label>
                             <input type="number" id="grade9_math_avg" name="grade9_math_avg" class="form-control" 
-                                   min="0" max="10" step="0.1" placeholder="Ví dụ: 8.5" value="{{ old('grade9_math_avg', '8.5') }}">
+                                   min="0" max="10" step="0.1" placeholder="Ví dụ: 8.5" value="{{ old('grade9_math_avg') }}">
                             <small class="text-muted">Nhập điểm từ 0.0 đến 10.0</small>
                             @error('grade9_math_avg')<small class="text-danger">{{ $message }}</small>@enderror
                         </div>
                         <div class="form-col">
                             <label for="grade9_literature_avg">Điểm trung bình Văn lớp 9</label>
                             <input type="number" id="grade9_literature_avg" name="grade9_literature_avg" class="form-control" 
-                                   min="0" max="10" step="0.1" placeholder="Ví dụ: 8.0" value="{{ old('grade9_literature_avg', '8.0') }}">
+                                   min="0" max="10" step="0.1" placeholder="Ví dụ: 8.0" value="{{ old('grade9_literature_avg') }}">
                             <small class="text-muted">Nhập điểm từ 0.0 đến 10.0</small>
                             @error('grade9_literature_avg')<small class="text-danger">{{ $message }}</small>@enderror
                         </div>
@@ -518,13 +518,13 @@
                         <div class="form-col-2">
                             <input type="text" id="achievements" name="achievements" class="form-control" 
                                    placeholder="Ghi rõ tên Cuộc thi/Hội thi/Giải đấu (nếu có)" 
-                                   value="{{ old('achievements', 'Cuộc thi Học sinh giỏi Toán cấp Quốc gia') }}" maxlength="500">
+                                   value="{{ old('achievements') }}" maxlength="500">
                             @error('achievements')<small class="text-danger">{{ $message }}</small>@enderror
                         </div>
                         <div class="form-col">
                             <input type="text" id="achievement_rank" name="achievement_rank" class="form-control" 
                                    placeholder="Giải cao nhất đạt được" 
-                                   value="{{ old('achievement_rank', 'Giải Nhì') }}" maxlength="100">
+                                   value="{{ old('achievement_rank') }}" maxlength="100">
                             @error('achievement_rank')<small class="text-danger">{{ $message }}</small>@enderror
                         </div>
                     </div>
@@ -545,7 +545,7 @@
                     <label for="special_info">16. Thông tin đặc biệt khác</label>
                     <textarea id="special_info" name="special_info" class="form-control" rows="4" 
                               placeholder="Ghi rõ các thông tin đặc biệt khác về học sinh (nếu có)" 
-                              maxlength="1000">{{ old('special_info', 'Học sinh có thành tích xuất sắc trong học tập, tích cực tham gia các hoạt động xã hội và thể thao.') }}</textarea>
+                              maxlength="1000">{{ old('special_info') }}</textarea>
                     <small class="text-muted">Tối đa 1000 ký tự</small>
                     @error('special_info')<small class="text-danger">{{ $message }}</small>@enderror
                 </div>
