@@ -12,9 +12,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('home_settings', function (Blueprint $table) {
-            // Category display configuration
-            $table->json('category_display_config')->nullable()->comment('Cấu hình hiển thị danh mục bài viết');
-            $table->boolean('show_categories')->default(true)->comment('Hiển thị danh mục ở trang chủ');
+            // Only add columns if they don't exist
+            if (!Schema::hasColumn('home_settings', 'category_display_config')) {
+                $table->json('category_display_config')->nullable()->comment('Cấu hình hiển thị danh mục bài viết');
+            }
+            if (!Schema::hasColumn('home_settings', 'show_categories')) {
+                $table->boolean('show_categories')->default(true)->comment('Hiển thị danh mục ở trang chủ');
+            }
         });
     }
 
