@@ -1,9 +1,9 @@
 <?php
 // Thông số kết nối của bạn
 $host = 'localhost';
-$db   = 'thuchaoumct3_demo';
-$user = 'thuchaoumct3'; // Thử đổi thành 'thuchaoumct3' nếu code này báo lỗi
-$pass = 'FMi66hmrtLe5Ax1W';
+$db   = 'thuchaoumct3_demo_thuchanh';
+$user = 'thuchaoumct3_demo_thuchanh'; // Thử đổi thành 'thuchaoumct3' nếu code này báo lỗi
+$pass = 's3hqRc2h0~HY{+,Q';
 $port = '3306';
 
 echo "<h2>Đang kiểm tra kết nối Database...</h2>";
