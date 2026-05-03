@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Models\HomeSetting;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Config;
@@ -227,7 +227,21 @@ class ImageController extends Controller
     public function getWebsiteConfig()
     {
         try {
-            $config = config('website');
+            $settings = HomeSetting::current();
+            
+            $config = [
+                'header_image' => [
+                    'current' => $settings->header_image,
+                    'path' => 'assets/image/',
+                ],
+                'logo' => [
+                    'current' => $settings->logo,
+                    'path' => 'assets/image/',
+                ],
+                'contact_info' => $settings->contact_info ?? [],
+                'school_info' => $settings->school_info ?? [],
+                'social_links' => $settings->social_links ?? []
+            ];
             
             return response()->json([
                 'success' => true,
@@ -265,21 +279,28 @@ class ImageController extends Controller
             $section = $request->input('section');
             $data = $request->input('data');
 
-            // Thêm thông tin người cập nhật
-            $data['last_updated'] = now()->toDateTimeString();
-            $data['updated_by'] = $admin->id;
-            $data['updated_by_name'] = $admin->name;
+            // Lấy home setting hiện tại
+            $settings = HomeSetting::current();
 
-            // Cập nhật config
-            $this->updateWebsiteConfig($section, $data);
-            
-            // Clear config cache
-            \Artisan::call('config:clear');
+            // Cập nhật section tương ứng
+            switch ($section) {
+                case 'contact_info':
+                    $settings->contact_info = array_merge($settings->contact_info ?? [], $data);
+                    break;
+                case 'school_info':
+                    $settings->school_info = array_merge($settings->school_info ?? [], $data);
+                    break;
+                case 'social_links':
+                    $settings->social_links = array_merge($settings->social_links ?? [], $data);
+                    break;
+            }
+
+            $settings->save();
 
             return response()->json([
                 'success' => true,
                 'message' => 'Cấu hình đã được cập nhật thành công!',
-                'data' => config("website.{$section}")
+                'data' => $settings->{$section}
             ]);
 
         } catch (\Exception $e) {

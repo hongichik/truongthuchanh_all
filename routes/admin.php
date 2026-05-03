@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\ImageController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ArticleController;
 use App\Http\Controllers\Admin\ImageUploadController;
+use App\Http\Controllers\Admin\HomeController;
 
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::middleware('guest:admin')->group(function () {
@@ -81,6 +82,20 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::post('articles/{article}/toggle-featured', [App\Http\Controllers\Admin\ArticleController::class, 'toggleFeatured'])->name('articles.toggle-featured');
         Route::post('articles/{article}/update-status', [App\Http\Controllers\Admin\ArticleController::class, 'updateStatus'])->name('articles.update-status');
         Route::post('articles/{article}/duplicate', [App\Http\Controllers\Admin\ArticleController::class, 'duplicate'])->name('articles.duplicate');
+
+        // Quản lý Trang chủ
+        Route::prefix('home')->name('home.')->group(function () {
+            Route::get('/', [HomeController::class, 'index'])->name('index');
+            Route::post('featured/update', [HomeController::class, 'updateFeatured'])->name('featured.update');
+            Route::post('quick-links/update', [HomeController::class, 'updateQuickLinks'])->name('quick-links.update');
+            Route::post('notifications/update', [HomeController::class, 'updateNotifications'])->name('notifications.update');
+            Route::post('activities/update', [HomeController::class, 'updateActivities'])->name('activities.update');
+            Route::post('events/update', [HomeController::class, 'updateEvents'])->name('events.update');
+            Route::post('services/update', [HomeController::class, 'updateServices'])->name('services.update');
+            Route::post('website-config/update', [HomeController::class, 'updateWebsiteConfig'])->name('website-config.update');
+            Route::post('category-config/update', [HomeController::class, 'updateCategoryConfig'])->name('category-config.update');
+            Route::post('toggle-visibility', [HomeController::class, 'toggleVisibility'])->name('toggle-visibility');
+        });
 
         // Upload ảnh cho trình soạn thảo
         Route::prefix('uploads')->name('uploads.')->group(function () {

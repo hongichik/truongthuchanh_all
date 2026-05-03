@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Models\HomeSetting;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -12,7 +13,9 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('user.home.index');
+        $homeSettings = HomeSetting::current();
+        
+        return view('user.home.index', compact('homeSettings'));
     }
     
     /**

@@ -84,25 +84,31 @@ return [
                 ],
             ],
             [
+                'text' => 'Quản lý trang chủ',
+                'icon' => 'fas fa-home',
+                'route' => 'admin.home.index',
+                'active' => 'admin/home*',
+            ],
+            [
                 'text' => 'Quản lý quản trị',
                 'icon' => 'bi bi-shield-lock',
                 'active' => 'admin/role*',
                 'permission' => 'manage-permissions',
                 'submenu' => [
-                    [
-                        'text' => 'Quyền',
-                        'icon' => 'bi bi-key',
-                        'route' => 'admin.role.permission.index',
-                        'active' => 'admin/role/permission*',
-                        'permission' => 'manage-permissions',
-                    ],
-                    [
-                        'text' => 'Vai trò',
-                        'icon' => 'bi bi-person-badge',
-                        'route' => 'admin.role.role.index',
-                        'active' => 'admin/role/role*',
-                        'permission' => 'manage-roles',
-                    ],
+                    // [
+                    //     'text' => 'Quyền',
+                    //     'icon' => 'bi bi-key',
+                    //     'route' => 'admin.role.permission.index',
+                    //     'active' => 'admin/role/permission*',
+                    //     'permission' => 'manage-permissions',
+                    // ],
+                    // [
+                    //     'text' => 'Vai trò',
+                    //     'icon' => 'bi bi-person-badge',
+                    //     'route' => 'admin.role.role.index',
+                    //     'active' => 'admin/role/role*',
+                    //     'permission' => 'manage-roles',
+                    // ],
                     [
                         'text' => 'Quản trị viên',
                         'icon' => 'bi bi-people',

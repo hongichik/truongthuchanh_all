@@ -8,25 +8,39 @@
         <!-- Left Content -->
         <div class="left-content">
             <!-- Featured News -->
+            @if($homeSettings->show_featured_banner ?? true)
             <section class="featured-news">
-                <img src="{{ asset('assets/image/banner_home.jpg') }}" alt="Chào mừng đến với Trường Thực hành Sư phạm" class="featured-image">
+                @if(str_starts_with($homeSettings->featured_image, 'http'))
+                    <img src="{{ $homeSettings->featured_image }}" alt="{{ $homeSettings->featured_title }}" class="featured-image">
+                @elseif(str_starts_with($homeSettings->featured_image, 'storage/'))
+                    <img src="{{ asset($homeSettings->featured_image) }}" alt="{{ $homeSettings->featured_title }}" class="featured-image">
+                @else
+                    <img src="{{ asset($homeSettings->featured_image) }}" alt="{{ $homeSettings->featured_title }}" class="featured-image">
+                @endif
                 <div class="featured-overlay">
-                    <h2>Trường TH, THCS và THPT Thực hành Sư phạm</h2>
-                    <p>Đại học Hạ Long - Nơi ươm mầm tương lai</p>
+                    <h2>{{ $homeSettings->featured_title }}</h2>
+                    <p>{{ $homeSettings->featured_subtitle }}</p>
                 </div>
             </section>
+            @endif
 
             <!-- Quick Links -->
+            @if($homeSettings->show_quick_links ?? true)
             <section class="quick-links">
-                <div class="quick-link-item orange" onclick="window.open('#', '_blank')">Chương trình TH</div>
-                <div class="quick-link-item orange" onclick="window.open('#', '_blank')">Chương trình THCS</div>
-                <div class="quick-link-item orange" onclick="window.open('#', '_blank')">Chương trình THPT</div>
-                <div class="quick-link-item orange" onclick="window.open('{{ route('dang-ky.lop10') }}', '_blank')">Đăng ký lớp 10</div>
-                <div class="quick-link-item orange" onclick="window.open('{{ route('dang-ky.lop6') }}', '_blank')">Đăng ký lớp 6</div>
-                <div class="quick-link-item orange" onclick="window.open('{{ route('dang-ky.lop1') }}', '_blank')">Đăng ký lớp 1</div>
-                <div class="quick-link-item orange" onclick="window.open('#', '_blank')">Thư viện ảnh</div>
-                <div class="quick-link-item orange" onclick="window.open('#', '_blank')">Thành tích học tập</div>
+                @foreach($homeSettings->quick_links as $link)
+                    @php
+                        $url = $link['url'];
+                        // Check if it's a route name
+                        if($url !== '#' && !str_starts_with($url, 'http') && !str_starts_with($url, '/')) {
+                            $url = route($url);
+                        }
+                    @endphp
+                    <div class="quick-link-item orange" onclick="window.open('{{ $url }}', '_blank')">
+                        {{ $link['title'] }}
+                    </div>
+                @endforeach
             </section>
+            @endif
 
             <!-- News Sections -->
             <section class="news-section">
@@ -139,82 +153,64 @@
         <!-- Right Sidebar -->
         <div class="sidebar">
             <!-- Notifications -->
+            @if($homeSettings->show_notifications ?? true)
             <div class="sidebar-section">
                 <h3 class="sidebar-title">THÔNG BÁO MỚI NHẤT</h3>
-                <div class="notification-item">
-                    <p><strong>Lịch thi cuối học kỳ II năm học 2024-2025</strong></p>
-                    <small>25 tháng 3, 2026</small>
-                </div>
-                <div class="notification-item">
-                    <p><strong>Thông báo tuyển sinh đầu cấp các khối lớp 10, 6, 1</strong></p>
-                    <small>20 tháng 3, 2026</small>
-                </div>
-                <div class="notification-item">
-                    <p><strong>Kế hoạch triển khai chương trình STEM tích hợp</strong></p>
-                    <small>15 tháng 3, 2026</small>
-                </div>
-                <div class="notification-item">
-                    <p><strong>Kế hoạch tuyển sinh đầu cấp năm học 2025-2026</strong></p>
-                    <small>10 tháng 3, 2026</small>
-                </div>
+                @foreach($homeSettings->notifications as $notification)
+                    <div class="notification-item">
+                        <p><strong>{{ $notification['title'] }}</strong></p>
+                        <small>{{ $notification['date'] }}</small>
+                    </div>
+                @endforeach
             </div>
+            @endif
 
             <!-- Videos -->
+            @if($homeSettings->show_activities ?? true)
             <div class="sidebar-section">
                 <h3 class="sidebar-title">HOẠT ĐỘNG NỔI BẬT</h3>
-                <div class="video-item">
-                    <iframe width="100%" height="auto" src="https://www.youtube.com/embed/83yr4vYIJA8" title="CHƯƠNG TRÌNH STEM TÍCH HỢP" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-                    <h4>CHƯƠNG TRÌNH STEM TÍCH HỢP</h4>
-                    <p>Triển khai giáo dục STEM cho học sinh THCS và THPT năm 2026</p>
-                </div>
-                <div class="video-item">
-                    <iframe width="100%" height="auto" src="https://www.youtube.com/embed/83yr4vYIJA8" title="GIAO LƯU VĂN HÓA KHU VỰC" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-                    <h4>GIAO LƯU VĂN HÓA KHU VỰC</h4>
-                    <p>Chương trình giao lưu với các trường trong tỉnh Quảng Ninh</p>
-                </div>
-                <div class="video-item">
-                    <iframe width="100%" height="auto" src="https://www.youtube.com/embed/83yr4vYIJA8" title="HỌC SINH GIỎI CẤP TỈNH" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-                    <h4>HỌC SINH GIỎI CẤP TỈNH</h4>
-                    <p>Thành tích xuất sắc của học sinh trong kỳ thi HSG 2025</p>
-                </div>
+                @foreach($homeSettings->featured_activities as $activity)
+                    <div class="video-item">
+                        <iframe width="100%" height="auto" 
+                                src="{{ $activity['video_url'] }}" 
+                                title="{{ $activity['title'] }}" 
+                                frameborder="0" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                                referrerpolicy="strict-origin-when-cross-origin" 
+                                allowfullscreen></iframe>
+                        <h4>{{ $activity['title'] }}</h4>
+                        <p>{{ $activity['description'] }}</p>
+                    </div>
+                @endforeach
             </div>
+            @endif
 
             <!-- New Events Section -->
+            @if($homeSettings->show_events ?? true)
             <div class="sidebar-section">
                 <h3 class="sidebar-title">SỰ KIỆN SẮP TỚI</h3>
-                <div class="notification-item">
-                    <p><strong>Hội nghị phụ huynh cuối năm học</strong></p>
-                    <small>15 tháng 4, 2026</small>
-                </div>
-                <div class="notification-item">
-                    <p><strong>Lễ tốt nghiệp THPT khóa 2024-2026</strong></p>
-                    <small>20 tháng 4, 2026</small>
-                </div>
-                <div class="notification-item">
-                    <p><strong>Khai giảng năm học mới 2026-2027</strong></p>
-                    <small>5 tháng 9, 2026</small>
-                </div>
+                @foreach($homeSettings->upcoming_events as $event)
+                    <div class="notification-item">
+                        <p><strong>{{ $event['title'] }}</strong></p>
+                        <small>{{ $event['date'] }}</small>
+                    </div>
+                @endforeach
             </div>
+            @endif
 
             <!-- Quick Links -->
+            @if($homeSettings->show_services ?? true)
             <div class="sidebar-section">
                 <h3 class="sidebar-title">LIÊN KẾT NHANH</h3>
-                <div class="activity-item">
-                    <p><strong>Đăng ký học bạ điện tử</strong><br>
-                        <a href="#" style="color: #3b82f6;">học bạ điện tử →</a>
-                    </p>
-                </div>
-                <div class="activity-item">
-                    <p><strong>Tra cứu điểm thi</strong><br>
-                        <a href="#" style="color: #3b82f6;">Xem kết quả học tập →</a>
-                    </p>
-                </div>
-                <div class="activity-item">
-                    <p><strong>Đăng ký học phí online</strong><br>
-                        <a href="#" style="color: #3b82f6;">Thanh toán học phí →</a>
-                    </p>
-                </div>
+                @foreach($homeSettings->quick_services as $service)
+                    <div class="activity-item">
+                        <p><strong>{{ $service['title'] }}</strong><br>
+                            <a href="{{ $service['url'] }}" style="color: #3b82f6;">{{ $service['description'] }}</a>
+                        </p>
+                    </div>
+                @endforeach
             </div>
+            @endif
         </div>
     </div>
 </div>

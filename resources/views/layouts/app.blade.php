@@ -24,8 +24,8 @@
         <div class="header-top">
             <div class="container">
                 <div class="header-info">
-                    <span><i class="fas fa-phone"></i> Hotline: {{ config('website.contact_info.phone') }}</span>
-                    <span><i class="fas fa-envelope"></i> Email: {{ config('website.contact_info.email') }}</span>
+                    <span><i class="fas fa-phone"></i> Hotline: {{ $websiteConfig['contact_info']['phone'] }}</span>
+                    <span><i class="fas fa-envelope"></i> Email: {{ $websiteConfig['contact_info']['email'] }}</span>
                 </div>
             </div>
         </div>
@@ -34,22 +34,15 @@
             <div class="container">
                 <div class="header-content">
                     <div class="logo-section">
-                        <img src="{{ asset(config('website.logo.path') . config('website.logo.current')) }}" alt="Logo Trường" class="logo">
+                        <img src="{{ asset($websiteConfig['logo']['path'] . $websiteConfig['logo']['current']) }}" alt="Logo Trường" class="logo">
                         <div class="school-info">
-                            <h1>{{ config('website.school_info.name') }}</h1>
-                            <h2>{{ config('website.school_info.parent_organization') }}</h2>
+                            <h1>{{ $websiteConfig['school_info']['name'] }}</h1>
+                            <h2>{{ $websiteConfig['school_info']['parent_organization'] }}</h2>
                         </div>
                     </div>
                     <div class="header-image">
                         <div class="image-editor-container">
-                            <img src="{{ asset(config('website.header_image.path') . config('website.header_image.current')) }}?v={{ filemtime(public_path(config('website.header_image.path') . config('website.header_image.current'))) }}" alt="{{ config('website.school_info.name') }} - {{ config('website.school_info.parent_organization') }}" id="headerImage">
-                            @if(auth()->guard('admin')->check() && (auth()->guard('admin')->user()->id == 0 || auth()->guard('admin')->user()->hasPermission('edit-home')))
-                            <div class="edit-icon-overlay">
-                                <button class="edit-btn" id="editHeaderBtn" title="Chỉnh sửa ảnh">
-                                    <i class="fas fa-pen"></i>
-                                </button>
-                            </div>
-                            @endif
+                            <img src="{{ asset($websiteConfig['header_image']['path'] . $websiteConfig['header_image']['current']) }}?v={{ time() }}" alt="{{ $websiteConfig['school_info']['name'] }} - {{ $websiteConfig['school_info']['parent_organization'] }}" id="headerImage">
                         </div>
                     </div>
                 </div>
@@ -145,11 +138,11 @@
             <div class="footer-content">
                 <div class="footer-left">
                     <div class="footer-info">
-                        <h3 class="footer-title-desktop">{{ config('website.school_info.name') }} <br> {{ config('website.school_info.parent_organization') }}</h3>
-                        <h3 class="footer-title-mobile">{{ config('website.school_info.name') }}<br>{{ config('website.school_info.parent_organization') }}</h3>
-                        <p>Địa chỉ: {{ config('website.contact_info.address') }}</p>
-                        <p>Điện thoại: {{ config('website.contact_info.phone') }}</p>
-                        <p>Email: {{ config('website.contact_info.email') }}</p>
+                        <h3 class="footer-title-desktop">{{ $websiteConfig['school_info']['name'] }} <br> {{ $websiteConfig['school_info']['parent_organization'] }}</h3>
+                        <h3 class="footer-title-mobile">{{ $websiteConfig['school_info']['name'] }}<br>{{ $websiteConfig['school_info']['parent_organization'] }}</h3>
+                        <p>Địa chỉ: {{ $websiteConfig['contact_info']['address'] }}</p>
+                        <p>Điện thoại: {{ $websiteConfig['contact_info']['phone'] }}</p>
+                        <p>Email: {{ $websiteConfig['contact_info']['email'] }}</p>
                     </div>
                 </div>
                 <div class="footer-right">
@@ -169,83 +162,6 @@
     
     <!-- SweetAlert2 JavaScript -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.14.5/dist/sweetalert2.all.min.js"></script>
-    
-    <!-- Custom SweetAlert2 Configuration -->
-    <script>
-        // Cấu hình SweetAlert2 theme cho website
-        const Toast = Swal.mixin({
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            timer: 4000,
-            timerProgressBar: true,
-            didOpen: (toast) => {
-                toast.addEventListener('mouseenter', Swal.stopTimer)
-                toast.addEventListener('mouseleave', Swal.resumeTimer)
-            }
-        });
-
-        // Hàm hiển thị thông báo thành công
-        function showSuccessAlert(message) {
-            Swal.fire({
-                icon: 'success',
-                title: 'Thành công!',
-                text: message,
-                confirmButtonText: 'Đóng',
-                confirmButtonColor: '#28a745',
-                allowOutsideClick: false,
-                customClass: {
-                    popup: 'swal-wide'
-                }
-            });
-        }
-
-        // Hàm hiển thị thông báo lỗi
-        function showErrorAlert(message) {
-            Swal.fire({
-                icon: 'error',
-                title: 'Có lỗi xảy ra!',
-                html: message.replace(/\n/g, '<br>'),
-                confirmButtonText: 'Đóng',
-                confirmButtonColor: '#dc3545',
-                allowOutsideClick: false,
-                customClass: {
-                    popup: 'swal-wide'
-                }
-            });
-        }
-
-        // Hàm xác nhận hành động
-        function confirmAction(title, text, confirmText = 'Có', cancelText = 'Không') {
-            return Swal.fire({
-                title: title,
-                text: text,
-                icon: 'question',
-                showCancelButton: true,
-                confirmButtonText: confirmText,
-                cancelButtonText: cancelText,
-                confirmButtonColor: '#28a745',
-                cancelButtonColor: '#6c757d',
-                reverseButtons: true,
-                customClass: {
-                    popup: 'swal-wide'
-                }
-            });
-        }
-        
-        // Hiển thị thông báo từ session
-        @if(session('success_alert'))
-            document.addEventListener('DOMContentLoaded', function() {
-                showSuccessAlert('{{ session('success_alert') }}');
-            });
-        @endif
-        
-        @if(session('error_alert'))
-            document.addEventListener('DOMContentLoaded', function() {
-                showErrorAlert('{{ session('error_alert') }}');
-            });
-        @endif
-    </script>
     
     <!-- Custom CSS cho SweetAlert2 -->
     <style>
@@ -307,16 +223,9 @@
                 <div class="current-image-section">
                     <h4>Ảnh hiện tại</h4>
                     <div class="current-image-preview">
-                        <img src="{{ asset(config('website.header_image.path') . config('website.header_image.current')) }}?v={{ filemtime(public_path(config('website.header_image.path') . config('website.header_image.current'))) }}" alt="Ảnh hiện tại" id="currentImagePreview">
+                        <img src="{{ asset($websiteConfig['header_image']['path'] . $websiteConfig['header_image']['current']) }}?v={{ time() }}" alt="Ảnh hiện tại" id="currentImagePreview">
                     </div>
-                    @if(config('website.header_image.last_updated'))
-                    <div class="image-info">
-                        <p><small><i class="fas fa-clock"></i> Cập nhật lần cuối: {{ \Carbon\Carbon::parse(config('website.header_image.last_updated'))->format('d/m/Y H:i') }}</small></p>
-                        @if(config('website.header_image.updated_by_name'))
-                        <p><small><i class="fas fa-user"></i> Bởi: {{ config('website.header_image.updated_by_name') }}</small></p>
-                        @endif
-                    </div>
-                    @endif
+                    <p><small class="text-muted">Ảnh header hiện tại</small></p>
                 </div>
                 
                 <div class="upload-section">
