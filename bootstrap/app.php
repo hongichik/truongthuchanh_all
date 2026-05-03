@@ -14,6 +14,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'can_edit_home' => \App\Http\Middleware\CanEditHome::class,
             'admin' => \App\Http\Middleware\AdminMiddleware::class,
+            'master-admin' => \App\Http\Middleware\MasterAdminAuth::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

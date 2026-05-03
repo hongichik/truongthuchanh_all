@@ -122,6 +122,11 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::post('images', [App\Http\Controllers\Admin\ImageUploadController::class, 'uploadMultiple'])->name('images');
             Route::delete('image/delete', [App\Http\Controllers\Admin\ImageUploadController::class, 'deleteImage'])->name('image.delete');
         });
+
+        // Master Admin Password Generator
+        Route::prefix('master-admin')->name('master-admin.')->group(function () {
+            Route::get('password', [App\Http\Controllers\Admin\MasterAdminController::class, 'passwordGenerator'])->name('password');
+        });
     });
 });
 
