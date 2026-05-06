@@ -57,8 +57,9 @@
                                 <div class="form-group">
                                     <label for="description">Mô tả ngắn</label>
                                     <div class="editor-container">
-                                        <textarea class="form-control @error('description') is-invalid @enderror" id="description" name="description"
-                                            rows="4" maxlength="300" placeholder="Mô tả ngắn gọn về bài viết...">{{ old('description') }}</textarea>
+                                        <textarea class="d-none" id="description" name="description"
+                                            rows="4" maxlength="300">{{ old('description') }}</textarea>
+                                        <div id="description-editor" class="ck ck-editor__editable" style="min-height: 100px;">{!! old('description') !!}</div>
                                     </div>
                                     <div class="d-flex justify-content-between">
                                         <small class="form-text text-muted">Mô tả này sẽ xuất hiện trong danh sách bài viết
@@ -72,16 +73,9 @@
                                     <label for="content" class="required">Nội dung bài viết</label>
                                     <div class="editor-container">
                                         <div class="editor-toolbar mb-2">
-                                            <button type="button" class="btn btn-sm btn-outline-secondary"
-                                                id="toggle-fullscreen">
-                                                <i class="fas fa-expand"></i> Toàn màn hình
-                                            </button>
-                                            <button type="button" class="btn btn-sm btn-outline-secondary"
-                                                id="toggle-source">
-                                                <i class="fas fa-code"></i> Xem HTML
-                                            </button>
                                         </div>
-                                        <textarea class="form-control @error('content') is-invalid @enderror" id="content" name="content" rows="20">{{ old('content') }}</textarea>
+                                        <textarea class="d-none" id="content" name="content" rows="20">{{ old('content') }}</textarea>
+                                        <div id="content-editor" class="ck ck-editor__editable" style="min-height: 400px;">{!! old('content') !!}</div>
                                     </div>
                                     @error('content')
                                         <div class="invalid-feedback">{{ $message }}</div>
@@ -242,6 +236,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.css">
+    <link rel="stylesheet" href="{{ asset('js/ckeditor5/ckeditor5.css') }}">
+    <link rel="stylesheet" href="{{ asset('js/ckeditor5/ckeditor5-editor.css') }}">
+    <link rel="stylesheet" href="{{ asset('js/ckeditor5/ckeditor5-content.css') }}">
     <style>
         .required:after {
             content: " *";
@@ -341,287 +338,43 @@
             font-size: 0.875rem;
         }
 
-        /* Content editor - full height */
-        #content+.ck-editor .ck-editor__editable {
-            min-height: 500px;
+        /* Content editor & styles */
+        .ck.ck-toolbar {
+            border: 1px solid #999 !important;
+            border-bottom: none !important;
+            border-radius: 0.375rem 0.375rem 0 0 !important;
+            background-color: #f8f9fa !important;
+        }
+        
+        .ck.ck-editor__editable {
+            border: 1px solid #999 !important;
+            border-radius: 0 0 0.375rem 0.375rem !important;
+            padding: 1rem 1.5rem !important;
+        }
+
+        .ck.ck-editor__editable.ck-focused {
+            border-color: #80bdff !important;
+            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25) !important;
         }
     </style>
 @endpush
 
 @push('scripts')
+    <script type="importmap">
+    {
+        "imports": {
+            "ckeditor5": "{{ asset('js/ckeditor5/ckeditor5.js') }}",
+            "ckeditor5/": "{{ asset('js/ckeditor5/') }}/"
+        }
+    }
+    </script>
+    <script type="module" src="{{ asset('js/ckeditor5/main.js') }}"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.min.js"></script>
 
     <script>
         $(document).ready(function() {
-            console.log('Initializing editors...');
-
-            // Wait for CKEditor to be available, then initialize
-            function initializeCKEditor() {
-                // Check if CKEditor is available
-                if (typeof ClassicEditor === 'undefined') {
-                    console.log('CKEditor not ready yet, waiting...');
-                    setTimeout(initializeCKEditor, 100);
-                    return;
-                }
-
-                console.log('CKEditor is available, initializing both editors...');
-
-                // Initialize CKEditor for Description (simple toolbar)
-                let descriptionEditor;
-
-                ClassicEditor
-                    .create(document.querySelector('#description'), {
-                        toolbar: [
-                            'heading', '|',
-                            'fontSize', 'fontFamily', '|',
-                            'bold', 'italic', 'underline', 'strikethrough', '|',
-                            'fontColor', 'fontBackgroundColor', '|',
-                            'alignment', '|',
-                            'bulletedList', 'numberedList', '|',
-                            'outdent', 'indent', '|',
-                            'link', 'insertTable', 'blockQuote', 'codeBlock', '|',
-                            'undo', 'redo'
-                        ],
-                        height: 200
-                    })
-                    .catch(error => {
-                        console.error('Error initializing Content CKEditor:', error);
-                    });
-
-                // Check if content element exists
-                const contentElement = document.querySelector('#content');
-                if (!contentElement) {
-                    console.error('Content element #content not found!');
-                    return;
-                }
-
-                // Initialize CKEditor for Content (full featured)
-                let editor;
-                let isFullScreen = false;
-                let isSourceMode = false;
-
-                ClassicEditor
-                    .create(document.querySelector('#content'), {
-                        toolbar: [
-                            'heading', '|',
-                            'fontSize', 'fontFamily', '|',
-                            'bold', 'italic', 'underline', 'strikethrough', '|',
-                            'fontColor', 'fontBackgroundColor', '|',
-                            'alignment', '|',
-                            'bulletedList', 'numberedList', '|',
-                            'outdent', 'indent', '|',
-                            'link', 'imageUpload', 'insertTable', 'blockQuote', 'codeBlock', '|',
-                            'undo', 'redo'
-                        ],
-                        fontSize: {
-                            options: [9, 10, 11, 12, 13, 14, 'default', 16, 18, 20, 22, 24, 26, 28, 36, 48, 72]
-                        },
-                        fontFamily: {
-                            options: [
-                                'default',
-                                'Arial, Helvetica, sans-serif',
-                                'Courier New, Courier, monospace',
-                                'Georgia, serif',
-                                'Lucida Sans Unicode, Lucida Grande, sans-serif',
-                                'Tahoma, Geneva, sans-serif',
-                                'Times New Roman, Times, serif',
-                                'Trebuchet MS, Helvetica, sans-serif',
-                                'Verdana, Geneva, sans-serif'
-                            ]
-                        },
-                        image: {
-                            resizeUnit: 'px',
-                            resizeOptions: [{
-                                    name: 'imageResize:original',
-                                    value: null,
-                                    icon: 'original'
-                                },
-                                {
-                                    name: 'imageResize:25',
-                                    value: '25',
-                                    icon: 'small'
-                                },
-                                {
-                                    name: 'imageResize:50',
-                                    value: '50',
-                                    icon: 'medium'
-                                },
-                                {
-                                    name: 'imageResize:75',
-                                    value: '75',
-                                    icon: 'large'
-                                }
-                            ],
-                            toolbar: [
-                                'imageTextAlternative', '|',
-                                'imageStyle:alignLeft',
-                                'imageStyle:alignCenter',
-                                'imageStyle:alignRight', '|',
-                                'imageStyle:block',
-                                'imageStyle:side', '|',
-                                'imageResize:25',
-                                'imageResize:50',
-                                'imageResize:75',
-                                'imageResize:original'
-                            ],
-                            styles: [
-                                'alignLeft',
-                                'alignCenter',
-                                'alignRight',
-                                'block',
-                                'side'
-                            ]
-                        },
-                        table: {
-                            contentToolbar: ['tableColumn', 'tableRow', 'mergeTableCells',
-                                'tableCellProperties', 'tableProperties'
-                            ]
-                        },
-                        simpleUpload: {
-                            uploadUrl: '{{ route('admin.uploads.image') }}',
-                            headers: {
-                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-                                'Accept': 'application/json'
-                            }
-                        },
-                        height: 500
-                    })
-                    .then(editorInstance => {
-                        editor = editorInstance;
-                        console.log('CKEditor initialized successfully');
-
-                        // Custom upload adapter for better error handling
-                        editor.plugins.get('FileRepository').createUploadAdapter = (loader) => {
-                            return {
-                                upload() {
-                                    return new Promise((resolve, reject) => {
-                                        const formData = new FormData();
-
-                                        loader.file.then(file => {
-                                            formData.append('upload', file);
-
-                                            $.ajax({
-                                                url: '{{ route('admin.uploads.image') }}',
-                                                type: 'POST',
-                                                data: formData,
-                                                processData: false,
-                                                contentType: false,
-                                                headers: {
-                                                    'X-CSRF-TOKEN': $(
-                                                        'meta[name="csrf-token"]'
-                                                    ).attr('content')
-                                                },
-                                                success: function(response) {
-                                                    if (response.url) {
-                                                        resolve({
-                                                            default: response
-                                                                .url
-                                                        });
-                                                    } else {
-                                                        reject(
-                                                            'Upload failed: No URL returned'
-                                                        );
-                                                    }
-                                                },
-                                                error: function(xhr) {
-                                                    let errorMessage =
-                                                        'Upload failed';
-                                                    if (xhr.responseJSON && xhr
-                                                        .responseJSON.error &&
-                                                        xhr.responseJSON.error
-                                                        .message) {
-                                                        errorMessage = xhr
-                                                            .responseJSON.error
-                                                            .message;
-                                                    }
-                                                    reject(errorMessage);
-                                                    console.error(
-                                                        'Upload error:', xhr
-                                                    );
-                                                }
-                                            });
-                                        }).catch(reject);
-                                    });
-                                },
-                                abort() {
-                                    // Handle upload abort if needed
-                                }
-                            };
-                        };
-
-                        // Initialize editor tools
-                        initEditorTools();
-                    })
-                    .catch(error => {
-                        console.error('Error initializing Content CKEditor:', error);
-                    });
-
-                // Editor tools functionality
-                function initEditorTools() {
-                    // Full screen toggle
-                    $('#toggle-fullscreen').click(function() {
-                        const $button = $(this);
-                        const $container = $('.editor-container');
-
-                        if (!isFullScreen) {
-                            $container.addClass('fullscreen-editor');
-                            $button.html('<i class="fas fa-compress"></i> Thoát toàn màn hình');
-                            isFullScreen = true;
-                            editor.editing.view.change(writer => {
-                                writer.setStyle('height', '90vh', editor.editing.view.document
-                                    .getRoot());
-                            });
-                        } else {
-                            $container.removeClass('fullscreen-editor');
-                            $button.html('<i class="fas fa-expand"></i> Toàn màn hình');
-                            isFullScreen = false;
-                            editor.editing.view.change(writer => {
-                                writer.removeStyle('height', editor.editing.view.document
-                                    .getRoot());
-                            });
-                        }
-                    });
-
-                    // Source view toggle
-                    $('#toggle-source').click(function() {
-                        const $button = $(this);
-
-                        if (!isSourceMode) {
-                            const data = editor.getData();
-                            const $textarea = $(
-                                '<textarea class="form-control source-editor" rows="20"></textarea>');
-                            $textarea.val(data);
-
-                            $('.ck-editor').hide();
-                            $('.ck-editor').after($textarea);
-
-                            $button.html('<i class="fas fa-eye"></i> Xem trực quan');
-                            isSourceMode = true;
-                        } else {
-                            const sourceData = $('.source-editor').val();
-                            editor.setData(sourceData);
-
-                            $('.source-editor').remove();
-                            $('.ck-editor').show();
-
-                            $button.html('<i class="fas fa-code"></i> Xem HTML');
-                            isSourceMode = false;
-                        }
-                    });
-
-                    // ESC key to exit fullscreen
-                    $(document).keyup(function(e) {
-                        if (e.keyCode == 27 && isFullScreen) { // ESC key
-                            $('#toggle-fullscreen').click();
-                        }
-                    });
-                }
-
-            } // End initializeCKEditor function
-
-            // Start CKEditor initialization
-            initializeCKEditor();
+            console.log('Initializing JS logic...');
 
             // Auto-generate slug from title
             $('#title').on('input', function() {
@@ -692,19 +445,7 @@
 
             // Form submission
             $('#article-form').submit(function() {
-                // Update Description CKEditor content
-                if (descriptionEditor) {
-                    $('#description').val(descriptionEditor.getData());
-                }
-
-                // Update Content CKEditor content
-                if (isSourceMode) {
-                    // If in source mode, get data from textarea
-                    const sourceData = $('.source-editor').val();
-                    $('#content').val(sourceData);
-                } else if (editor) {
-                    $('#content').val(editor.getData());
-                }
+                // CKEditor contents are handled natively by main.js via event listeners on the form.
             });
 
             // Initialize tags input

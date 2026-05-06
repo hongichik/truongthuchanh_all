@@ -293,6 +293,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.css">
+    <link rel="stylesheet" href="{{ asset('js/ckeditor5/ckeditor5/ckeditor5.css') }}">
+    <link rel="stylesheet" href="{{ asset('js/ckeditor5/ckeditor5/ckeditor5-editor.css') }}">
+    <link rel="stylesheet" href="{{ asset('js/ckeditor5/ckeditor5/ckeditor5-content.css') }}">
     <style>
         .required:after {
             content: " *";
@@ -402,6 +405,8 @@
 @endpush
 
 @push('scripts')
+    <script src="https://cdn.ckeditor.com/ckeditor5/40.2.0/classic/ckeditor.js"></script>
+
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.min.js"></script>
 
