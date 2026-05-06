@@ -36,8 +36,8 @@
                     <div class="logo-section">
                         <img src="{{ asset($websiteConfig['logo']['path'] . $websiteConfig['logo']['current']) }}" alt="Logo Trường" class="logo">
                         <div class="school-info">
-                            <h1>{{ $websiteConfig['school_info']['name'] }}</h1>
                             <h2>{{ $websiteConfig['school_info']['parent_organization'] }}</h2>
+                            <h1>{{ $websiteConfig['school_info']['name'] }}</h1>
                         </div>
                     </div>
                     <div class="header-image">
@@ -138,8 +138,8 @@
             <div class="footer-content">
                 <div class="footer-left">
                     <div class="footer-info">
-                        <h3 class="footer-title-desktop">{{ $websiteConfig['school_info']['name'] }} <br> {{ $websiteConfig['school_info']['parent_organization'] }}</h3>
-                        <h3 class="footer-title-mobile">{{ $websiteConfig['school_info']['name'] }}<br>{{ $websiteConfig['school_info']['parent_organization'] }}</h3>
+                        <h3 class="footer-title-desktop">{{ $websiteConfig['school_info']['parent_organization'] }} <br> {{ $websiteConfig['school_info']['name'] }} </h3>
+                        <h3 class="footer-title-mobile">{{ $websiteConfig['school_info']['parent_organization'] }} <br> {{ $websiteConfig['school_info']['name'] }} </h3>
                         <p>Địa chỉ: {{ $websiteConfig['contact_info']['address'] }}</p>
                         <p>Điện thoại: {{ $websiteConfig['contact_info']['phone'] }}</p>
                         <p>Email: {{ $websiteConfig['contact_info']['email'] }}</p>

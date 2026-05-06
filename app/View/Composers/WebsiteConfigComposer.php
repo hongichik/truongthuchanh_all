@@ -29,8 +29,8 @@ class WebsiteConfigComposer
                 'address' => '258 Lê Thánh Tông, Phường Hồng Gai, TP. Hạ Long, Tỉnh Quảng Ninh'
             ],
             'school_info' => $settings->school_info ?? [
-                'name' => 'ĐẠI HỌC HẠ LONG',
-                'parent_organization' => 'TRƯỜNG TH, THCS VÀ THPT THỰC HÀNH SƯ PHẠM',
+                'name' => 'TRƯỜNG TH, THCS VÀ THPT THỰC HÀNH SƯ PHẠM',
+                'parent_organization' => 'ĐẠI HỌC HẠ LONG',
                 'short_description' => 'Nơi ươm mầm tương lai'
             ],
             'social_links' => $settings->social_links ?? [
