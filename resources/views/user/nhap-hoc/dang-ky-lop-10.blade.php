@@ -230,7 +230,7 @@
                     <div class="form-col-2">
                         <div class="form-group">
                             <label for="fullname">1. Họ và tên <span class="required">*</span></label>
-                            <input type="text" id="fullname" name="fullname" class="form-control"  value="Phạm Nguyen Demo"
+                            <input type="text" id="fullname" name="fullname" class="form-control" 
                                    style="text-transform: uppercase;" placeholder="Nhập họ và tên đầy đủ" 
                                    value="{{ old('fullname') }}" required>
                             @error('fullname')<small class="text-danger">{{ $message }}</small>@enderror
