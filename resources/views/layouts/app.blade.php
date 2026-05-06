@@ -76,7 +76,7 @@
                 @else
                     <button class="mobile-menu-toggle">
                         <div class="dropdown">
-                            <a href="#" class="nav-link" id="show-tuyen-sinh"><i class="fas fa-clipboard-list"></i> TUYỂN SINH</a>
+                            <a href="#" class="nav-link" id="show-tuyen-sinh"><i class="fas fa-clipboard-list"></i>ĐĂNG KÝ TUYỂN SINH</a>
                             <div class="dropdown-content" id="tuyen-sinh" style="position: fixed!important;">
                                 <a href="{{ route('dang-ky.lop10') }}"><i class="fas fa-child"></i> Đăng ký vào lớp 10</a>
                                 <a href="{{ route('dang-ky.lop6') }}"><i class="fas fa-user-graduate"></i> Đăng ký vào lớp 6</a>
