@@ -17,7 +17,7 @@ use Illuminate\Support\Str;
                 <!-- Article Header -->
                 <header class="article-header">
                     <div class="article-category">
-                        <a href="{{ route('category.articles', $article->category->slug) }}" class="category-link">
+                        <a href="{{ route('articles.category', $article->category->slug) }}" class="category-link">
                             {{ $article->category->name }}
                         </a>
                     </div>
