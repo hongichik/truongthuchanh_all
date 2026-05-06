@@ -16,10 +16,10 @@
                 </p>
             </div>
             <div>
-                <a href="{{ route('admin.applications.lop10') }}" class="btn btn-secondary">
+                <a href="{{ route('admin.applications.lop' . ($grade ?? 10)) }}" class="btn btn-secondary">
                     <i class="fas fa-arrow-left"></i> Quay lại danh sách
                 </a>
-                <a href="{{ route('admin.applications.download', ['type' => $type, 'id' => $application->id]) }}" 
+                <a href="{{ route('admin.applications.download', ['type' => $type, 'id' => $application->id, 'grade' => $grade ?? 10]) }}" 
                    class="btn btn-primary" target="_blank">
                     <i class="fas fa-download"></i> Tải về tất cả (ZIP)
                 </a>
@@ -82,7 +82,7 @@
                                class="btn btn-sm btn-primary">
                                 <i class="fas fa-external-link-alt"></i> Mở file
                             </a>
-                            <a href="{{ route('admin.applications.download', ['type' => $type, 'id' => $application->id]) }}?single={{ $file['index'] }}" 
+                            <a href="{{ route('admin.applications.download', ['type' => $type, 'id' => $application->id, 'grade' => $grade ?? 10]) }}&single={{ $file['index'] }}" 
                                class="btn btn-sm btn-success">
                                 <i class="fas fa-download"></i> Tải về
                             </a>

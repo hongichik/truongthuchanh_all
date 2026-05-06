@@ -39,6 +39,99 @@
         box-sizing: border-box;
     }
     
+    .form-control[type="file"] {
+        padding: 8px;
+        background: #f8f9fa;
+        border: 2px dashed #28a745;
+    }
+    
+    .form-control[type="file"]:focus {
+        border-color: #28a745;
+        background: #e8f5e8;
+        outline: none;
+        box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
+    }
+    
+    /* File preview styles */
+    .file-preview {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 10px;
+    }
+    
+    .file-preview-item {
+        position: relative;
+        width: 120px;
+        height: 120px;
+        border: 2px solid #dee2e6;
+        border-radius: 8px;
+        overflow: hidden;
+        background: #f8f9fa;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .file-preview-item img {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: cover;
+    }
+    
+    .file-preview-item .file-info {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: rgba(0,0,0,0.7);
+        color: white;
+        padding: 5px;
+        font-size: 10px;
+        text-align: center;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+    
+    .file-preview-item .remove-file {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        background: #dc3545;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 20px;
+        height: 20px;
+        font-size: 12px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .file-preview-item .file-icon {
+        font-size: 40px;
+        color: #6c757d;
+    }
+    
+    .compressing {
+        opacity: 0.6;
+    }
+    
+    .compress-progress {
+        position: absolute;
+        bottom: 20px;
+        left: 0;
+        right: 0;
+        background: rgba(40, 167, 69, 0.8);
+        color: white;
+        padding: 2px;
+        font-size: 9px;
+        text-align: center;
+    }
+    
     .form-control:focus {
         border-color: #28a745;
         outline: none;
@@ -61,9 +154,21 @@
         min-width: 300px;
     }
     
-    .btn-submit {
-        background: #28a745;
-        color: white;
+    .academic-year {
+        border: 1px solid #dee2e6;
+        border-radius: 4px;
+        padding: 15px;
+        margin-bottom: 15px;
+        background: white;
+    }
+    
+    .academic-year h4 {
+        color: #495057;
+        margin-bottom: 15px;
+        font-size: 16px;
+    }
+    
+    .btn-submit, .btn-reset {
         padding: 15px 40px;
         border: none;
         border-radius: 5px;
@@ -74,26 +179,19 @@
         margin: 10px 5px;
     }
     
-    .btn-submit:hover {
-        background: #218838;
+    .btn-submit {
+        background: #28a745;
+        color: white;
     }
+    
+    .btn-submit:hover { background: #218838; }
     
     .btn-reset {
         background: #6c757d;
         color: white;
-        padding: 15px 40px;
-        border: none;
-        border-radius: 5px;
-        font-size: 16px;
-        font-weight: bold;
-        cursor: pointer;
-        transition: background-color 0.3s;
-        margin: 10px 5px;
     }
     
-    .btn-reset:hover {
-        background: #5a6268;
-    }
+    .btn-reset:hover { background: #5a6268; }
     
     .required { color: red; }
     .alert { padding: 15px; margin-bottom: 20px; border: 1px solid transparent; border-radius: 4px; }
@@ -114,14 +212,14 @@
 <div class="container">
     <div style="text-align: center; margin: 30px 0;">
         <h1 style="color: #2c5530;">
-            <i class="fas fa-user-graduate"></i>
+            <i class="fas fa-child"></i>
             ĐĂNG KÝ TUYỂN SINH VÀO LỚP 6
         </h1>
         <p style="font-size: 16px; color: #666;">Vui lòng điền đầy đủ thông tin vào form dưới đây</p>
     </div>
     
     <div class="registration-form">
-        <form method="POST" action="{{ route('dang-ky.lop6.store') }}">
+        <form method="POST" action="{{ route('dang-ky.lop6.store') }}" enctype="multipart/form-data">
             @csrf
           
             <!-- Thông tin cá nhân học sinh -->
@@ -134,7 +232,7 @@
                             <label for="fullname">1. Họ và tên <span class="required">*</span></label>
                             <input type="text" id="fullname" name="fullname" class="form-control" 
                                    style="text-transform: uppercase;" placeholder="Nhập họ và tên đầy đủ" 
-                                   value="{{ old('fullname') }}" required>
+                                   value="{{ old('fullname', '') }}" required>
                             @error('fullname')<small class="text-danger">{{ $message }}</small>@enderror
                         </div>
                     </div>
@@ -142,7 +240,7 @@
                         <div class="form-group">
                             <label for="birthdate">2. Ngày sinh <span class="required">*</span></label>
                             <input type="date" id="birthdate" name="birthdate" class="form-control" 
-                                   value="{{ old('birthdate') }}" required>
+                                   value="{{ old('birthdate', '') }}" required>
                             @error('birthdate')<small class="text-danger">{{ $message }}</small>@enderror
                         </div>
                     </div>
@@ -154,8 +252,8 @@
                             <label for="gender">3. Giới tính <span class="required">*</span></label>
                             <select id="gender" name="gender" class="form-control" required>
                                 <option value="">-- Chọn giới tính --</option>
-                                <option value="Nam" {{ old('gender') == 'Nam' ? 'selected' : '' }}>Nam</option>
-                                <option value="Nữ" {{ old('gender') == 'Nữ' ? 'selected' : '' }}>Nữ</option>
+                                <option value="Nam" {{ old('gender', '') == 'Nam' ? 'selected' : '' }}>Nam</option>
+                                <option value="Nữ" {{ old('gender', '') == 'Nữ' ? 'selected' : '' }}>Nữ</option>
                             </select>
                             @error('gender')<small class="text-danger">{{ $message }}</small>@enderror
                         </div>
@@ -164,17 +262,16 @@
                         <div class="form-group">
                             <label for="ethnicity">4. Dân tộc</label>
                             <input type="text" id="ethnicity" name="ethnicity" class="form-control" 
-                                   placeholder="VD: Kinh, Tày, Nùng..." value="{{ old('ethnicity', 'Kinh') }}">
-                            @error('ethnicity')<small class="text-danger">{{ $message }}</small>@enderror
+                                   placeholder="VD: Kinh, Tày, Nùng..." value="{{ old('ethnicity', '') }}">
                         </div>
                     </div>
                 </div>
                 
                 <div class="form-group">
-                    <label for="current_school">5. Học sinh trường Tiểu học <span class="required">*</span></label>
+                    <label for="current_school">5. Học sinh trường THCS <span class="required">*</span></label>
                     <input type="text" id="current_school" name="current_school" class="form-control" 
-                           placeholder="Nhập tên trường Tiểu học đang theo học" 
-                           value="{{ old('current_school') }}" required>
+                           placeholder="Nhập tên trường THCS đang theo học" 
+                           value="{{ old('current_school', '') }}" required>
                     @error('current_school')<small class="text-danger">{{ $message }}</small>@enderror
                 </div>
                 
@@ -182,36 +279,344 @@
                     <label for="citizen_id">6. CCCD (số định danh)</label>
                     <input type="text" id="citizen_id" name="citizen_id" class="form-control" 
                            placeholder="Nhập số căn cước công dân (số định danh)" 
-                           pattern="[0-9]{12}" value="{{ old('citizen_id') }}">
-                    @error('citizen_id')<small class="text-danger">{{ $message }}</small>@enderror
+                           pattern="[0-9]{12}" value="{{ old('citizen_id', '') }}">
                 </div>
                 
                 <div class="form-group">
                     <label for="address">7. Thông tin cư trú <span class="required">*</span></label>
                     <textarea id="address" name="address" class="form-control" rows="3" 
-                              placeholder="Nhập địa chỉ cư trú đầy đủ" required>{{ old('address') }}</textarea>
+                              placeholder="Nhập địa chỉ cư trú đầy đủ" required>{{ old('address', '') }}</textarea>
                     @error('address')<small class="text-danger">{{ $message }}</small>@enderror
                 </div>
-            </div>
-          
-            <!-- Thông tin gia đình -->
-            <div class="form-section">
-                <h3><i class="fas fa-users"></i> II. THÔNG TIN GIA ĐÌNH</h3>
-                
+
                 <div class="form-group">
-                    <label for="guardian_name">8. Tên Bố hoặc Mẹ hoặc người bảo trợ <span class="required">*</span></label>
-                    <input type="text" id="guardian_name" name="guardian_name" class="form-control" 
-                           placeholder="Nhập tên bố hoặc mẹ hoặc người bảo trợ" 
-                           value="{{ old('guardian_name') }}" required>
-                    @error('guardian_name')<small class="text-danger">{{ $message }}</small>@enderror
+                    <label for="birthplace">8. Nơi sinh (Tỉnh/Thành phố)</label>
+                    <input type="text" id="birthplace" name="birthplace" class="form-control"
+                           placeholder="Nhập tỉnh/thành phố nơi sinh" value="{{ old('birthplace', '') }}">
+                    @error('birthplace')<small class="text-danger">{{ $message }}</small>@enderror
                 </div>
                 
                 <div class="form-group">
                     <label for="phone">9. Số điện thoại liên lạc <span class="required">*</span></label>
                     <input type="tel" id="phone" name="phone" class="form-control" 
                            placeholder="Nhập số điện thoại liên lạc" 
-                           pattern="[0-9]{10,11}" value="{{ old('phone') }}" required>
+                           pattern="[0-9]{10,11}" value="{{ old('phone', '') }}" required>
                     @error('phone')<small class="text-danger">{{ $message }}</small>@enderror
+                </div>
+            </div>
+          
+            <!-- Thông tin gia đình -->
+            <div class="form-section">
+                <h3><i class="fas fa-users"></i> II. THÔNG TIN GIA ĐÌNH</h3>
+
+                <h4 style="color: #495057; margin-top: 20px; margin-bottom: 15px; border-bottom: 1px solid #dee2e6; padding-bottom: 10px;">A. THÔNG TIN CHA</h4>
+                <div class="form-row">
+                    <div class="form-col-2">
+                        <div class="form-group">
+                            <label for="father_name">10. Họ tên Cha</label>
+                            <input type="text" id="father_name" name="father_name" class="form-control"
+                                   placeholder="Nhập họ tên bố" value="{{ old('father_name', '') }}">
+                        </div>
+                    </div>
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label for="father_ethnicity">Dân tộc</label>
+                            <input type="text" id="father_ethnicity" name="father_ethnicity" class="form-control"
+                                   placeholder="Kinh" value="{{ old('father_ethnicity', '') }}">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label for="father_birthyear">Năm sinh</label>
+                            <input type="number" id="father_birthyear" name="father_birthyear" class="form-control"
+                                   placeholder="VD: 1968" min="1920" max="2010" value="{{ old('father_birthyear', '') }}">
+                        </div>
+                    </div>
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label for="father_occupation">Nghề nghiệp</label>
+                            <input type="text" id="father_occupation" name="father_occupation" class="form-control"
+                                   placeholder="VD: Công nhân, Nông dân..." value="{{ old('father_occupation', '') }}">
+                        </div>
+                    </div>
+                </div>
+
+                <h4 style="color: #495057; margin-top: 20px; margin-bottom: 15px; border-bottom: 1px solid #dee2e6; padding-bottom: 10px;">B. THÔNG TIN MẸ</h4>
+                <div class="form-row">
+                    <div class="form-col-2">
+                        <div class="form-group">
+                            <label for="mother_name">11. Họ tên Mẹ</label>
+                            <input type="text" id="mother_name" name="mother_name" class="form-control"
+                                   placeholder="Nhập họ tên mẹ" value="{{ old('mother_name', '') }}">
+                        </div>
+                    </div>
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label for="mother_ethnicity">Dân tộc</label>
+                            <input type="text" id="mother_ethnicity" name="mother_ethnicity" class="form-control"
+                                   placeholder="Kinh" value="{{ old('mother_ethnicity', '') }}">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label for="mother_birthyear">Năm sinh</label>
+                            <input type="number" id="mother_birthyear" name="mother_birthyear" class="form-control"
+                                   placeholder="VD: 1970" min="1920" max="2010" value="{{ old('mother_birthyear', '') }}">
+                        </div>
+                    </div>
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label for="mother_occupation">Nghề nghiệp</label>
+                            <input type="text" id="mother_occupation" name="mother_occupation" class="form-control"
+                                   placeholder="VD: Giáo viên, Bác sĩ..." value="{{ old('mother_occupation', '') }}">
+                        </div>
+                    </div>
+                </div>
+
+                <h4 style="color: #495057; margin-top: 20px; margin-bottom: 15px; border-bottom: 1px solid #dee2e6; padding-bottom: 10px;">12. NGƯỜI GIÁM HỘ</h4>
+                <div class="form-row">
+                    <div class="form-col-2">
+                        <div class="form-group">
+                            <label for="guardian_name">12. Họ tên Người giám hộ</label>
+                            <input type="text" id="guardian_name" name="guardian_name" class="form-control"
+                                   placeholder="Nhập họ tên người giám hộ (nếu có)" value="{{ old('guardian_name', '') }}">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label for="guardian_birthyear">Năm sinh</label>
+                            <input type="number" id="guardian_birthyear" name="guardian_birthyear" class="form-control"
+                                   placeholder="VD: 1965" min="1920" max="2010" value="{{ old('guardian_birthyear', '') }}">
+                        </div>
+                    </div>
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label for="guardian_occupation">Nghề nghiệp</label>
+                            <input type="text" id="guardian_occupation" name="guardian_occupation" class="form-control"
+                                   placeholder="VD: Doanh nhân, Tự do..." value="{{ old('guardian_occupation', '') }}">
+                        </div>
+                    </div>
+                </div>
+            </div>
+          
+            <!-- Kết quả học tập -->
+            <div class="form-section">
+                <h3><i class="fas fa-graduation-cap"></i> III. KẾT QUẢ HỌC TẬP CÁC NĂM</h3>
+                
+                <div class="academic-year">
+                    <h4>Lớp 1</h4>
+                    <div class="form-row">
+                        <div class="form-col">
+                            <label for="grade1_academic">Kết quả học lực</label>
+                            <select id="grade1_academic" name="grade1_academic" class="form-control">
+                                <option value="">-- Chọn xếp loại --</option>
+                                <option value="Tốt" {{ old('grade1_academic', '') == 'Tốt' ? 'selected' : '' }}>Tốt</option>
+                                <option value="Khá" {{ old('grade1_academic', '') == 'Khá' ? 'selected' : '' }}>Khá</option>
+                                <option value="Đạt" {{ old('grade1_academic', '') == 'Đạt' ? 'selected' : '' }}>Đạt</option>
+                                <option value="Chưa đạt" {{ old('grade1_academic', '') == 'Chưa đạt' ? 'selected' : '' }}>Chưa đạt</option>
+                            </select>
+                        </div>
+                        <div class="form-col">
+                            <label for="grade1_conduct">Hạnh kiểm</label>
+                            <select id="grade1_conduct" name="grade1_conduct" class="form-control">
+                                <option value="">-- Chọn xếp loại --</option>
+                                <option value="Tốt" {{ old('grade1_conduct', '') == 'Tốt' ? 'selected' : '' }}>Tốt</option>
+                                <option value="Khá" {{ old('grade1_conduct', '') == 'Khá' ? 'selected' : '' }}>Khá</option>
+                                <option value="Đạt" {{ old('grade1_conduct', '') == 'Đạt' ? 'selected' : '' }}>Đạt</option>
+                                <option value="Chưa đạt" {{ old('grade1_conduct', '') == 'Chưa đạt' ? 'selected' : '' }}>Chưa đạt</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="academic-year">
+                    <h4>Lớp 2</h4>
+                    <div class="form-row">
+                        <div class="form-col">
+                            <label for="grade2_academic">Kết quả học lực</label>
+                            <select id="grade2_academic" name="grade2_academic" class="form-control">
+                                <option value="">-- Chọn xếp loại --</option>
+                                <option value="Tốt" {{ old('grade2_academic', '') == 'Tốt' ? 'selected' : '' }}>Tốt</option>
+                                <option value="Khá" {{ old('grade2_academic', '') == 'Khá' ? 'selected' : '' }}>Khá</option>
+                                <option value="Đạt" {{ old('grade2_academic', '') == 'Đạt' ? 'selected' : '' }}>Đạt</option>
+                                <option value="Chưa đạt" {{ old('grade2_academic', '') == 'Chưa đạt' ? 'selected' : '' }}>Chưa đạt</option>
+                            </select>
+                        </div>
+                        <div class="form-col">
+                            <label for="grade2_conduct">Hạnh kiểm</label>
+                            <select id="grade2_conduct" name="grade2_conduct" class="form-control">
+                                <option value="">-- Chọn xếp loại --</option>
+                                <option value="Tốt" {{ old('grade2_conduct', '') == 'Tốt' ? 'selected' : '' }}>Tốt</option>
+                                <option value="Khá" {{ old('grade2_conduct', '') == 'Khá' ? 'selected' : '' }}>Khá</option>
+                                <option value="Đạt" {{ old('grade2_conduct', '') == 'Đạt' ? 'selected' : '' }}>Đạt</option>
+                                <option value="Chưa đạt" {{ old('grade2_conduct', '') == 'Chưa đạt' ? 'selected' : '' }}>Chưa đạt</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="academic-year">
+                    <h4>Lớp 3</h4>
+                    <div class="form-row">
+                        <div class="form-col">
+                            <label for="grade3_academic">Kết quả học lực</label>
+                            <select id="grade3_academic" name="grade3_academic" class="form-control">
+                                <option value="">-- Chọn xếp loại --</option>
+                                <option value="Tốt" {{ old('grade3_academic', '') == 'Tốt' ? 'selected' : '' }}>Tốt</option>
+                                <option value="Khá" {{ old('grade3_academic', '') == 'Khá' ? 'selected' : '' }}>Khá</option>
+                                <option value="Đạt" {{ old('grade3_academic', '') == 'Đạt' ? 'selected' : '' }}>Đạt</option>
+                                <option value="Chưa đạt" {{ old('grade3_academic', '') == 'Chưa đạt' ? 'selected' : '' }}>Chưa đạt</option>
+                            </select>
+                        </div>
+                        <div class="form-col">
+                            <label for="grade3_conduct">Hạnh kiểm</label>
+                            <select id="grade3_conduct" name="grade3_conduct" class="form-control">
+                                <option value="">-- Chọn xếp loại --</option>
+                                <option value="Tốt" {{ old('grade3_conduct', '') == 'Tốt' ? 'selected' : '' }}>Tốt</option>
+                                <option value="Khá" {{ old('grade3_conduct', '') == 'Khá' ? 'selected' : '' }}>Khá</option>
+                                <option value="Đạt" {{ old('grade3_conduct', '') == 'Đạt' ? 'selected' : '' }}>Đạt</option>
+                                <option value="Chưa đạt" {{ old('grade3_conduct', '') == 'Chưa đạt' ? 'selected' : '' }}>Chưa đạt</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="academic-year">
+                    <h4>Lớp 4</h4>
+                    <div class="form-row">
+                        <div class="form-col">
+                            <label for="grade4_academic">Kết quả học lực</label>
+                            <select id="grade4_academic" name="grade4_academic" class="form-control">
+                                <option value="">-- Chọn xếp loại --</option>
+                                <option value="Tốt" {{ old('grade4_academic', '') == 'Tốt' ? 'selected' : '' }}>Tốt</option>
+                                <option value="Khá" {{ old('grade4_academic', '') == 'Khá' ? 'selected' : '' }}>Khá</option>
+                                <option value="Đạt" {{ old('grade4_academic', '') == 'Đạt' ? 'selected' : '' }}>Đạt</option>
+                                <option value="Chưa đạt" {{ old('grade4_academic', '') == 'Chưa đạt' ? 'selected' : '' }}>Chưa đạt</option>
+                            </select>
+                        </div>
+                        <div class="form-col">
+                            <label for="grade4_conduct">Hạnh kiểm</label>
+                            <select id="grade4_conduct" name="grade4_conduct" class="form-control">
+                                <option value="">-- Chọn xếp loại --</option>
+                                <option value="Tốt" {{ old('grade4_conduct', '') == 'Tốt' ? 'selected' : '' }}>Tốt</option>
+                                <option value="Khá" {{ old('grade4_conduct', '') == 'Khá' ? 'selected' : '' }}>Khá</option>
+                                <option value="Đạt" {{ old('grade4_conduct', '') == 'Đạt' ? 'selected' : '' }}>Đạt</option>
+                                <option value="Chưa đạt" {{ old('grade4_conduct', '') == 'Chưa đạt' ? 'selected' : '' }}>Chưa đạt</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="academic-year">
+                    <h4>Lớp 5</h4>
+                    <div class="form-row">
+                        <div class="form-col">
+                            <label for="grade5_academic">Kết quả học lực lớp 5</label>
+                            <select id="grade5_academic" name="grade5_academic" class="form-control">
+                                <option value="">-- Chọn xếp loại --</option>
+                                <option value="Tốt" {{ old('grade5_academic', '') == 'Tốt' ? 'selected' : '' }}>Tốt</option>
+                                <option value="Khá" {{ old('grade5_academic', '') == 'Khá' ? 'selected' : '' }}>Khá</option>
+                                <option value="Đạt" {{ old('grade5_academic', '') == 'Đạt' ? 'selected' : '' }}>Đạt</option>
+                                <option value="Chưa đạt" {{ old('grade5_academic', '') == 'Chưa đạt' ? 'selected' : '' }}>Chưa đạt</option>
+                            </select>
+                        </div>
+                        <div class="form-col">
+                            <label for="grade5_conduct">Hạnh kiểm lớp 5</label>
+                            <select id="grade5_conduct" name="grade5_conduct" class="form-control">
+                                <option value="">-- Chọn xếp loại --</option>
+                                <option value="Tốt" {{ old('grade5_conduct', '') == 'Tốt' ? 'selected' : '' }}>Tốt</option>
+                                <option value="Khá" {{ old('grade5_conduct', '') == 'Khá' ? 'selected' : '' }}>Khá</option>
+                                <option value="Đạt" {{ old('grade5_conduct', '') == 'Đạt' ? 'selected' : '' }}>Đạt</option>
+                                <option value="Chưa đạt" {{ old('grade5_conduct', '') == 'Chưa đạt' ? 'selected' : '' }}>Chưa đạt</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <!-- Điểm trung bình các môn lớp 5 -->
+                    <div class="form-row" style="margin-top: 15px;">
+                        <div class="form-col">
+                            <label for="grade5_math_avg">Điểm trung bình Toán lớp 5</label>
+                            <input type="number" id="grade5_math_avg" name="grade5_math_avg" class="form-control" 
+                                   min="0" max="10" step="0.1" placeholder="Ví dụ: 8.5" value="{{ old('grade5_math_avg', '') }}">
+                            <small class="text-muted">Nhập điểm từ 0.0 đến 10.0</small>
+                            @error('grade5_math_avg')<small class="text-danger">{{ $message }}</small>@enderror
+                        </div>
+                        <div class="form-col">
+                            <label for="grade5_literature_avg">Điểm trung bình Tiếng Việt lớp 5</label>
+                            <input type="number" id="grade5_literature_avg" name="grade5_literature_avg" class="form-control" 
+                                   min="0" max="10" step="0.1" placeholder="Ví dụ: 8.0" value="{{ old('grade5_literature_avg', '') }}">
+                            <small class="text-muted">Nhập điểm từ 0.0 đến 10.0</small>
+                            @error('grade5_literature_avg')<small class="text-danger">{{ $message }}</small>@enderror
+                        </div>
+                    </div>
+                </div>
+            </div>
+          
+            <!-- Upload học bạ -->
+            <div class="form-section">
+                <h3><i class="fas fa-file-upload"></i> IV. TẢI LÊN HỌC BẠ</h3>
+                
+                <div class="form-group">
+                    <label for="academic_transcript">Học bạ Tiểu học (nhiều ảnh PDF, JPG, PNG) <span class="required">*</span></label>
+                    <input type="file" id="academic_transcript" name="academic_transcript[]" class="form-control" 
+                           accept=".pdf,.jpg,.jpeg,.png" multiple required>
+                    <small class="text-muted">
+                        <i class="fas fa-info-circle"></i> 
+                        Chọn nhiều ảnh cùng lúc: học bạ từ lớp 6-9, bằng tốt nghiệp THCS... 
+                        Ảnh sẽ được tự động nén để tối ưu tốc độ tải.
+                    </small>
+                    <div id="academic_preview" class="mt-2"></div>
+                    @error('academic_transcript')<small class="text-danger">{{ $message }}</small>@enderror
+                </div>
+                
+                <div class="form-group">
+                    <label for="additional_documents">Giấy tờ bổ sung (nếu có)</label>
+                    <input type="file" id="additional_documents" name="additional_documents[]" class="form-control" 
+                           accept=".pdf,.jpg,.jpeg,.png" multiple>
+                    <small class="text-muted">
+                        <i class="fas fa-info-circle"></i> 
+                        Upload nhiều file: giấy khen, chứng chỉ, giấy tờ chứng minh gia đình chính sách...
+                    </small>
+                    <div id="additional_preview" class="mt-2"></div>
+                    @error('additional_documents')<small class="text-danger">{{ $message }}</small>@enderror
+                </div>
+            </div>
+
+            <!-- Thông tin đặc biệt -->
+            <div class="form-section">
+                <h3><i class="fas fa-star"></i> V. THÔNG TIN ĐẶC BIỆT</h3>
+                
+                <div class="form-group">
+                    <label for="is_disabled">13. Trường hợp đặc biệt, học sinh là người khuyết tật</label>
+                    <input type="text" id="is_disabled" name="is_disabled" class="form-control"
+                           placeholder="Ghi rõ dạng tật (nếu có). Để trống nếu không" value="{{ old('is_disabled') }}">
+                    <small class="text-muted">Ví dụ: Khiếm thị, Khiếc, Khuyết tật vận động...</small>
+                    @error('is_disabled')<small class="text-danger">{{ $message }}</small>@enderror
+                </div>
+                
+                <div class="form-group">
+                    <label for="achievements">14. Học sinh đạt giải cấp quốc tế, quốc gia, cấp tỉnh các cuộc thi</label>
+                    <div class="form-row">
+                        <div class="form-col-2">
+                            <input type="text" id="achievements" name="achievements" class="form-control" 
+                                   placeholder="Ghi rõ tên Cuộc thi/Hội thi/Giải đấu (nếu có)" 
+                                   value="{{ old('achievements') }}" maxlength="500">
+                            @error('achievements')<small class="text-danger">{{ $message }}</small>@enderror
+                        </div>
+                        <div class="form-col">
+                            <input type="text" id="achievement_rank" name="achievement_rank" class="form-control" 
+                                   placeholder="Giải cao nhất đạt được" 
+                                   value="{{ old('achievement_rank') }}" maxlength="100">
+                            @error('achievement_rank')<small class="text-danger">{{ $message }}</small>@enderror
+                        </div>
+                    </div>
+                    <small class="text-muted">Ví dụ: Cuộc thi Học sinh giỏi Toán cấp Quốc gia - Giải Nhất</small>
                 </div>
             </div>
           
@@ -227,33 +632,349 @@
     </div>
 </div>
 @push('scripts')
+<!-- SweetAlert2 for beautiful alerts -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
+// SweetAlert2 wrapper functions
+function confirmAction(title, text, confirmText = 'Xác nhận', cancelText = 'Hủy') {
+    return Swal.fire({
+        title: title,
+        text: text,
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#28a745',
+        cancelButtonColor: '#6c757d',
+        confirmButtonText: confirmText,
+        cancelButtonText: cancelText,
+        reverseButtons: true
+    });
+}
+
+const Toast = Swal.mixin({
+    toast: true,
+    position: 'top-end',
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+        toast.addEventListener('mouseenter', Swal.stopTimer)
+        toast.addEventListener('mouseleave', Swal.resumeTimer)
+    }
+});
+
+function escapeHtml(value) {
+    return String(value)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+}
+
+function getFormPreviewItems(form) {
+    const fields = form.querySelectorAll('input, select, textarea');
+    const items = [];
+
+    fields.forEach((field) => {
+        if (!field.name || field.disabled || field.type === 'hidden') return;
+        if ((field.type === 'checkbox' || field.type === 'radio') && !field.checked) return;
+
+        const labelEl = field.id ? form.querySelector(`label[for="${field.id}"]`) : null;
+        const gradeFieldMatch = field.name.match(/^grade(\d+)_(academic|conduct)$/);
+        const label = gradeFieldMatch
+            ? (gradeFieldMatch[2] === 'academic'
+                ? `Kết quả học lực lớp ${gradeFieldMatch[1]}`
+                : `Hạnh kiểm lớp ${gradeFieldMatch[1]}`)
+            : (labelEl ? labelEl.textContent : field.name).replace(/\*/g, '').trim();
+
+        let value = '';
+        if (field.type === 'file') {
+            if (!field.files || field.files.length === 0) return;
+            value = Array.from(field.files).map((f) => f.name).join(', ');
+        } else {
+            value = (field.value || '').trim();
+            if (!value) return;
+        }
+
+        items.push({ label, value });
+    });
+
+    return items;
+}
+
+function buildPreviewHtml(form) {
+    const items = getFormPreviewItems(form);
+    if (items.length === 0) {
+        return '<p style="text-align:left; margin:0;">Chưa có dữ liệu để gửi.</p>';
+    }
+
+    const rows = items
+        .map((item) => `<tr><td style="padding:8px;border:1px solid #dee2e6;font-weight:600;vertical-align:top;">${escapeHtml(item.label)}</td><td style="padding:8px;border:1px solid #dee2e6;">${escapeHtml(item.value)}</td></tr>`)
+        .join('');
+
+    return `<div style="max-height:420px;overflow:auto;text-align:left;"><table style="width:100%;border-collapse:collapse;font-size:14px;"><tbody>${rows}</tbody></table></div>`;
+}
+
+// Image compression and preview functionality
+class ImageCompressor {
+    constructor(maxWidth = 1200, maxHeight = 1600, quality = 0.8) {
+        this.maxWidth = maxWidth;
+        this.maxHeight = maxHeight;
+        this.quality = quality;
+        this.maxFileSize = 1024 * 1024; // 1MB after compression
+    }
+
+    compressImage(file) {
+        return new Promise((resolve) => {
+            if (file.type === 'application/pdf') {
+                resolve(file); // Don't compress PDF files
+                return;
+            }
+
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            const img = new Image();
+
+            img.onload = () => {
+                // Calculate new dimensions
+                let { width, height } = this.calculateDimensions(img.width, img.height);
+                
+                canvas.width = width;
+                canvas.height = height;
+
+                // Draw and compress
+                ctx.drawImage(img, 0, 0, width, height);
+                
+                canvas.toBlob((blob) => {
+                    // If still too large, compress more
+                    if (blob.size > this.maxFileSize && this.quality > 0.3) {
+                        this.quality -= 0.1;
+                        canvas.toBlob((blob2) => {
+                            const compressedFile = new File([blob2], file.name, {
+                                type: file.type,
+                                lastModified: Date.now()
+                            });
+                            resolve(compressedFile);
+                        }, file.type, this.quality);
+                    } else {
+                        const compressedFile = new File([blob], file.name, {
+                            type: file.type,
+                            lastModified: Date.now()
+                        });
+                        resolve(compressedFile);
+                    }
+                }, file.type, this.quality);
+            };
+
+            img.src = URL.createObjectURL(file);
+        });
+    }
+
+    calculateDimensions(width, height) {
+        if (width <= this.maxWidth && height <= this.maxHeight) {
+            return { width, height };
+        }
+
+        const ratio = Math.min(this.maxWidth / width, this.maxHeight / height);
+        return {
+            width: Math.round(width * ratio),
+            height: Math.round(height * ratio)
+        };
+    }
+
+    formatFileSize(bytes) {
+        if (bytes === 0) return '0 Bytes';
+        const k = 1024;
+        const sizes = ['Bytes', 'KB', 'MB'];
+        const i = Math.floor(Math.log(bytes) / Math.log(k));
+        return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+    }
+}
+
+// File manager for handling multiple uploads
+class FileManager {
+    constructor(inputElement, previewElement) {
+        this.input = inputElement;
+        this.preview = previewElement;
+        this.files = [];
+        this.compressor = new ImageCompressor();
+        
+        this.init();
+    }
+
+    init() {
+        this.input.addEventListener('change', (e) => this.handleFileSelect(e));
+        this.preview.innerHTML = '';
+    }
+
+    async handleFileSelect(event) {
+        const selectedFiles = Array.from(event.target.files);
+        
+        for (let file of selectedFiles) {
+            await this.addFile(file);
+        }
+        
+        this.updateInputFiles();
+    }
+
+    async addFile(file) {
+        const previewItem = this.createPreviewItem(file);
+        this.preview.appendChild(previewItem);
+
+        if (file.type.startsWith('image/')) {
+            previewItem.classList.add('compressing');
+            const progressDiv = previewItem.querySelector('.compress-progress');
+            if (progressDiv) progressDiv.textContent = 'Đang nén ảnh...';
+
+            try {
+                const compressedFile = await this.compressor.compressImage(file);
+                const index = this.files.push(compressedFile) - 1;
+                
+                previewItem.classList.remove('compressing');
+                if (progressDiv) progressDiv.remove();
+                
+                // Update file info
+                const fileInfo = previewItem.querySelector('.file-info');
+                if (fileInfo) {
+                    const originalSize = this.compressor.formatFileSize(file.size);
+                    const compressedSize = this.compressor.formatFileSize(compressedFile.size);
+                    fileInfo.innerHTML = `${file.name}<br><small>${originalSize} → ${compressedSize}</small>`;
+                }
+                
+                previewItem.dataset.fileIndex = index;
+            } catch (error) {
+                console.error('Compression failed:', error);
+                const index = this.files.push(file) - 1;
+                previewItem.dataset.fileIndex = index;
+                previewItem.classList.remove('compressing');
+            }
+        } else {
+            const index = this.files.push(file) - 1;
+            previewItem.dataset.fileIndex = index;
+        }
+    }
+
+    createPreviewItem(file) {
+        const item = document.createElement('div');
+        item.className = 'file-preview-item';
+        
+        const removeBtn = document.createElement('button');
+        removeBtn.type = 'button';
+        removeBtn.className = 'remove-file';
+        removeBtn.innerHTML = '×';
+        removeBtn.onclick = (e) => {
+            e.preventDefault();
+            this.removeFile(item);
+        };
+
+        const progressDiv = document.createElement('div');
+        progressDiv.className = 'compress-progress';
+        progressDiv.textContent = 'Đang xử lý...';
+
+        if (file.type.startsWith('image/')) {
+            const img = document.createElement('img');
+            img.src = URL.createObjectURL(file);
+            item.appendChild(img);
+        } else {
+            const icon = document.createElement('i');
+            icon.className = 'fas fa-file-pdf file-icon';
+            item.appendChild(icon);
+        }
+
+        const fileInfo = document.createElement('div');
+        fileInfo.className = 'file-info';
+        fileInfo.innerHTML = `${file.name}<br><small>${this.compressor.formatFileSize(file.size)}</small>`;
+
+        item.appendChild(removeBtn);
+        item.appendChild(fileInfo);
+        if (file.type.startsWith('image/')) {
+            item.appendChild(progressDiv);
+        }
+
+        return item;
+    }
+
+    removeFile(previewItem) {
+        const index = parseInt(previewItem.dataset.fileIndex);
+        if (!isNaN(index)) {
+            this.files.splice(index, 1);
+            this.updateFileIndices();
+        }
+        previewItem.remove();
+        this.updateInputFiles();
+    }
+
+    updateFileIndices() {
+        const items = this.preview.querySelectorAll('.file-preview-item');
+        items.forEach((item, index) => {
+            item.dataset.fileIndex = index;
+        });
+    }
+
+    updateInputFiles() {
+        const dt = new DataTransfer();
+        this.files.forEach(file => dt.items.add(file));
+        this.input.files = dt.files;
+    }
+}
+
 document.addEventListener('DOMContentLoaded', function() {
     const form = document.querySelector('form');
     const submitBtn = document.querySelector('.btn-submit');
     const resetBtn = document.querySelector('.btn-reset');
+
+    @if (session('success_alert'))
+    Swal.fire({
+        icon: 'success',
+        title: 'Đã gửi thành công',
+        text: @json(session('success_alert')),
+        confirmButtonColor: '#28a745'
+    });
+    @endif
+
+    @if (session('error_alert'))
+    Swal.fire({
+        icon: 'error',
+        title: 'Gửi chưa thành công',
+        text: @json(session('error_alert')),
+        confirmButtonColor: '#dc3545'
+    });
+    @endif
     
-    // Xác nhận trước khi submit
+    // Initialize file managers
+    const academicInput = document.getElementById('academic_transcript');
+    const academicPreview = document.getElementById('academic_preview');
+    const academicManager = new FileManager(academicInput, academicPreview);
+
+    const additionalInput = document.getElementById('additional_documents');
+    const additionalPreview = document.getElementById('additional_preview');  
+    const additionalManager = new FileManager(additionalInput, additionalPreview);
+
+    // Xem lại thông tin trước khi submit
     form.addEventListener('submit', function(e) {
         e.preventDefault();
-        
-        confirmAction(
-            'Xác nhận đăng ký',
-            'Bạn có chắc chắn muốn gửi đăng ký vào lớp 6 này không?',
-            'Gửi đăng ký',
-            'Hủy bỏ'
-        ).then((result) => {
+
+        Swal.fire({
+            title: 'Kiểm tra thông tin trước khi gửi',
+            html: buildPreviewHtml(form),
+            icon: 'info',
+            width: 900,
+            showCancelButton: true,
+            confirmButtonColor: '#28a745',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: 'Thông tin đúng, gửi ngay',
+            cancelButtonText: 'Sửa lại thông tin',
+            reverseButtons: true
+        }).then((result) => {
             if (result.isConfirmed) {
-                // Disable button và hiển thị loading
                 submitBtn.disabled = true;
                 submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Đang gửi...';
-                
-                // Hiển thị loading toast
+
                 Toast.fire({
                     icon: 'info',
                     title: 'Đang xử lý đăng ký...'
                 });
-                
+
                 form.submit();
             }
         });
@@ -271,6 +992,12 @@ document.addEventListener('DOMContentLoaded', function() {
         ).then((result) => {
             if (result.isConfirmed) {
                 form.reset();
+                // Clear file previews
+                academicPreview.innerHTML = '';
+                additionalPreview.innerHTML = '';
+                academicManager.files = [];
+                additionalManager.files = [];
+                
                 Toast.fire({
                     icon: 'success',
                     title: 'Đã xóa tất cả thông tin!'

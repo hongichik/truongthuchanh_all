@@ -21,10 +21,13 @@
 </div>
 
 <div class="card">
-    <div class="card-header">
+    <div class="card-header d-flex justify-content-between align-items-center">
         <h5 class="card-title mb-0">
             <i class="fas fa-list"></i> Danh sách đơn đăng ký lớp 10
         </h5>
+        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exportListModal">
+            <i class="fas fa-file-excel"></i> Xuất danh sách Excel
+        </button>
     </div>
     <div class="card-body">
         <div class="table-responsive">
@@ -46,6 +49,48 @@
                     </tr>
                 </thead>
             </table>
+        </div>
+    </div>
+</div>
+
+<!-- Modal xuất danh sách Excel -->
+<div class="modal fade" id="exportListModal" tabindex="-1" aria-labelledby="exportListModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-success text-white">
+                <h5 class="modal-title" id="exportListModalLabel">
+                    <i class="fas fa-file-excel"></i> Xuất danh sách học sinh lớp 10
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Từ ngày</label>
+                    <input type="date" class="form-control" id="exportDateFrom">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Đến ngày</label>
+                    <input type="date" class="form-control" id="exportDateTo">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Trạng thái</label>
+                    <select class="form-control" id="exportStatus">
+                        <option value="all">Tất cả</option>
+                        <option value="pending">Chờ duyệt</option>
+                        <option value="approved">Đã duyệt</option>
+                        <option value="rejected">Từ chối</option>
+                    </select>
+                </div>
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle"></i> Để trống ngày để xuất tất cả học sinh.
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                <button type="button" class="btn btn-success" id="btnExportList">
+                    <i class="fas fa-download"></i> Xuất Excel
+                </button>
+            </div>
         </div>
     </div>
 </div>
@@ -250,5 +295,18 @@ function processRejectApplication(id, notes) {
         }
     });
 }
+
+document.getElementById('btnExportList').addEventListener('click', function() {
+    var dateFrom = document.getElementById('exportDateFrom').value;
+    var dateTo   = document.getElementById('exportDateTo').value;
+    var status   = document.getElementById('exportStatus').value;
+    var baseUrl  = '{{ route("admin.applications.lop10.export.list") }}';
+    var url = new URL(baseUrl, window.location.origin);
+    if (dateFrom) url.searchParams.set('date_from', dateFrom);
+    if (dateTo)   url.searchParams.set('date_to', dateTo);
+    if (status)   url.searchParams.set('status', status);
+    window.open(url.toString(), '_blank');
+    bootstrap.Modal.getInstance(document.getElementById('exportListModal')).hide();
+});
 </script>
 @endpush

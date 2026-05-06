@@ -21,10 +21,13 @@
 </div>
 
 <div class="card">
-    <div class="card-header">
+    <div class="card-header d-flex justify-content-between align-items-center">
         <h5 class="card-title mb-0">
             <i class="fas fa-list"></i> Danh sách đơn đăng ký lớp 6
         </h5>
+        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exportListModal">
+            <i class="fas fa-file-excel"></i> Xuất danh sách Excel
+        </button>
     </div>
     <div class="card-body">
         <div class="table-responsive">
@@ -34,15 +37,60 @@
                         <th>ID</th>
                         <th>Họ tên</th>
                         <th>Ngày sinh</th>
-                        <th>Giới tính</th>
+                        <th>Giới tính</th>  
                         <th>SĐT</th>
                         <th>Trường cũ</th>
+                        <th>Tải xuống</th>
+                        <th>Xem nhanh</th>
+                        <th>Ngày upload</th>
                         <th>Trạng thái</th>
                         <th>Ngày nộp</th>
                         <th>Thao tác</th>
                     </tr>
                 </thead>
             </table>
+        </div>
+    </div>
+</div>
+
+<!-- Modal xuất danh sách Excel -->
+<div class="modal fade" id="exportListModal" tabindex="-1" aria-labelledby="exportListModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-success text-white">
+                <h5 class="modal-title" id="exportListModalLabel">
+                    <i class="fas fa-file-excel"></i> Xuất danh sách học sinh lớp 6
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Từ ngày</label>
+                    <input type="date" class="form-control" id="exportDateFrom">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Đến ngày</label>
+                    <input type="date" class="form-control" id="exportDateTo">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Trạng thái</label>
+                    <select class="form-control" id="exportStatus">
+                        <option value="all">Tất cả</option>
+                        <option value="pending">Chờ duyệt</option>
+                        <option value="approved">Đã duyệt</option>
+                        <option value="rejected">Từ chối</option>
+                    </select>
+                </div>
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle"></i> Để trống ngày để xuất tất cả học sinh.
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                <button type="button" class="btn btn-success" id="btnExportList">
+                    <i class="fas fa-download"></i> Xuất Excel
+                </button>
+            </div>
         </div>
     </div>
 </div>
@@ -133,13 +181,30 @@ $(document).ready(function() {
             {data: 'gender', name: 'gender'},
             {data: 'phone', name: 'phone'},
             {data: 'current_school', name: 'current_school'},
+            {data: 'documents', name: 'documents', orderable: false, searchable: false},
+            {data: 'documents_preview', name: 'documents_preview', orderable: false, searchable: false},
+            {data: 'documents_uploaded_at', name: 'documents_uploaded_at'},
             {data: 'status', name: 'status', orderable: false},
             {data: 'created_at', name: 'created_at'},
             {data: 'action', name: 'action', orderable: false, searchable: false}
         ],
         language: {
             "url": "https://cdn.datatables.net/plug-ins/1.13.6/i18n/vi.json"
-        }
+        },
+        columnDefs: [
+            {
+                targets: [6], // Cột documents (tải xuống)
+                width: "150px"
+            },
+            {
+                targets: [7], // Cột documents_preview (xem nhanh)
+                width: "150px"
+            },
+            {
+                targets: [8], // Cột documents_uploaded_at  
+                width: "120px"
+            }
+        ]
     });
     
     // Xử lý duyệt đơn
@@ -230,5 +295,18 @@ function processRejectApplication(id, notes) {
         }
     });
 }
+
+document.getElementById('btnExportList').addEventListener('click', function() {
+    var dateFrom = document.getElementById('exportDateFrom').value;
+    var dateTo   = document.getElementById('exportDateTo').value;
+    var status   = document.getElementById('exportStatus').value;
+    var baseUrl  = '{{ route("admin.applications.lop6.export.list") }}';
+    var url = new URL(baseUrl, window.location.origin);
+    if (dateFrom) url.searchParams.set('date_from', dateFrom);
+    if (dateTo)   url.searchParams.set('date_to', dateTo);
+    if (status)   url.searchParams.set('status', status);
+    window.open(url.toString(), '_blank');
+    bootstrap.Modal.getInstance(document.getElementById('exportListModal')).hide();
+});
 </script>
 @endpush

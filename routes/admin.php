@@ -45,14 +45,20 @@ Route::prefix('admin')->name('admin.')->group(function () {
             // Lớp 1
             Route::get('lop-1', [ApplicationController::class, 'lop1'])->name('lop1');
             Route::get('lop-1/data', [ApplicationController::class, 'lop1Data'])->name('lop1.data');
+            Route::get('lop-1/export-list', [ApplicationController::class, 'lop1ExportList'])->name('lop1.export.list');
+            Route::get('lop-1/{id}/export/excel', [ApplicationController::class, 'lop1ExportExcel'])->name('lop1.export.excel');
             
             // Lớp 6
             Route::get('lop-6', [ApplicationController::class, 'lop6'])->name('lop6');
             Route::get('lop-6/data', [ApplicationController::class, 'lop6Data'])->name('lop6.data');
+            Route::get('lop-6/export-list', [ApplicationController::class, 'lop6ExportList'])->name('lop6.export.list');
+            Route::get('lop-6/{id}/export/excel', [ApplicationController::class, 'lop6ExportExcel'])->name('lop6.export.excel');
             
             // Lớp 10
             Route::get('lop-10', [ApplicationController::class, 'lop10'])->name('lop10');
             Route::get('lop-10/data', [ApplicationController::class, 'lop10Data'])->name('lop10.data');
+            Route::get('lop-10/export-list', [ApplicationController::class, 'lop10ExportList'])->name('lop10.export.list');
+            Route::get('lop-10/{id}/export/excel', [ApplicationController::class, 'lop10ExportExcel'])->name('lop10.export.excel');
             
             // Download file học bạ
             Route::get('download/{type}/{id}', [ApplicationController::class, 'downloadFile'])->name('download');

@@ -168,7 +168,7 @@
                             <input type="text" id="fullname" name="fullname" class="form-control" 
                                    style="text-transform: uppercase;" 
                                    placeholder="Nhập họ và tên đầy đủ" 
-                                   value="{{ old('fullname') }}" required>
+                                   value="{{ old('fullname', '') }}" required>
                             @error('fullname')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
@@ -178,7 +178,7 @@
                         <div class="form-group">
                             <label for="birthdate">2. Ngày sinh <span class="required">*</span></label>
                             <input type="date" id="birthdate" name="birthdate" class="form-control" 
-                                   value="{{ old('birthdate') }}" required>
+                                   value="{{ old('birthdate', '') }}" required>
                             @error('birthdate')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
@@ -192,8 +192,8 @@
                             <label for="gender">3. Giới tính <span class="required">*</span></label>
                             <select id="gender" name="gender" class="form-control" required>
                                 <option value="">-- Chọn giới tính --</option>
-                                <option value="Nam" {{ old('gender') == 'Nam' ? 'selected' : '' }}>Nam</option>
-                                <option value="Nữ" {{ old('gender') == 'Nữ' ? 'selected' : '' }}>Nữ</option>
+                                <option value="Nam" {{ old('gender', '') == 'Nam' ? 'selected' : '' }}>Nam</option>
+                                <option value="Nữ" {{ old('gender', '') == 'Nữ' ? 'selected' : '' }}>Nữ</option>
                             </select>
                             @error('gender')
                                 <small class="text-danger">{{ $message }}</small>
@@ -205,7 +205,7 @@
                             <label for="ethnicity">4. Dân tộc</label>
                             <input type="text" id="ethnicity" name="ethnicity" class="form-control" 
                                    placeholder="VD: Kinh, Tày, Nùng..." 
-                                   value="{{ old('ethnicity', 'Kinh') }}">
+                                   value="{{ old('ethnicity', '') }}">
                             @error('ethnicity')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
@@ -217,7 +217,7 @@
                     <label for="citizen_id">5. CCCD (số định danh)</label>
                     <input type="text" id="citizen_id" name="citizen_id" class="form-control" 
                            placeholder="Nhập số căn cước công dân (số định danh)" 
-                           pattern="[0-9]{12}" value="{{ old('citizen_id') }}">
+                           pattern="[0-9]{12}" value="{{ old('citizen_id', '') }}">
                     @error('citizen_id')
                         <small class="text-danger">{{ $message }}</small>
                     @enderror
@@ -227,8 +227,27 @@
                     <label for="address">6. Thông tin cư trú <span class="required">*</span></label>
                     <textarea id="address" name="address" class="form-control" rows="3" 
                               placeholder="Nhập địa chỉ cư trú đầy đủ (số nhà, đường, phường/xã, quận/huyện, tỉnh/thành phố)" 
-                              required>{{ old('address') }}</textarea>
+                              required>{{ old('address', '') }}</textarea>
                     @error('address')
+                        <small class="text-danger">{{ $message }}</small>
+                    @enderror
+                </div>
+
+                <div class="form-group">
+                    <label for="birthplace">7. Nơi sinh (Tỉnh/Thành phố)</label>
+                    <input type="text" id="birthplace" name="birthplace" class="form-control"
+                           placeholder="Nhập tỉnh/thành phố nơi sinh" value="{{ old('birthplace', '') }}">
+                    @error('birthplace')
+                        <small class="text-danger">{{ $message }}</small>
+                    @enderror
+                </div>
+
+                <div class="form-group">
+                    <label for="phone">8. Số điện thoại liên lạc <span class="required">*</span></label>
+                    <input type="tel" id="phone" name="phone" class="form-control" 
+                           placeholder="Nhập số điện thoại liên lạc" 
+                           pattern="[0-9]{10,11}" value="{{ old('phone', '') }}" required>
+                    @error('phone')
                         <small class="text-danger">{{ $message }}</small>
                     @enderror
                 </div>
@@ -237,25 +256,133 @@
             <!-- Thông tin gia đình -->
             <div class="form-section">
                 <h3><i class="fas fa-users"></i> II. THÔNG TIN GIA ĐÌNH</h3>
-                
-                <div class="form-group">
-                    <label for="guardian_name">7. Tên Bố hoặc Mẹ hoặc người bảo trợ <span class="required">*</span></label>
-                    <input type="text" id="guardian_name" name="guardian_name" class="form-control" 
-                           placeholder="Nhập tên bố hoặc mẹ hoặc người bảo trợ" 
-                           value="{{ old('guardian_name') }}" required>
-                    @error('guardian_name')
-                        <small class="text-danger">{{ $message }}</small>
-                    @enderror
+
+                <h4 style="color: #495057; margin-top: 20px; margin-bottom: 15px; border-bottom: 1px solid #dee2e6; padding-bottom: 10px;">A. THÔNG TIN CHA</h4>
+                <div class="form-row">
+                    <div class="form-col-2">
+                        <div class="form-group">
+                            <label for="father_name">9. Họ tên Cha</label>
+                            <input type="text" id="father_name" name="father_name" class="form-control"
+                                   placeholder="Nhập họ tên bố" value="{{ old('father_name', '') }}">
+                            @error('father_name')<small class="text-danger">{{ $message }}</small>@enderror
+                        </div>
+                    </div>
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label for="father_ethnicity">Dân tộc</label>
+                            <input type="text" id="father_ethnicity" name="father_ethnicity" class="form-control"
+                                   placeholder="Kinh" value="{{ old('father_ethnicity', '') }}">
+                        </div>
+                    </div>
                 </div>
-                
+                <div class="form-row">
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label for="father_birthyear">Năm sinh</label>
+                            <input type="number" id="father_birthyear" name="father_birthyear" class="form-control"
+                                   placeholder="VD: 1985" min="1920" max="2010" value="{{ old('father_birthyear', '') }}">
+                        </div>
+                    </div>
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label for="father_occupation">Nghề nghiệp</label>
+                            <input type="text" id="father_occupation" name="father_occupation" class="form-control"
+                                   placeholder="VD: Công nhân, Nông dân..." value="{{ old('father_occupation', '') }}">
+                        </div>
+                    </div>
+                </div>
+
+                <h4 style="color: #495057; margin-top: 20px; margin-bottom: 15px; border-bottom: 1px solid #dee2e6; padding-bottom: 10px;">B. THÔNG TIN MẸ</h4>
+                <div class="form-row">
+                    <div class="form-col-2">
+                        <div class="form-group">
+                            <label for="mother_name">10. Họ tên Mẹ</label>
+                            <input type="text" id="mother_name" name="mother_name" class="form-control"
+                                   placeholder="Nhập họ tên mẹ" value="{{ old('mother_name', '') }}">
+                            @error('mother_name')<small class="text-danger">{{ $message }}</small>@enderror
+                        </div>
+                    </div>
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label for="mother_ethnicity">Dân tộc</label>
+                            <input type="text" id="mother_ethnicity" name="mother_ethnicity" class="form-control"
+                                   placeholder="Kinh" value="{{ old('mother_ethnicity', '') }}">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label for="mother_birthyear">Năm sinh</label>
+                            <input type="number" id="mother_birthyear" name="mother_birthyear" class="form-control"
+                                   placeholder="VD: 1987" min="1920" max="2010" value="{{ old('mother_birthyear', '') }}">
+                        </div>
+                    </div>
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label for="mother_occupation">Nghề nghiệp</label>
+                            <input type="text" id="mother_occupation" name="mother_occupation" class="form-control"
+                                   placeholder="VD: Giáo viên, Nội trợ..." value="{{ old('mother_occupation', '') }}">
+                        </div>
+                    </div>
+                </div>
+
+                <h4 style="color: #495057; margin-top: 20px; margin-bottom: 15px; border-bottom: 1px solid #dee2e6; padding-bottom: 10px;">11. NGƯỜI GIÁM HỘ (NẾU CÓ)</h4>
+                <div class="form-row">
+                    <div class="form-col-2">
+                        <div class="form-group">
+                            <label for="guardian_name">Họ tên Người giám hộ</label>
+                            <input type="text" id="guardian_name" name="guardian_name" class="form-control"
+                                   placeholder="Nhập họ tên người giám hộ" value="{{ old('guardian_name', '') }}">
+                            @error('guardian_name')<small class="text-danger">{{ $message }}</small>@enderror
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label for="guardian_birthyear">Năm sinh</label>
+                            <input type="number" id="guardian_birthyear" name="guardian_birthyear" class="form-control"
+                                   placeholder="VD: 1980" min="1920" max="2010" value="{{ old('guardian_birthyear', '') }}">
+                        </div>
+                    </div>
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label for="guardian_occupation">Nghề nghiệp</label>
+                            <input type="text" id="guardian_occupation" name="guardian_occupation" class="form-control"
+                                   placeholder="VD: Kinh doanh, Tự do..." value="{{ old('guardian_occupation', '') }}">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Thông tin đặc biệt -->
+            <div class="form-section">
+                <h3><i class="fas fa-star"></i> III. THÔNG TIN ĐẶC BIỆT</h3>
+
                 <div class="form-group">
-                    <label for="phone">8. Số điện thoại liên lạc <span class="required">*</span></label>
-                    <input type="tel" id="phone" name="phone" class="form-control" 
-                           placeholder="Nhập số điện thoại liên lạc" 
-                           pattern="[0-9]{10,11}" value="{{ old('phone') }}" required>
-                    @error('phone')
-                        <small class="text-danger">{{ $message }}</small>
-                    @enderror
+                    <label for="is_disabled">12. Trường hợp đặc biệt, học sinh là người khuyết tật</label>
+                    <input type="text" id="is_disabled" name="is_disabled" class="form-control"
+                           placeholder="Ghi rõ dạng tật (nếu có). Để trống nếu không" value="{{ old('is_disabled', '') }}">
+                    <small class="text-muted">Ví dụ: Khiếm thị, Khiếc, Khuyết tật vận động...</small>
+                    @error('is_disabled')<small class="text-danger">{{ $message }}</small>@enderror
+                </div>
+
+                <div class="form-group">
+                    <label for="achievements">13. Học sinh đạt giải cấp quốc tế, quốc gia, cấp tỉnh các cuộc thi</label>
+                    <div class="form-row">
+                        <div class="form-col-2">
+                            <input type="text" id="achievements" name="achievements" class="form-control"
+                                   placeholder="Ghi rõ tên Cuộc thi/Hội thi/Giải đấu (nếu có)"
+                                   value="{{ old('achievements', '') }}" maxlength="500">
+                        </div>
+                        <div class="form-col">
+                            <input type="text" id="achievement_rank" name="achievement_rank" class="form-control"
+                                   placeholder="Giải cao nhất đạt được"
+                                   value="{{ old('achievement_rank', '') }}" maxlength="100">
+                        </div>
+                    </div>
+                    <small class="text-muted">Ví dụ: Cuộc thi Trạng Nguyên Toàn Tài cấp Tỉnh - Giải Nhất</small>
                 </div>
             </div>
           
@@ -272,33 +399,131 @@
 </div>
 
 @push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
+// SweetAlert2 wrapper functions
+function confirmAction(title, text, confirmText = 'Xác nhận', cancelText = 'Hủy') {
+    return Swal.fire({
+        title: title,
+        text: text,
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#28a745',
+        cancelButtonColor: '#6c757d',
+        confirmButtonText: confirmText,
+        cancelButtonText: cancelText,
+        reverseButtons: true
+    });
+}
+
+const Toast = Swal.mixin({
+    toast: true,
+    position: 'top-end',
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+        toast.addEventListener('mouseenter', Swal.stopTimer)
+        toast.addEventListener('mouseleave', Swal.resumeTimer)
+    }
+});
+
+function escapeHtml(value) {
+    return String(value)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+}
+
+function getFormPreviewItems(form) {
+    const fields = form.querySelectorAll('input, select, textarea');
+    const items = [];
+
+    fields.forEach((field) => {
+        if (!field.name || field.disabled || field.type === 'hidden') return;
+        if ((field.type === 'checkbox' || field.type === 'radio') && !field.checked) return;
+
+        const labelEl = field.id ? form.querySelector(`label[for="${field.id}"]`) : null;
+        const label = (labelEl ? labelEl.textContent : field.name).replace(/\*/g, '').trim();
+
+        let value = '';
+        if (field.type === 'file') {
+            if (!field.files || field.files.length === 0) return;
+            value = Array.from(field.files).map((f) => f.name).join(', ');
+        } else {
+            value = (field.value || '').trim();
+            if (!value) return;
+        }
+
+        items.push({ label, value });
+    });
+
+    return items;
+}
+
+function buildPreviewHtml(form) {
+    const items = getFormPreviewItems(form);
+    if (items.length === 0) {
+        return '<p style="text-align:left; margin:0;">Chưa có dữ liệu để gửi.</p>';
+    }
+
+    const rows = items
+        .map((item) => `<tr><td style="padding:8px;border:1px solid #dee2e6;font-weight:600;vertical-align:top;">${escapeHtml(item.label)}</td><td style="padding:8px;border:1px solid #dee2e6;">${escapeHtml(item.value)}</td></tr>`)
+        .join('');
+
+    return `<div style="max-height:420px;overflow:auto;text-align:left;"><table style="width:100%;border-collapse:collapse;font-size:14px;"><tbody>${rows}</tbody></table></div>`;
+}
+
 document.addEventListener('DOMContentLoaded', function() {
     const form = document.querySelector('form');
     const submitBtn = document.querySelector('.btn-submit');
     const resetBtn = document.querySelector('.btn-reset');
+
+    @if (session('success_alert'))
+    Swal.fire({
+        icon: 'success',
+        title: 'Đã gửi thành công',
+        text: @json(session('success_alert')),
+        confirmButtonColor: '#28a745'
+    });
+    @endif
+
+    @if (session('error_alert'))
+    Swal.fire({
+        icon: 'error',
+        title: 'Gửi chưa thành công',
+        text: @json(session('error_alert')),
+        confirmButtonColor: '#dc3545'
+    });
+    @endif
     
-    // Xác nhận trước khi submit
+    // Xem lại thông tin trước khi submit
     form.addEventListener('submit', function(e) {
         e.preventDefault();
-        
-        confirmAction(
-            'Xác nhận đăng ký',
-            'Bạn có chắc chắn muốn gửi đăng ký vào lớp 1 này không?',
-            'Gửi đăng ký',
-            'Hủy bỏ'
-        ).then((result) => {
+
+        Swal.fire({
+            title: 'Kiểm tra thông tin trước khi gửi',
+            html: buildPreviewHtml(form),
+            icon: 'info',
+            width: 900,
+            showCancelButton: true,
+            confirmButtonColor: '#28a745',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: 'Thông tin đúng, gửi ngay',
+            cancelButtonText: 'Sửa lại thông tin',
+            reverseButtons: true
+        }).then((result) => {
             if (result.isConfirmed) {
-                // Disable button và hiển thị loading
                 submitBtn.disabled = true;
                 submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Đang gửi...';
-                
-                // Hiển thị loading toast
+
                 Toast.fire({
                     icon: 'info',
                     title: 'Đang xử lý đăng ký...'
                 });
-                
+
                 form.submit();
             }
         });

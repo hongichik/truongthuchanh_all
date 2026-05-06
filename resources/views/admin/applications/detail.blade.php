@@ -43,6 +43,10 @@
                                 <td>{{ $application->address }}</td>
                             </tr>
                             <tr>
+                                <td><strong>Nơi sinh:</strong></td>
+                                <td>{{ $application->birthplace ?? 'Chưa có' }}</td>
+                            </tr>
+                            <tr>
                                 <td><strong>Số điện thoại:</strong></td>
                                 <td>{{ $application->phone }}</td>
                             </tr>
@@ -73,7 +77,7 @@
         </div>
 
         <!-- Thông tin gia đình -->
-        @if($application->father_name || $application->mother_name)
+        @if($application->father_name || $application->mother_name || $application->guardian_name || $application->guardian_birthyear || $application->guardian_occupation)
         <div class="card mt-3">
             <div class="card-header bg-secondary text-white">
                 <h5 class="mb-0">
@@ -93,6 +97,14 @@
                                 <td><strong>Dân tộc:</strong></td>
                                 <td>{{ $application->father_ethnicity ?? 'Không có thông tin' }}</td>
                             </tr>
+                            <tr>
+                                <td><strong>Năm sinh:</strong></td>
+                                <td>{{ $application->father_birthyear ?? 'Không có thông tin' }}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Nghề nghiệp:</strong></td>
+                                <td>{{ $application->father_occupation ?? 'Không có thông tin' }}</td>
+                            </tr>
                         </table>
                     </div>
                     <div class="col-md-6">
@@ -106,9 +118,35 @@
                                 <td><strong>Dân tộc:</strong></td>
                                 <td>{{ $application->mother_ethnicity ?? 'Không có thông tin' }}</td>
                             </tr>
+                            <tr>
+                                <td><strong>Năm sinh:</strong></td>
+                                <td>{{ $application->mother_birthyear ?? 'Không có thông tin' }}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Nghề nghiệp:</strong></td>
+                                <td>{{ $application->mother_occupation ?? 'Không có thông tin' }}</td>
+                            </tr>
                         </table>
                     </div>
                 </div>
+
+                @if($application->guardian_name || $application->guardian_birthyear || $application->guardian_occupation)
+                <div class="row mt-2">
+                    <div class="col-md-12">
+                        <h6><i class="fas fa-user-shield text-info"></i> Thông tin Người giám hộ</h6>
+                        <table class="table table-borderless table-sm">
+                            <tr>
+                                <td><strong>Họ tên:</strong></td>
+                                <td>{{ $application->guardian_name ?? 'Không có thông tin' }}</td>
+                                <td><strong>Năm sinh:</strong></td>
+                                <td>{{ $application->guardian_birthyear ?? 'Không có thông tin' }}</td>
+                                <td><strong>Nghề nghiệp:</strong></td>
+                                <td>{{ $application->guardian_occupation ?? 'Không có thông tin' }}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                @endif
             </div>
         </div>
         @endif
@@ -130,7 +168,7 @@
                                 $academicField = "grade{$i}_academic";
                                 $conductField = "grade{$i}_conduct";
                             @endphp
-                            @if($application->$academicField || $application->$conductField)
+                            @if($application->$academicField || $application->$conductField || ($i == 5 && ($application->grade5_math_avg || $application->grade5_literature_avg)))
                             <div class="col-md-4 mb-3">
                                 <div class="card border-info">
                                     <div class="card-header bg-info text-white text-center">
@@ -139,6 +177,14 @@
                                     <div class="card-body text-center">
                                         <p class="mb-1"><strong>Học lực:</strong> {{ $application->$academicField ?? 'Chưa có' }}</p>
                                         <p class="mb-0"><strong>Hạnh kiểm:</strong> {{ $application->$conductField ?? 'Chưa có' }}</p>
+                                        @if($i == 5)
+                                            @if($application->grade5_math_avg)
+                                                <p class="mt-1 mb-1 border-top pt-1"><strong>ĐTB Toán:</strong> {{ $application->grade5_math_avg }}</p>
+                                            @endif
+                                            @if($application->grade5_literature_avg)
+                                                <p class="mb-0"><strong>ĐTB Tiếng Việt:</strong> {{ $application->grade5_literature_avg }}</p>
+                                            @endif
+                                        @endif
                                     </div>
                                 </div>
                             </div>
@@ -181,8 +227,8 @@
         </div>
         @endif
 
-        <!-- Thông tin đặc biệt cho lớp 10 -->
-        @if($grade == 10 && ($application->is_disabled || $application->achievements || $application->is_policy_family || $application->special_info))
+        <!-- Thông tin đặc biệt -->
+        @if(($grade == 10 || $grade == 6 || $grade == 1) && ($application->is_disabled || $application->achievements))
         <div class="card mt-3">
             <div class="card-header bg-warning text-white">
                 <h5 class="mb-0">
@@ -195,17 +241,8 @@
                         @if($application->is_disabled)
                         <div class="mb-3">
                             <strong><i class="fas fa-wheelchair"></i> Người khuyết tật:</strong>
-                            <span class="badge {{ $application->is_disabled == 'Có' ? 'badge-danger' : 'badge-success' }}">
+                            <span class="badge {{ $application->is_disabled == 'Không' ? 'badge-success' : 'badge-danger' }}">
                                 {{ $application->is_disabled }}
-                            </span>
-                        </div>
-                        @endif
-                        
-                        @if($application->is_policy_family)
-                        <div class="mb-3">
-                            <strong><i class="fas fa-family"></i> Con gia đình chính sách:</strong>
-                            <span class="badge {{ $application->is_policy_family == 'Có' ? 'badge-info' : 'badge-secondary' }}">
-                                {{ $application->is_policy_family }}
                             </span>
                         </div>
                         @endif
@@ -222,15 +259,6 @@
                         @endif
                     </div>
                 </div>
-                
-                @if($application->special_info)
-                <div class="mt-3">
-                    <strong><i class="fas fa-info-circle"></i> Thông tin đặc biệt khác:</strong>
-                    <div class="mt-2 p-3 bg-light rounded">
-                        {{ $application->special_info }}
-                    </div>
-                </div>
-                @endif
             </div>
         </div>
         @endif
