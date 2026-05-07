@@ -21,14 +21,16 @@
         $metaTitle = trim($__env->yieldContent('meta_title', $defaultTitle));
         $metaDescription = trim(preg_replace('/\s+/', ' ', strip_tags($__env->yieldContent('meta_description', $defaultDescription))));
         $metaImage = $__env->yieldContent('meta_image', $defaultImage);
-        $metaUrl = url()->current();
+        $metaUrl = trim($__env->yieldContent('meta_url', url()->current()));
+        $metaType = trim($__env->yieldContent('meta_type', 'website'));
     @endphp
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ $metaTitle }}</title>
     <meta name="description" content="{{ $metaDescription }}">
-    <meta property="og:type" content="website">
+    <link rel="canonical" href="{{ $metaUrl }}">
+    <meta property="og:type" content="{{ $metaType }}">
     <meta property="og:locale" content="vi_VN">
     <meta property="og:title" content="{{ $metaTitle }}">
     <meta property="og:description" content="{{ $metaDescription }}">
@@ -36,6 +38,7 @@
     <meta property="og:image" content="{{ $metaImage }}">
     <meta property="og:site_name" content="Trường thực hành sư phạm Đại học Hạ Long">
     <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="{{ $metaUrl }}">
     <meta name="twitter:title" content="{{ $metaTitle }}">
     <meta name="twitter:description" content="{{ $metaDescription }}">
     <meta name="twitter:image" content="{{ $metaImage }}">
