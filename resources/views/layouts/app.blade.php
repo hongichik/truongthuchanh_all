@@ -2,10 +2,43 @@
 <html lang="vi">
 
 <head>
+    @php
+        $defaultTitle = trim($__env->yieldContent('title', 'Trường TH, THCS và THPT Thực hành Sư phạm - Đại học Hạ Long'));
+        $defaultDescription = 'Đại học Hạ Long Trường thực hành sư phạm';
+        $defaultImage = asset('assets/image/logo.png');
+
+        if (request()->routeIs('dang-ky.lop1')) {
+            $defaultTitle = 'Trang đăng ký tuyển sinh vào lớp 1 Trường thực hành sư phạm Đại học Hạ Long';
+            $defaultDescription = $defaultTitle;
+        } elseif (request()->routeIs('dang-ky.lop6')) {
+            $defaultTitle = 'Trang đăng ký tuyển sinh vào lớp 6 Trường thực hành sư phạm Đại học Hạ Long';
+            $defaultDescription = $defaultTitle;
+        } elseif (request()->routeIs('dang-ky.lop10')) {
+            $defaultTitle = 'Trang đăng ký tuyển sinh vào lớp 10 Trường thực hành sư phạm Đại học Hạ Long';
+            $defaultDescription = $defaultTitle;
+        }
+
+        $metaTitle = trim($__env->yieldContent('meta_title', $defaultTitle));
+        $metaDescription = trim(preg_replace('/\s+/', ' ', strip_tags($__env->yieldContent('meta_description', $defaultDescription))));
+        $metaImage = $__env->yieldContent('meta_image', $defaultImage);
+        $metaUrl = url()->current();
+    @endphp
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>@yield('title', 'Trường TH, THCS và THPT Thực hành Sư phạm - Đại học Hạ Long')</title>
+    <title>{{ $metaTitle }}</title>
+    <meta name="description" content="{{ $metaDescription }}">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="vi_VN">
+    <meta property="og:title" content="{{ $metaTitle }}">
+    <meta property="og:description" content="{{ $metaDescription }}">
+    <meta property="og:url" content="{{ $metaUrl }}">
+    <meta property="og:image" content="{{ $metaImage }}">
+    <meta property="og:site_name" content="Trường thực hành sư phạm Đại học Hạ Long">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ $metaTitle }}">
+    <meta name="twitter:description" content="{{ $metaDescription }}">
+    <meta name="twitter:image" content="{{ $metaImage }}">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">

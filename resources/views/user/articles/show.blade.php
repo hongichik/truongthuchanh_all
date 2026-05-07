@@ -1,6 +1,9 @@
 @extends('layouts.app')
 
 @section('title', $article->title . ' - Trường TH, THCS và THPT Thực hành Sư phạm')
+@section('meta_title', $article->title)
+@section('meta_description', Str::limit(strip_tags($article->description ?: $article->content), 160))
+@section('meta_image', $article->featured_image_url)
 
 @php
 use App\Helpers\CategoryDisplayHelper;

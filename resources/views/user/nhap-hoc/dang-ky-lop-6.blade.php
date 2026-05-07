@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
-@section('title', 'Đăng ký tuyển sinh vào lớp 6 - Trường TH, THCS và THPT Thực hành Sư phạm - Đại học Hạ Long')
+@section('title', 'Trang đăng ký tuyển sinh vào lớp 6 Trường thực hành sư phạm Đại học Hạ Long')
+@section('meta_description', 'Trang đăng ký tuyển sinh vào lớp 6 Trường thực hành sư phạm Đại học Hạ Long')
 
 @push('styles')
 <style>
