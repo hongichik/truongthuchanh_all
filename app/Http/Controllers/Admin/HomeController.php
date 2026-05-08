@@ -66,7 +66,8 @@ class HomeController extends Controller
         $request->validate([
             'notifications' => 'required|array',
             'notifications.*.title' => 'required|string|max:255',
-            'notifications.*.date' => 'required|string|max:100'
+            'notifications.*.date' => 'required|string|max:100',
+            'notifications.*.url' => ['nullable', 'string', 'max:500', 'regex:/^(https?:\/\/|\/|#).*/i']
         ]);
 
         $settings = HomeSetting::current();
@@ -97,7 +98,8 @@ class HomeController extends Controller
         $request->validate([
             'upcoming_events' => 'required|array', 
             'upcoming_events.*.title' => 'required|string|max:255',
-            'upcoming_events.*.date' => 'required|string|max:100'
+            'upcoming_events.*.date' => 'required|string|max:100',
+            'upcoming_events.*.url' => ['nullable', 'string', 'max:500', 'regex:/^(https?:\/\/|\/|#).*/i']
         ]);
 
         $settings = HomeSetting::current();

@@ -97,19 +97,23 @@ class HomeSetting extends Model
                 'notifications' => [
                     [
                         'title' => 'Lịch thi cuối học kỳ II năm học 2024-2025',
-                        'date' => '25 tháng 3, 2026'
+                        'date' => '25 tháng 3, 2026',
+                        'url' => '#'
                     ],
                     [
                         'title' => 'Thông báo tuyển sinh đầu cấp các khối lớp 10, 6, 1',
-                        'date' => '20 tháng 3, 2026'
+                        'date' => '20 tháng 3, 2026',
+                        'url' => '#'
                     ],
                     [
                         'title' => 'Kế hoạch triển khai chương trình STEM tích hợp',
-                        'date' => '15 tháng 3, 2026'
+                        'date' => '15 tháng 3, 2026',
+                        'url' => '#'
                     ],
                     [
                         'title' => 'Kế hoạch tuyển sinh đầu cấp năm học 2025-2026',
-                        'date' => '10 tháng 3, 2026'
+                        'date' => '10 tháng 3, 2026',
+                        'url' => '#'
                     ]
                 ],
                 'show_notifications' => true,
@@ -134,15 +138,18 @@ class HomeSetting extends Model
                 'upcoming_events' => [
                     [
                         'title' => 'Hội nghị phụ huynh cuối năm học',
-                        'date' => '15 tháng 4, 2026'
+                        'date' => '15 tháng 4, 2026',
+                        'url' => '#'
                     ],
                     [
                         'title' => 'Lễ tốt nghiệp THPT khóa 2024-2026',
-                        'date' => '20 tháng 4, 2026'
+                        'date' => '20 tháng 4, 2026',
+                        'url' => '#'
                     ],
                     [
                         'title' => 'Khai giảng năm học mới 2026-2027',
-                        'date' => '5 tháng 9, 2026'
+                        'date' => '5 tháng 9, 2026',
+                        'url' => '#'
                     ]
                 ],
                 'show_events' => true,

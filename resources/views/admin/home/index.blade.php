@@ -232,7 +232,7 @@
                                     @foreach($settings->notifications as $index => $notification)
                                         <div class="notification-item border p-3 mb-3 rounded">
                                             <div class="row">
-                                                <div class="col-md-8">
+                                                <div class="col-md-5">
                                                     <div class="form-group">
                                                         <label>Tiêu đề thông báo</label>
                                                         <input type="text" class="form-control" 
@@ -247,6 +247,15 @@
                                                                name="notifications[{{ $index }}][date]" 
                                                                value="{{ $notification['date'] }}" 
                                                                placeholder="1 tháng 1, 2026" required>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <label>Liên kết</label>
+                                                        <input type="text" class="form-control" 
+                                                               name="notifications[{{ $index }}][url]" 
+                                                               value="{{ $notification['url'] ?? '' }}" 
+                                                               placeholder="https://... hoặc /duong-dan hoặc #">
                                                     </div>
                                                 </div>
                                                 <div class="col-md-1 d-flex align-items-end">
@@ -372,7 +381,7 @@
                                     @foreach($settings->upcoming_events as $index => $event)
                                         <div class="event-item border p-3 mb-3 rounded">
                                             <div class="row">
-                                                <div class="col-md-8">
+                                                <div class="col-md-5">
                                                     <div class="form-group">
                                                         <label>Tên sự kiện</label>
                                                         <input type="text" class="form-control" 
@@ -387,6 +396,15 @@
                                                                name="upcoming_events[{{ $index }}][date]" 
                                                                value="{{ $event['date'] }}" 
                                                                placeholder="15 tháng 4, 2026" required>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <label>Liên kết</label>
+                                                        <input type="text" class="form-control" 
+                                                               name="upcoming_events[{{ $index }}][url]" 
+                                                               value="{{ $event['url'] ?? '' }}" 
+                                                               placeholder="https://... hoặc /duong-dan hoặc #">
                                                     </div>
                                                 </div>
                                                 <div class="col-md-1 d-flex align-items-end">
@@ -949,7 +967,7 @@ $(document).ready(function() {
         const html = `
             <div class="notification-item border p-3 mb-3 rounded">
                 <div class="row">
-                    <div class="col-md-8">
+                    <div class="col-md-5">
                         <div class="form-group">
                             <label>Tiêu đề thông báo</label>
                             <input type="text" class="form-control" name="notifications[${notificationIndex}][title]" required>
@@ -959,6 +977,12 @@ $(document).ready(function() {
                         <div class="form-group">
                             <label>Ngày</label>
                             <input type="text" class="form-control" name="notifications[${notificationIndex}][date]" placeholder="1 tháng 1, 2026" required>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>Liên kết</label>
+                            <input type="text" class="form-control" name="notifications[${notificationIndex}][url]" placeholder="https://... hoặc /duong-dan hoặc #">
                         </div>
                     </div>
                     <div class="col-md-1 d-flex align-items-end">
@@ -1013,7 +1037,7 @@ $(document).ready(function() {
         const html = `
             <div class="event-item border p-3 mb-3 rounded">
                 <div class="row">
-                    <div class="col-md-8">
+                    <div class="col-md-5">
                         <div class="form-group">
                             <label>Tên sự kiện</label>
                             <input type="text" class="form-control" name="upcoming_events[${eventIndex}][title]" required>
@@ -1023,6 +1047,12 @@ $(document).ready(function() {
                         <div class="form-group">
                             <label>Thời gian</label>
                             <input type="text" class="form-control" name="upcoming_events[${eventIndex}][date]" placeholder="15 tháng 4, 2026" required>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>Liên kết</label>
+                            <input type="text" class="form-control" name="upcoming_events[${eventIndex}][url]" placeholder="https://... hoặc /duong-dan hoặc #">
                         </div>
                     </div>
                     <div class="col-md-1 d-flex align-items-end">

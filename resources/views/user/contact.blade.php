@@ -137,7 +137,13 @@
                         <h3 class="sidebar-title">THÔNG BÁO MỚI NHẤT</h3>
                         @foreach ($homeSettings->notifications as $notification)
                             <div class="notification-item">
-                                <p><strong>{{ $notification['title'] }}</strong></p>
+                                <p>
+                                    @if(!empty($notification['url']))
+                                        <a href="{{ $notification['url'] }}" class="notification-link"><strong>{{ $notification['title'] }}</strong></a>
+                                    @else
+                                        <strong>{{ $notification['title'] }}</strong>
+                                    @endif
+                                </p>
                                 <small>{{ $notification['date'] }}</small>
                             </div>
                         @endforeach
@@ -167,7 +173,13 @@
                         <h3 class="sidebar-title">SỰ KIỆN SẮP TỚI</h3>
                         @foreach ($homeSettings->upcoming_events as $event)
                             <div class="notification-item">
-                                <p><strong>{{ $event['title'] }}</strong></p>
+                                <p>
+                                    @if(!empty($event['url']))
+                                        <a href="{{ $event['url'] }}" class="notification-link"><strong>{{ $event['title'] }}</strong></a>
+                                    @else
+                                        <strong>{{ $event['title'] }}</strong>
+                                    @endif
+                                </p>
                                 <small>{{ $event['date'] }}</small>
                             </div>
                         @endforeach
