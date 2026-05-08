@@ -286,9 +286,9 @@
 @endsection
 
 @push('styles')
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css?v=1.0">
     <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.css">
+        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.css?v=1.0">
     <link rel="stylesheet" href="{{ asset('js/ckeditor5/ckeditor5.css') }}">
     <link rel="stylesheet" href="{{ asset('js/ckeditor5/ckeditor5-editor.css') }}">
     <link rel="stylesheet" href="{{ asset('js/ckeditor5/ckeditor5-content.css') }}">

@@ -10,11 +10,11 @@
     <meta name="theme-color" content="#1a1a1a" media="(prefers-color-scheme: dark)">
     <meta name="description" content="@yield('meta_description', 'Admin Dashboard powered by AdminLTE')">
     <meta name="supported-color-schemes" content="light dark">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/source-sans-3@5.0.12/index.css"
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/source-sans-3@5.0.12/index.css?v=1.0"
         crossorigin="anonymous" media="print" onload="this.media='all'">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/overlayscrollbars@2.11.0/styles/overlayscrollbars.min.css"
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/overlayscrollbars@2.11.0/styles/overlayscrollbars.min.css?v=1.0"
         crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css"
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css?v=1.0"
         crossorigin="anonymous">
     <link rel="stylesheet" href="{{ asset('vendor/master-admin/assets/css/adminlte.css') }}">
     @stack('styles')
@@ -120,7 +120,7 @@
     {{-- Image path fix --}}
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const cssLink = document.querySelector('link[href*="css/adminlte.css"]');
+            const cssLink = document.querySelector('link[href*="css/adminlte.css?v=1.0"]');
             if (!cssLink) return;
 
             const cssHref = cssLink.getAttribute('href');
