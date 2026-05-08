@@ -50,7 +50,28 @@
     
     <!-- SweetAlert2 CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.14.5/dist/sweetalert2.min.css">
-    
+
+    <!-- Messenger Button -->
+    <style>
+        .messenger-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 9999;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+        .messenger-btn:hover {
+            transform: scale(1.1);
+        }
+        .messenger-btn img {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+    </style>
+
     @stack('styles')
 </head>
 
@@ -298,6 +319,11 @@
     </div>
     @endif
     
+    <!-- Nút chat Messenger -->
+    <a href="https://m.me/Truongthuchanhsupham" target="_blank" rel="noopener noreferrer" class="messenger-btn" aria-label="Chat với chúng tôi qua Messenger">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/b/be/Facebook_Messenger_logo_2020.svg" alt="Chat Messenger">
+    </a>
+
     @stack('scripts')
 </body>
 
