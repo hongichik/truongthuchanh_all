@@ -237,7 +237,7 @@
                 <div class="form-group">
                     <label for="birthplace">7. Nơi sinh (Tỉnh/Thành phố)</label>
                     <input type="text" id="birthplace" name="birthplace" class="form-control"
-                           placeholder="Nhập tỉnh/thành phố nơi sinh" value="{{ old('birthplace', '') }}">
+                           placeholder="VD: Phường Hạ Long - Tỉnh Quảng Ninh" value="{{ old('birthplace', '') }}">
                     @error('birthplace')
                         <small class="text-danger">{{ $message }}</small>
                     @enderror

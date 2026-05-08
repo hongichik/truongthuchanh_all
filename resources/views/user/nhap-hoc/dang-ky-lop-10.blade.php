@@ -293,7 +293,7 @@
                 <div class="form-group">
                     <label for="birthplace">8. Nơi sinh (Tỉnh/Thành phố)</label>
                     <input type="text" id="birthplace" name="birthplace" class="form-control" 
-                           placeholder="Nhập tỉnh/thành phố nơi sinh" value="{{ old('birthplace', '') }}">
+                              placeholder="VD: Phường Hạ Long - Tỉnh Quảng Ninh" value="{{ old('birthplace', '') }}">
                     @error('birthplace')<small class="text-danger">{{ $message }}</small>@enderror
                 </div>
                 
@@ -538,9 +538,9 @@
                 <h3><i class="fas fa-file-upload"></i> IV. TẢI LÊN HỌC BẠ</h3>
                 
                 <div class="form-group">
-                    <label for="academic_transcript">Học bạ THCS (nhiều ảnh PDF, JPG, PNG)</label>
+                    <label for="academic_transcript">Học bạ THCS (nhiều ảnh PDF, JPG, PNG)<span class="required">*</span></label>
                     <input type="file" id="academic_transcript" name="academic_transcript[]" class="form-control" 
-                           accept=".pdf,.jpg,.jpeg,.png" multiple>
+                           accept=".pdf,.jpg,.jpeg,.png" multiple required>
                     <small class="text-muted">
                         <i class="fas fa-info-circle"></i> 
                         Chọn nhiều ảnh cùng lúc: học bạ từ lớp 6-9, bằng tốt nghiệp THCS... 
