@@ -25,6 +25,7 @@ use Illuminate\Support\Str;
                 <div class="featured-overlay">
                     <h2>{{ $homeSettings->featured_title }}</h2>
                     <p>{{ $homeSettings->featured_subtitle }}</p>
+                    <p class="featured-slogan">{{ $homeSettings->featured_slogan ?? 'Môi trường giáo dục hiện đại - hội nhập - nhân văn' }}</p>
                 </div>
             </section>
             @endif
@@ -152,7 +153,7 @@ use Illuminate\Support\Str;
                 @foreach($homeSettings->quick_services as $service)
                     <div class="activity-item">
                         <p><strong>{{ $service['title'] }}</strong><br>
-                            <a href="{{ $service['url'] }}" style="color: #3b82f6;">{{ $service['description'] }}</a>
+                            <a href="{{ $service['url'] }}" style="color: #2f6fed;">{{ $service['description'] }}</a>
                         </p>
                     </div>
                 @endforeach

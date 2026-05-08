@@ -43,7 +43,7 @@
     <meta name="twitter:description" content="{{ $metaDescription }}">
     <meta name="twitter:image" content="{{ $metaImage }}">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <!-- Custom Badge Styles -->
     <link rel="stylesheet" href="{{ asset('css/badges.css') }}">
@@ -82,7 +82,7 @@
             <div class="container">
                 <div class="header-info">
                     <span><i class="fas fa-phone"></i> Hotline: 0976.690.595 - 0982.972.709</span>
-                    <span><i class="fas fa-envelope"></i> Email: thuchanh@uhl.edu.vn</span>
+                    <span><i class="fas fa-envelope"></i> Email: {{ $websiteConfig['contact_info']['email'] ?? 'thuchanh@uhl.edu.vn' }}</span>
                 </div>
             </div>
         </div>
@@ -199,7 +199,7 @@
                         <h3 class="footer-title-mobile">TRƯỜNG ĐẠI HỌC HẠ LONG <br> TRƯỜNG TH, THCS VÀ THPT THỰC HÀNH SƯ PHẠM</h3>
                         <p>Địa chỉ: Số 258, đường Bạch Đằng, phường Vàng Danh, tỉnh Quảng Ninh</p>
                         <p>Điện thoại: 0976.690.595 - 0982.972.709</p>
-                        <p>Email: thuchanh@uhl.edu.vn</p>
+                        <p>Email: {{ $websiteConfig['contact_info']['email'] ?? 'thuchanh@uhl.edu.vn' }}</p>
                     </div>
                 </div>
                 <div class="footer-right">
@@ -228,13 +228,13 @@
         }
         
         .swal2-popup {
-            font-family: 'Roboto', sans-serif !important;
+            font-family: 'Be Vietnam Pro', 'Inter', sans-serif !important;
             border-radius: 10px !important;
         }
         
         .swal2-title {
             font-size: 1.5rem !important;
-            color: #2c5530 !important;
+            color: #4f6470 !important;
             font-weight: 600 !important;
         }
         
@@ -258,7 +258,7 @@
         }
         
         .swal2-toast {
-            font-family: 'Roboto', sans-serif !important;
+            font-family: 'Be Vietnam Pro', 'Inter', sans-serif !important;
             font-size: 0.95rem !important;
         }
         
