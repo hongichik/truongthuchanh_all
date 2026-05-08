@@ -24,13 +24,13 @@ class WebsiteConfigComposer
                 'path' => 'assets/image/',
             ],
             'contact_info' => $settings->contact_info ?? [
-                'phone' => '0203.3841.166',
+                'phone' => '0976.690.595-0982.972.709',
                 'email' => 'thuchanh@uhl.edu.vn',
-                'address' => '258 Lê Thánh Tông, Phường Hồng Gai, TP. Hạ Long, Tỉnh Quảng Ninh'
+                'address' => 'Số 258, đường Bạch Đằng, phường Vàng Danh, tỉnh Quảng Ninh'
             ],
             'school_info' => $settings->school_info ?? [
                 'name' => 'TRƯỜNG TH, THCS VÀ THPT THỰC HÀNH SƯ PHẠM',
-                'parent_organization' => 'ĐẠI HỌC HẠ LONG',
+                'parent_organization' => 'TRƯỜNG ĐẠI HỌC HẠ LONG',
                 'short_description' => 'Nơi ươm mầm tương lai'
             ],
             'social_links' => $settings->social_links ?? [
