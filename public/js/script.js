@@ -16,6 +16,9 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Video play functionality
     initializeVideoLinks();
+
+    // Make notification/event cards clickable as a whole block
+    initializeNotificationItemCards();
     
     // Mobile menu toggle
     initializeMobileMenu();
@@ -26,6 +29,32 @@ document.addEventListener('DOMContentLoaded', function() {
     // Auto update visit counter
     updateVisitCounter();
 });
+
+// Notification/event card click behavior
+function initializeNotificationItemCards() {
+    const items = document.querySelectorAll('.notification-item');
+
+    items.forEach(item => {
+        const link = item.querySelector('a.notification-link[href]');
+        if (!link) {
+            return;
+        }
+
+        item.classList.add('has-link');
+
+        item.addEventListener('click', function(e) {
+            // Keep native anchor behavior when clicking directly on link text
+            if (e.target.closest('a')) {
+                return;
+            }
+
+            const href = link.getAttribute('href');
+            if (href) {
+                window.location.href = href;
+            }
+        });
+    });
+}
 
 // Navigation functionality  
 function initializeNavigation() {

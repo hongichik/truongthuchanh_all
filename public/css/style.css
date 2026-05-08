@@ -574,14 +574,24 @@ h1, h2, h3, h4, h5, h6 {
     padding-left: 12px;
 }
 
+.notification-item.has-link {
+    cursor: pointer;
+}
+
+.notification-item a,
+.notification-item a:visited,
+.notification-item a:active,
+.notification-item a:focus,
 .notification-link {
     color: inherit;
     text-decoration: none;
+    outline: none;
 }
 
+.notification-item a:hover,
 .notification-link:hover {
     color: #294591;
-    text-decoration: underline;
+    text-decoration: none;
 }
 
 .video-item {
