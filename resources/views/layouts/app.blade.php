@@ -81,8 +81,8 @@
         <div class="header-top">
             <div class="container">
                 <div class="header-info">
-                    <span><i class="fas fa-phone"></i> Hotline: {{ $websiteConfig['contact_info']['phone'] }}</span>
-                    <span><i class="fas fa-envelope"></i> Email: {{ $websiteConfig['contact_info']['email'] }}</span>
+                    <span><i class="fas fa-phone"></i> Hotline: 0976.690.595 - 0982.972.709</span>
+                    <span><i class="fas fa-envelope"></i> Email: thuchanh@uhl.edu.vn</span>
                 </div>
             </div>
         </div>
@@ -91,15 +91,15 @@
             <div class="container">
                 <div class="header-content">
                     <div class="logo-section">
-                        <img src="{{ asset($websiteConfig['logo']['path'] . $websiteConfig['logo']['current']) }}" alt="Logo Trường" class="logo">
+                        <img src="{{ asset('assets/image/logo.png') }}" alt="Logo Trường" class="logo">
                         <div class="school-info">
-                            <h2>{{ $websiteConfig['school_info']['parent_organization'] }}</h2>
-                            <h1>{{ $websiteConfig['school_info']['name'] }}</h1>
+                            <h2>TRƯỜNG ĐẠI HỌC HẠ LONG</h2>
+                            <h1>TRƯỜNG TH, THCS VÀ THPT THỰC HÀNH SƯ PHẠM</h1>
                         </div>
                     </div>
                     <div class="header-image">
                         <div class="image-editor-container">
-                            <img src="{{ asset($websiteConfig['header_image']['path'] . $websiteConfig['header_image']['current']) }}?v={{ time() }}" alt="{{ $websiteConfig['school_info']['name'] }} - {{ $websiteConfig['school_info']['parent_organization'] }}" id="headerImage">
+                            <img src="{{ asset('assets/image/bg_header.jpg') }}?v={{ time() }}" alt="TRƯỜNG TH, THCS VÀ THPT THỰC HÀNH SƯ PHẠM - TRƯỜNG ĐẠI HỌC HẠ LONG" id="headerImage">
                         </div>
                     </div>
                 </div>
@@ -195,11 +195,11 @@
             <div class="footer-content">
                 <div class="footer-left">
                     <div class="footer-info">
-                        <h3 class="footer-title-desktop">{{ $websiteConfig['school_info']['parent_organization'] }} <br> {{ $websiteConfig['school_info']['name'] }} </h3>
-                        <h3 class="footer-title-mobile">{{ $websiteConfig['school_info']['parent_organization'] }} <br> {{ $websiteConfig['school_info']['name'] }} </h3>
-                        <p>Địa chỉ: {{ $websiteConfig['contact_info']['address'] }}</p>
-                        <p>Điện thoại: {{ $websiteConfig['contact_info']['phone'] }}</p>
-                        <p>Email: {{ $websiteConfig['contact_info']['email'] }}</p>
+                        <h3 class="footer-title-desktop">TRƯỜNG ĐẠI HỌC HẠ LONG <br> TRƯỜNG TH, THCS VÀ THPT THỰC HÀNH SƯ PHẠM</h3>
+                        <h3 class="footer-title-mobile">TRƯỜNG ĐẠI HỌC HẠ LONG <br> TRƯỜNG TH, THCS VÀ THPT THỰC HÀNH SƯ PHẠM</h3>
+                        <p>Địa chỉ: Số 258, đường Bạch Đằng, phường Vàng Danh, tỉnh Quảng Ninh</p>
+                        <p>Điện thoại: 0976.690.595 - 0982.972.709</p>
+                        <p>Email: thuchanh@uhl.edu.vn</p>
                     </div>
                 </div>
                 <div class="footer-right">
@@ -280,7 +280,7 @@
                 <div class="current-image-section">
                     <h4>Ảnh hiện tại</h4>
                     <div class="current-image-preview">
-                        <img src="{{ asset($websiteConfig['header_image']['path'] . $websiteConfig['header_image']['current']) }}?v={{ time() }}" alt="Ảnh hiện tại" id="currentImagePreview">
+                        <img src="{{ asset('assets/image/bg_header.jpg') }}?v={{ time() }}" alt="Ảnh hiện tại" id="currentImagePreview">
                     </div>
                     <p><small class="text-muted">Ảnh header hiện tại</small></p>
                 </div>
