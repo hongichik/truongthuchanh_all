@@ -121,11 +121,11 @@
                                     <label>Preview hiện tại</label>
                                     <div class="current-banner-preview">
                                         @if(str_starts_with($settings->featured_image, 'http'))
-                                            <img src="{{ $settings->featured_image }}" alt="Current banner" class="img-fluid rounded">
+                                            <img src="{{ $settings->featured_image }}" alt="Current banner 1" class="img-fluid rounded">
                                         @elseif(str_starts_with($settings->featured_image, 'storage/'))
-                                            <img src="{{ asset($settings->featured_image) }}" alt="Current banner" class="img-fluid rounded">
+                                            <img src="{{ asset($settings->featured_image) }}" alt="Current banner 2" class="img-fluid rounded">
                                         @else
-                                            <img src="{{ asset($settings->featured_image) }}" alt="Current banner" class="img-fluid rounded">
+                                            <img src="{{ asset('storage/' . $settings->featured_image) }}" alt="Current banner 3" class="img-fluid rounded">
                                         @endif
                                     </div>
                                 </div>

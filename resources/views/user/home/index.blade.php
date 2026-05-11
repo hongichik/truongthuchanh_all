@@ -20,12 +20,11 @@ use Illuminate\Support\Str;
                 @elseif(str_starts_with($homeSettings->featured_image, 'storage/'))
                     <img src="{{ asset($homeSettings->featured_image) }}" alt="{{ $homeSettings->featured_title }}" class="featured-image">
                 @else
-                    <img src="{{ asset($homeSettings->featured_image) }}" alt="{{ $homeSettings->featured_title }}" class="featured-image">
+                    <img src="{{ asset('storage/' . $homeSettings->featured_image) }}" alt="{{ $homeSettings->featured_title }}" class="featured-image">
                 @endif
                 <div class="featured-overlay">
                     <h2>{{ $homeSettings->featured_title }}</h2>
-                    <p>{{ $homeSettings->featured_subtitle }}</p>
-                    <p class="featured-slogan">{{ $homeSettings->featured_slogan ?? 'Môi trường giáo dục hiện đại - hội nhập - nhân văn' }}</p>
+                    <p class="featured-slogan">{{ $homeSettings->featured_subtitle }}</p>
                 </div>
             </section>
             @endif

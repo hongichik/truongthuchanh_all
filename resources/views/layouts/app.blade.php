@@ -102,6 +102,41 @@
                             <img src="{{ asset('assets/image/bg_header.jpg') }}?v={{ time() }}" alt="TRƯỜNG TH, THCS VÀ THPT THỰC HÀNH SƯ PHẠM - TRƯỜNG ĐẠI HỌC HẠ LONG" id="headerImage">
                         </div>
                     </div>
+
+                    <div class="header-mobile-cta">
+                        @if($headerMenus && $headerMenus->isNotEmpty())
+                            @foreach($headerMenus as $menu)
+                                @if($menu->children->isNotEmpty())
+                                    <button class="mobile-menu-toggle" type="button">
+                                        <div class="dropdown">
+                                            <a href="{{ $menu->url ?: '#' }}" class="nav-link" id="show-{{ $menu->slug }}">
+                                                @if($menu->icon)<i class="{{ $menu->icon }}"></i>@endif {{ strtoupper($menu->name) }}
+                                            </a>
+                                            <div class="dropdown-content" id="{{ $menu->slug }}" style="position: fixed!important;">
+                                                @foreach($menu->children as $child)
+                                                    <a href="{{ $child->url }}">
+                                                        @if($child->icon)<i class="{{ $child->icon }}"></i>@endif {{ $child->name }}
+                                                    </a>
+                                                @endforeach
+                                            </div>
+                                        </div>
+                                    </button>
+                                    @break
+                                @endif
+                            @endforeach
+                        @else
+                            <button class="mobile-menu-toggle" type="button">
+                                <div class="dropdown">
+                                    <a href="#" class="nav-link" id="show-tuyen-sinh"><i class="fas fa-clipboard-list"></i>ĐĂNG KÝ <br> TUYỂN SINH</a>
+                                    <div class="dropdown-content" id="tuyen-sinh" style="position: fixed!important;">
+                                        <a href="{{ route('dang-ky.lop10') }}"><i class="fas fa-child"></i> Đăng ký vào lớp 10</a>
+                                        <a href="{{ route('dang-ky.lop6') }}"><i class="fas fa-user-graduate"></i> Đăng ký vào lớp 6</a>
+                                        <a href="{{ route('dang-ky.lop1') }}"><i class="fas fa-graduation-cap"></i> Đăng ký vào lớp 1</a>
+                                    </div>
+                                </div>
+                            </button>
+                        @endif
+                    </div>
                 </div>
             </div>
         </div>
@@ -109,40 +144,6 @@
         <!-- Navigation -->
         <nav class="navbar">
             <div class="container">
-                <!-- Mobile Menu Toggle -->
-                @if($headerMenus && $headerMenus->isNotEmpty())
-                    @foreach($headerMenus as $menu)
-                        @if($menu->children->isNotEmpty())
-                            <button class="mobile-menu-toggle">
-                                <div class="dropdown">
-                                    <a href="{{ $menu->url ?: '#' }}" class="nav-link" id="show-{{ $menu->slug }}">
-                                        @if($menu->icon)<i class="{{ $menu->icon }}"></i>@endif {{ strtoupper($menu->name) }}
-                                    </a>
-                                    <div class="dropdown-content" id="{{ $menu->slug }}" style="position: fixed!important;">
-                                        @foreach($menu->children as $child)
-                                            <a href="{{ $child->url }}">
-                                                @if($child->icon)<i class="{{ $child->icon }}"></i>@endif {{ $child->name }}
-                                            </a>
-                                        @endforeach
-                                    </div>
-                                </div>
-                            </button>
-                            @break
-                        @endif
-                    @endforeach
-                @else
-                    <button class="mobile-menu-toggle">
-                        <div class="dropdown">
-                            <a href="#" class="nav-link" id="show-tuyen-sinh"><i class="fas fa-clipboard-list"></i>ĐĂNG KÝ TUYỂN SINH</a>
-                            <div class="dropdown-content" id="tuyen-sinh" style="position: fixed!important;">
-                                <a href="{{ route('dang-ky.lop10') }}"><i class="fas fa-child"></i> Đăng ký vào lớp 10</a>
-                                <a href="{{ route('dang-ky.lop6') }}"><i class="fas fa-user-graduate"></i> Đăng ký vào lớp 6</a>
-                                <a href="{{ route('dang-ky.lop1') }}"><i class="fas fa-graduation-cap"></i> Đăng ký vào lớp 1</a>
-                            </div>
-                        </div>
-                    </button>
-                @endif
-
                 <!-- Desktop Menu -->
                 <ul class="nav-menu" id="navMenu">
                     @if($headerMenus && $headerMenus->isNotEmpty())
