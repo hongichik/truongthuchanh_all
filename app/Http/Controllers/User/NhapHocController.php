@@ -204,8 +204,8 @@ class NhapHocController extends Controller
             'is_disabled' => 'nullable|string|max:500',
             'achievements' => 'nullable|string|max:500',
             'achievement_rank' => 'nullable|string|max:100',
-            'academic_transcript.*' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048', // Changed from required to nullable for testing
-            'additional_documents.*' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048'
+            'academic_transcript.*' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:20480',
+            'additional_documents.*' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:20480'
         ]);
         
         if ($validator->fails()) {

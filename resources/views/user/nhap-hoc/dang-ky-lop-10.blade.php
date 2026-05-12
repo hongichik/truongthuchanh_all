@@ -721,24 +721,26 @@ class ImageCompressor {
                 ctx.drawImage(img, 0, 0, width, height);
                 
                 canvas.toBlob((blob) => {
+                    if (!blob) { resolve(file); return; }
                     // If still too large, compress more
                     if (blob.size > this.maxFileSize && this.quality > 0.3) {
                         this.quality -= 0.1;
                         canvas.toBlob((blob2) => {
+                            if (!blob2) { resolve(file); return; }
                             const compressedFile = new File([blob2], file.name, {
-                                type: file.type,
+                                type: 'image/jpeg',
                                 lastModified: Date.now()
                             });
                             resolve(compressedFile);
-                        }, file.type, this.quality);
+                        }, 'image/jpeg', this.quality);
                     } else {
                         const compressedFile = new File([blob], file.name, {
-                            type: file.type,
+                            type: 'image/jpeg',
                             lastModified: Date.now()
                         });
                         resolve(compressedFile);
                     }
-                }, file.type, this.quality);
+                }, 'image/jpeg', this.quality);
             };
 
             img.src = URL.createObjectURL(file);
