@@ -389,7 +389,7 @@
                 <div class="form-group">
                     <label>
                         Đơn đăng ký
-                        <a href="{{ asset('assets/mau_don_lop_1.doc') }}" download>
+                        <a href="{{ route('dang-ky.mau-don', ['lop' => 1]) }}">
                             Tải mẫu đơn lớp 1
                         </a>
                     </label>

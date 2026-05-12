@@ -21,6 +21,10 @@ Route::post('/lien-he', [ContactController::class, 'store'])->name('contact.stor
 
 // Registration routes with proper controller
 Route::prefix('dang-ky')->name('dang-ky.')->group(function () {
+    Route::get('/mau-don/lop-{lop}', [NhapHocController::class, 'downloadMauDon'])
+        ->whereIn('lop', ['1', '6', '10'])
+        ->name('mau-don');
+
     // Grade 1 registration
     Route::get('/lop-1', [NhapHocController::class, 'dangKyLop1'])->name('lop1');
     Route::post('/lop-1', [NhapHocController::class, 'storeLop1'])->name('lop1.store');

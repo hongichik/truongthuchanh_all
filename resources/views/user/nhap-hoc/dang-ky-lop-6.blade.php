@@ -579,7 +579,7 @@
                 <div class="form-group">
                     <label for="additional_documents">
                         Đơn đăng ký <span class="required">*</span>
-                        <a href="{{ asset('assets/mau_don_lop_6.doc') }}" download>
+                        <a href="{{ route('dang-ky.mau-don', ['lop' => 6]) }}">
                             Tải mẫu đơn lớp 6
                         </a>
                     </label>

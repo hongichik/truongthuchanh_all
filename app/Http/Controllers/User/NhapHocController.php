@@ -11,6 +11,34 @@ use Illuminate\Support\Facades\Validator;
 
 class NhapHocController extends Controller
 {
+    public function downloadMauDon(string $lop)
+    {
+        $files = [
+            '1' => 'mau_don_lop_1.doc',
+            '6' => 'mau_don_lop_6.doc',
+            '10' => 'mau_don_lop_10.doc',
+        ];
+
+        if (!isset($files[$lop])) {
+            abort(404);
+        }
+
+        $path = public_path('assets/' . $files[$lop]);
+        if (!is_file($path) || filesize($path) === 0) {
+            abort(404, 'Tep mau don khong ton tai hoac rong.');
+        }
+
+        return response()->download(
+            $path,
+            'mau-don-lop-' . $lop . '.doc',
+            [
+                'Content-Type' => 'application/msword',
+                'Content-Transfer-Encoding' => 'binary',
+                'Cache-Control' => 'private, no-transform, no-store, must-revalidate',
+            ]
+        );
+    }
+
     /**
      * Hiển thị form đăng ký lớp 1
      */
