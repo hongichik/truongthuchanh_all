@@ -389,7 +389,7 @@
                 <div class="form-group">
                     <label>
                         Đơn đăng ký
-                        <a href="{{ asset('assets/' . rawurlencode('MẪU PHIẾU ĐĂNG KÍ XÉT TUYỂN VÀO   LỚP 1 - NĂM HỌC  2026 - 2027.doc')) }}" download>
+                        <a href="{{ asset('assets/mau_don_lop_1.doc') }}" download>
                             Tải mẫu đơn lớp 1
                         </a>
                     </label>

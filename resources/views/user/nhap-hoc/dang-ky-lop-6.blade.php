@@ -579,7 +579,7 @@
                 <div class="form-group">
                     <label for="additional_documents">
                         Đơn đăng ký <span class="required">*</span>
-                        <a href="{{ asset('assets/' . rawurlencode('MẪU PHIẾU ĐĂNG KÍ XÉT TUYỂN VÀO   LỚP 6 - NĂM HỌC  2026 - 2027.doc')) }}" download>
+                        <a href="{{ asset('assets/mau_don_lop_6.doc') }}" download>
                             Tải mẫu đơn lớp 6
                         </a>
                     </label>
