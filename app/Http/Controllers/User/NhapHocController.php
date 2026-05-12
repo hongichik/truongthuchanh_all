@@ -113,7 +113,8 @@ class NhapHocController extends Controller
             'achievements' => 'nullable|string|max:500',
             'achievement_rank' => 'nullable|string|max:100',
             'academic_transcript.*' => 'required|file|mimes:pdf,jpg,jpeg,png|max:5120',
-            'additional_documents.*' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:5120'
+            'additional_documents' => 'required|array|min:1',
+            'additional_documents.*' => 'required|file|mimes:pdf,jpg,jpeg,png|max:5120'
         ]);
         
         if ($validator->fails()) {
@@ -205,7 +206,8 @@ class NhapHocController extends Controller
             'achievements' => 'nullable|string|max:500',
             'achievement_rank' => 'nullable|string|max:100',
             'academic_transcript.*' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:20480',
-            'additional_documents.*' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:20480'
+            'additional_documents' => 'required|array|min:1',
+            'additional_documents.*' => 'required|file|mimes:pdf,jpg,jpeg,png|max:20480'
         ]);
         
         if ($validator->fails()) {

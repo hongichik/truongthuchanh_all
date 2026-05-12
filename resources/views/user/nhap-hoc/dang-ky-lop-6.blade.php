@@ -577,12 +577,17 @@
                 </div>
                 
                 <div class="form-group">
-                    <label for="additional_documents">Giấy tờ bổ sung (nếu có)</label>
+                    <label for="additional_documents">
+                        Đơn đăng ký <span class="required">*</span>
+                        <a href="{{ asset('assets/' . rawurlencode('MẪU PHIẾU ĐĂNG KÍ XÉT TUYỂN VÀO   LỚP 6 - NĂM HỌC  2026 - 2027.doc')) }}" download>
+                            Tải mẫu đơn lớp 6
+                        </a>
+                    </label>
                     <input type="file" id="additional_documents" name="additional_documents[]" class="form-control" 
-                           accept=".pdf,.jpg,.jpeg,.png" multiple>
+                           accept=".pdf,.jpg,.jpeg,.png" multiple required>
                     <small class="text-muted">
                         <i class="fas fa-info-circle"></i> 
-                        Upload nhiều file: giấy khen, chứng chỉ, giấy tờ chứng minh gia đình chính sách...
+                        Upload đơn đăng ký đã điền (PDF/JPG/PNG), có thể kèm giấy tờ bổ sung nếu cần.
                     </small>
                     <div id="additional_preview" class="mt-2"></div>
                     @error('additional_documents')<small class="text-danger">{{ $message }}</small>@enderror

@@ -385,6 +385,19 @@
                     </div>
                     <small class="text-muted">Ví dụ: Cuộc thi Trạng Nguyên Toàn Tài cấp Tỉnh - Giải Nhất</small>
                 </div>
+
+                <div class="form-group">
+                    <label>
+                        Đơn đăng ký
+                        <a href="{{ asset('assets/' . rawurlencode('MẪU PHIẾU ĐĂNG KÍ XÉT TUYỂN VÀO   LỚP 1 - NĂM HỌC  2026 - 2027.doc')) }}" download>
+                            Tải mẫu đơn lớp 1
+                        </a>
+                    </label>
+                    <small class="text-muted">
+                        <i class="fas fa-info-circle"></i>
+                        Tải mẫu đơn để điền thông tin theo hướng dẫn tuyển sinh lớp 1.
+                    </small>
+                </div>
             </div>
           
             <div style="text-align: center; margin-top: 30px;">
