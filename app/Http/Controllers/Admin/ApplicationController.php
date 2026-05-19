@@ -49,7 +49,8 @@ class ApplicationController extends Controller
     {
         $applications = DangKyLop1::select([
             'id', 'fullname', 'birthdate', 'gender', 'phone', 
-            'guardian_name', 'status', 'created_at'
+            'guardian_name', 'status', 'created_at',
+            'registration_form_path'
         ])->orderBy('created_at', 'desc');
         
         return DataTables::of($applications)
@@ -72,6 +73,21 @@ class ApplicationController extends Controller
                     </div>
                 ';
             })
+            ->addColumn('documents', function($row) {
+                if (empty($row->registration_form_path)) {
+                    return '<span class="text-muted">Chưa có file</span>';
+                }
+
+                $downloadUrl = route('admin.applications.download', [
+                    'type' => 'registration',
+                    'id' => $row->id,
+                    'grade' => 1,
+                ]);
+
+                return '<a href="'.$downloadUrl.'" class="btn btn-sm btn-primary" target="_blank">\
+                    <i class="fas fa-download"></i> Tải đơn\
+                </a>';
+            })
             ->editColumn('status', function($row) {
                 $badges = [
                     'pending' => '<span class="badge bg-warning text-dark">Chờ duyệt</span>',
@@ -86,7 +102,7 @@ class ApplicationController extends Controller
             ->editColumn('birthdate', function($row) {
                 return $row->birthdate->format('d/m/Y');
             })
-            ->rawColumns(['action', 'status'])
+            ->rawColumns(['action', 'documents', 'status'])
             ->make(true);
     }
 
@@ -1168,10 +1184,34 @@ class ApplicationController extends Controller
     public function downloadFile(Request $request, $type, $id)
     {
         $grade = (int) $request->query('grade', 10);
-        $model = $grade === 6 ? DangKyLop6::class : DangKyLop10::class;
+        $model = match ($grade) {
+            1 => DangKyLop1::class,
+            6 => DangKyLop6::class,
+            default => DangKyLop10::class,
+        };
         $application = $model::findOrFail($id);
         
         switch ($type) {
+            case 'registration':
+                if ($grade !== 1) {
+                    abort(404, 'Loại file không hợp lệ');
+                }
+
+                $registrationPath = $application->registration_form_path;
+                if (empty($registrationPath)) {
+                    abort(404, 'Không có file đơn đăng ký');
+                }
+
+                $filePath = storage_path('app/public/' . $registrationPath);
+                if (!file_exists($filePath)) {
+                    abort(404, 'File đơn đăng ký không tìm thấy trên server');
+                }
+
+                $extension = pathinfo($filePath, PATHINFO_EXTENSION);
+                $downloadName = 'don_dang_ky_lop_1_' . $application->id . '.' . $extension;
+
+                return response()->download($filePath, $downloadName);
+
             case 'academic':
                 $academicData = $application->academic_transcript_path;
                 
@@ -1424,8 +1464,14 @@ class ApplicationController extends Controller
     // Helper function to format file sizes
     private function formatBytes($size, $precision = 2) 
     {
+        if ($size <= 0) {
+            return '0 B';
+        }
+
         $base = log($size, 1024);
         $suffixes = array('B', 'KB', 'MB', 'GB', 'TB');
-        return round(pow(1024, $base - floor($base)), $precision) .' '. $suffixes[floor($base)];
+        $index = (int) floor($base);
+
+        return round(pow(1024, $base - $index), $precision) . ' ' . $suffixes[$index];
     }
 }

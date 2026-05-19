@@ -7,6 +7,7 @@ use App\Models\DangKyLop1;
 use App\Models\DangKyLop6;
 use App\Models\DangKyLop10;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
 class NhapHocController extends Controller
@@ -74,7 +75,8 @@ class NhapHocController extends Controller
             'guardian_occupation' => 'nullable|string|max:255',
             'is_disabled' => 'nullable|string|max:500',
             'achievements' => 'nullable|string|max:500',
-            'achievement_rank' => 'nullable|string|max:100'
+            'achievement_rank' => 'nullable|string|max:100',
+            'registration_form_image' => 'required|file|image|mimes:jpg,jpeg,png,webp|max:5120',
         ]);
         
         if ($validator->fails()) {
@@ -84,9 +86,19 @@ class NhapHocController extends Controller
         }
         
         try {
-            DangKyLop1::create($request->all());
+            $data = $request->except(['registration_form_image']);
+
+            if ($request->hasFile('registration_form_image')) {
+                $file = $request->file('registration_form_image');
+                $fileName = time() . '_' . uniqid() . '_don_dang_ky_' . $file->getClientOriginalName();
+                $data['registration_form_path'] = $file->storeAs('uploads/don-dang-ky/lop1', $fileName, 'public');
+                $data['registration_form_uploaded_at'] = now();
+            }
+
+            DangKyLop1::create($data);
             return back()->with('success_alert', 'Đăng ký thành công! Chúng tôi sẽ liên hệ với bạn sớm nhất.');
         } catch (\Exception $e) {
+            Log::error('Lỗi đăng ký lớp 1: ' . $e->getMessage());
             return back()->withInput()->with('error_alert', 'Có lỗi xảy ra khi đăng ký. Vui lòng thử lại.');
         }
     }
@@ -181,7 +193,7 @@ class NhapHocController extends Controller
             DangKyLop6::create($data);
             return back()->with('success_alert', 'Đăng ký thành công! Hồ sơ đã được tải lên. Chúng tôi sẽ liên hệ với bạn sớm nhất.');
         } catch (\Exception $e) {
-            \Log::error('Lỗi đăng ký lớp 6: ' . $e->getMessage());
+            Log::error('Lỗi đăng ký lớp 6: ' . $e->getMessage());
             return back()->withInput()->with('error_alert', 'Có lỗi xảy ra khi đăng ký. Vui lòng thử lại.');
         }
     }
@@ -282,7 +294,7 @@ class NhapHocController extends Controller
             DangKyLop10::create($data);
             return back()->with('success_alert', 'Đăng ký thành công! Học bạ đã được tải lên. Chúng tôi sẽ liên hệ với bạn sớm nhất.');
         } catch (\Exception $e) {
-            \Log::error('Lỗi đăng ký lớp 10: ' . $e->getMessage());
+            Log::error('Lỗi đăng ký lớp 10: ' . $e->getMessage());
             return back()->withInput()->with('error_alert', 'Có lỗi xảy ra khi đăng ký. Vui lòng thử lại: ' . $e->getMessage());
         }
     }

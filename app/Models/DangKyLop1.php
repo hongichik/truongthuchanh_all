@@ -35,11 +35,14 @@ class DangKyLop1 extends Model
         'is_disabled',
         'achievements',
         'achievement_rank',
+        'registration_form_path',
+        'registration_form_uploaded_at',
         'status',
         'notes'
     ];
 
     protected $casts = [
-        'birthdate' => 'date'
+        'birthdate' => 'date',
+        'registration_form_uploaded_at' => 'datetime',
     ];
 }

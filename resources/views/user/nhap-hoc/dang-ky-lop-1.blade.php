@@ -155,7 +155,7 @@
     </div>
     
     <div class="registration-form">
-        <form method="POST" action="{{ route('dang-ky.lop1.store') }}">
+        <form method="POST" action="{{ route('dang-ky.lop1.store') }}" enctype="multipart/form-data">
             @csrf
           
             <!-- Thông tin cá nhân học sinh -->
@@ -393,9 +393,18 @@
                             Tải mẫu đơn lớp 1
                         </a>
                     </label>
+                    <input
+                        type="file"
+                        id="registration_form_image"
+                        name="registration_form_image"
+                        class="form-control"
+                        accept=".jpg,.jpeg,.png,.webp"
+                        required
+                    >
+                    @error('registration_form_image')<small class="text-danger">{{ $message }}</small>@enderror
                     <small class="text-muted">
                         <i class="fas fa-info-circle"></i>
-                        Tải mẫu đơn để điền thông tin theo hướng dẫn tuyển sinh lớp 1.
+                        Sau khi điền mẫu đơn, vui lòng chụp/scan và tải ảnh đơn đăng ký (JPG, PNG, WEBP - tối đa 5MB).
                     </small>
                 </div>
             </div>

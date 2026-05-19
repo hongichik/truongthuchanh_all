@@ -70,6 +70,20 @@
                                 <td><strong>Ngày nộp đơn:</strong></td>
                                 <td>{{ $application->created_at->format('d/m/Y H:i') }}</td>
                             </tr>
+                            @if($grade == 1)
+                            <tr>
+                                <td><strong>Đơn đăng ký:</strong></td>
+                                <td>
+                                    @if(!empty($application->registration_form_path))
+                                        <a href="{{ route('admin.applications.download', ['type' => 'registration', 'id' => $application->id, 'grade' => 1]) }}" class="btn btn-sm btn-primary" target="_blank">
+                                            <i class="fas fa-download"></i> Tải đơn đăng ký
+                                        </a>
+                                    @else
+                                        <span class="text-muted">Chưa có file</span>
+                                    @endif
+                                </td>
+                            </tr>
+                            @endif
                         </table>
                     </div>
                 </div>

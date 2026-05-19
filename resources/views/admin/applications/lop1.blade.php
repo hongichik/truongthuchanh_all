@@ -40,6 +40,7 @@
                         <th>Giới tính</th>
                         <th>SĐT</th>
                         <th>Người giám hộ</th>
+                        <th>Đơn đăng ký</th>
                         <th>Trạng thái</th>
                         <th>Ngày nộp</th>
                         <th>Thao tác</th>
@@ -178,6 +179,7 @@ $(document).ready(function() {
             {data: 'gender', name: 'gender'},
             {data: 'phone', name: 'phone'},
             {data: 'guardian_name', name: 'guardian_name'},
+            {data: 'documents', name: 'documents', orderable: false, searchable: false},
             {data: 'status', name: 'status', orderable: false},
             {data: 'created_at', name: 'created_at'},
             {data: 'action', name: 'action', orderable: false, searchable: false}
