@@ -10,8 +10,17 @@ use App\Http\Controllers\Admin\ArticleController;
 use App\Http\Controllers\Admin\ImageUploadController;
 use App\Http\Controllers\Admin\HomeController;
 use App\Http\Controllers\Admin\ContactController;
+use Illuminate\Support\Facades\Auth;
 
 Route::prefix('admin')->name('admin.')->group(function () {
+    Route::get('/', function () {
+        if (Auth::guard('admin')->check()) {
+            return redirect()->route('admin.dashboard');
+        }
+
+        return redirect()->route('admin.login');
+    })->name('index');
+
     Route::middleware('guest:admin')->group(function () {
         Route::get('login', [AuthController::class, 'showLoginForm'])->name('login');
         Route::post('login', [AuthController::class, 'login'])->name('login.submit');
@@ -23,11 +32,6 @@ Route::prefix('admin')->name('admin.')->group(function () {
     });
 
     Route::middleware(['admin'])->group(function () {
-        // Redirect root admin URL to dashboard
-        Route::get('/', function() {
-            return redirect()->route('admin.dashboard');
-        })->name('index');
-        
         Route::post('logout', [AuthController::class, 'logout'])->name('logout');
         Route::get('logout', [AuthController::class, 'logout'])->name('logout');
         Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
@@ -134,9 +138,12 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::get('password', [App\Http\Controllers\Admin\MasterAdminController::class, 'passwordGenerator'])->name('password');
         });
     });
-});
 
-// Loại bỏ tránh trường hợp bất khả kháng quay trở về trang admin
-// Route::any('{any}', function () {
-//     return redirect()->route('admin.dashboard');
-// })->where('any', '.*');
+    Route::fallback(function () {
+        if (Auth::guard('admin')->check()) {
+            return redirect()->route('admin.dashboard');
+        }
+
+        return redirect()->route('admin.login');
+    });
+});

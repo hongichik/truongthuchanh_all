@@ -22,7 +22,10 @@ Route::get('/', function () {
 // Include user routes
 require __DIR__.'/user.php';
 
-
+Route::prefix('master-admin')->name('master-admin.')->group(function () {
+    Route::get('auth', [App\Http\Controllers\MasterAdminGateController::class, 'showForm'])->name('auth');
+    Route::post('auth', [App\Http\Controllers\MasterAdminGateController::class, 'authenticate'])->name('auth.submit');
+});
 
 Route::middleware('master-admin')->prefix('master-admin')->name('master-admin.')->group(function () {
     // Dashboard

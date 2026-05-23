@@ -44,3 +44,23 @@ if (!function_exists('get_master_admin_url')) {
         return $baseUrl . '?pass=' . $password;
     }
 }
+
+if (!function_exists('master_admin_requires_login')) {
+    /**
+     * Master Admin chỉ yêu cầu đăng nhập khi đã có super admin (ID=1).
+     */
+    function master_admin_requires_login(): bool
+    {
+        try {
+            \Illuminate\Support\Facades\DB::connection()->getPdo();
+
+            if (! \Illuminate\Support\Facades\Schema::hasTable('admins')) {
+                return false;
+            }
+
+            return \App\Models\Admin::where('id', 1)->exists();
+        } catch (\Throwable) {
+            return false;
+        }
+    }
+}

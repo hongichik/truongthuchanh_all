@@ -3,7 +3,6 @@
 namespace Hongdev\MasterAdmin;
 
 use Illuminate\Support\ServiceProvider;
-use Hongdev\MasterAdmin\Http\Middleware\MasterAdminMiddleware;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
@@ -46,17 +45,6 @@ class MasterAdminServiceProvider extends ServiceProvider
             __DIR__ . '/../Export/Auth/config' => config_path(),
         ], 'master-admin-auth');
 
-
-        // Đăng ký middleware
-        $router = $this->app['router'];
-        $router->aliasMiddleware('master-admin', MasterAdminMiddleware::class);
-
-        // Ensure the middleware group has session and error handling
-        $router->middlewareGroup('master-admin', [
-            \Illuminate\Session\Middleware\StartSession::class,
-            \Illuminate\View\Middleware\ShareErrorsFromSession::class,
-            \Hongdev\MasterAdmin\Http\Middleware\MasterAdminMiddleware::class,
-        ]);
 
         // Register Google Drive disk configuration
         $this->registerGoogleDriveDisk();
