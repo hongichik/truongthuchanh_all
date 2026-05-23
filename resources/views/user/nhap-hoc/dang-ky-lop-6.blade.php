@@ -269,7 +269,7 @@
                 </div>
                 
                 <div class="form-group">
-                    <label for="current_school">5. Học sinh trường THCS <span class="required">*</span></label>
+                    <label for="current_school">5. Học sinh trường tiểu học <span class="required">*</span></label>
                     <input type="text" id="current_school" name="current_school" class="form-control" 
                            placeholder="Nhập tên trường THCS đang theo học" 
                            value="{{ old('current_school', '') }}" required>
